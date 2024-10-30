@@ -245,7 +245,6 @@ const closeHandler = () => {
 
 	display: flex;
 	flex-direction: column;
-	align-items:center;
 	max-height: 164px;
 	overflow-y: auto;
 }

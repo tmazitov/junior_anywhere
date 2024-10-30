@@ -5,6 +5,7 @@
 	@mouseleave="isHovered = false"
 	v-bind:style="{
 		'border-color' : color,
+		'color' : color,
 		'background' : color + (isHovered ? '2a' : '12'),
 	}">
 		{{ title }}
