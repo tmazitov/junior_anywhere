@@ -1,5 +1,7 @@
 <template>
-	<div class="base-icon-button">
+	<div class="base-icon-button" v-bind:class="{
+		primary: primary,
+	}">
 		<Icon :icon="icon" color="var(--text-color)" height="18px" width="18px"/> 
 	</div>
 </template>
@@ -12,6 +14,7 @@ defineProps({
 		type: String,
 		required: true,
 	},
+	primary: Boolean,
 })
 </script>
 
@@ -35,7 +38,13 @@ defineProps({
 	background: var(--button-background-hover);
 }
 
-.base-icon-button:hover{
-	background: var(--button-background-hover);
+
+.primary{
+	background: var(--primary-color);
+	border-color: transparent;
+}
+
+.primary:hover{
+	background: var(--primary-color-hover);
 }
 </style>

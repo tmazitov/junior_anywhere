@@ -10,7 +10,7 @@
 
 					<div class="buttons">
 						<BaseInput :left-icon="icons['search']" placeholder="Field of interest" v-model="search"/>
-						<BaseSelect icon="tabler:clock" placeholder="Employment" :items="options" v-model="selected"/>
+						<BaseSelect icon="tabler:briefcase" placeholder="Employment" :items="options" v-model="selected"/>
 						<BaseButton id="search-desktop" title="Search" primary/>
 					</div>
 

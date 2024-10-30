@@ -1,36 +1,106 @@
 <template>
 	<div class="page">
 		<div class="page-frame grid-container">
-			<div class="block">
-				<div class="block-child" style="height:200px">
-					Add One
-				</div>
-				<div class="block-child" style="flex:1;">
-					Add Two
-				</div>
+			<div class="block-child nav">
+				<NavigationBar/>
 			</div>
 			<div class="block">
-				<div class="block-child">Filters</div>
-				<div class="block-child" style="flex:1;">
-					Vacancy List
-				</div>
+				<ContentBlock class="add" outlined>
+					<div class="add-cover">
+						<h3>Hard to make the CV?</h3>
+						<div>Let our specialists help you to find your strong sides</div>
+					</div>
+				</ContentBlock>
+				<ContentBlock style="flex:1; max-height: 450px" class="desktop">
+					<h4>Filters</h4>
+				</ContentBlock>
+			</div>
+			<div class="block">
+				<ContentBlock class="filters">
+					<BaseInput :left-icon="icons['search']" placeholder="Field of interest" v-model="search"/>
+					<BaseSelect icon="tabler:briefcase" placeholder="Employment" :items="options" v-model="selected"/>
+				</ContentBlock>
+				<ContentBlock style="flex:1;">Vacancy List</ContentBlock>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+import BaseSelect from '../components/inputs/BaseSelect.vue';
+import BaseInput from '../components/inputs/BaseInput.vue';
+import ContentBlock from '../components/ContentBlock.vue';
+import NavigationBar from '../components/navigation-bar/NavigationBar.vue';
 
+const selected = ref(null)
+const search = ref('');
+const icons = {
+	"search" : {
+		name: "tabler:search",
+	},
+}
+
+const options = [
+	{
+		value: "all",
+		title: "All"
+	},
+	{
+		value: "internship",
+		title: "Internship"
+	},
+	{
+		value: "full-time",
+		title: "Full Time"
+	},
+	{
+		value: "part-time",
+		title: "Part Time"
+	},
+]
 
 </script>
 
 <style scoped>
+.filters{
+	display: flex;
+	flex-direction: row;
 
-.block-child {
-	background-color: #f0f0f0;
-	border-radius: 8px;
-	padding: 16px;
+	gap: 10px;
+	padding: 0;
+	background: none;
+	width: fit-content;
 }
+
+.filters > * {
+	width: max(50%, 160px);
+}
+
+.add {
+	border-color: var(--primary-color);
+	background: linear-gradient(90deg, var(--primary-color-opacity) 0%, var(--primary-color) 100%);
+	height: 120px;
+	padding: 0;
+	overflow: hidden;
+	cursor: pointer;
+}
+
+.add-cover {
+	padding: 16px;
+	height: 100%;
+	box-sizing: border-box;
+	background: rgba( 255, 255, 255, 0.15 );
+	box-shadow: 0 8px 32px 0 rgba(162, 165, 199, 0.37);
+	backdrop-filter: blur( 13px );
+	-webkit-backdrop-filter: blur( 13px );
+	border-radius: 10px;
+
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
 
 .block {
 	display: flex;
@@ -41,6 +111,30 @@
 .grid-container {
 	display: grid;
 	grid-template-columns: 240px 1fr;
+	grid-template-rows: auto 1fr;
 	grid-column-gap: 16px;
+	grid-row-gap: 32px;
 }
+
+@media (max-width: 768px) {
+	.grid-container {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+}
+
+@media (max-width: 868px) {
+	.desktop {
+		display: none;
+	}
+}
+
+@media (min-width: 868px) {
+	.mobile {
+		display: none;
+	}
+}
+
+.nav { grid-area: 1 / 1 / 2 / 3; }
 </style>

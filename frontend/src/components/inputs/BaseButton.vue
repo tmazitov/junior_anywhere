@@ -37,7 +37,7 @@ defineProps({
 	font-weight: 500;
 
 	display: flex;
-	gap: 12px;
+	gap: 8px;
 }
 
 
@@ -76,13 +76,14 @@ defineProps({
 		background: var(--button-background-hover);
 	}
 	.base__button.primary:hover{
-		background: var(--primary-color-hover);
+		background: linear-gradient(90deg, var(--primary-color-opacity) 0%, var(--primary-color) 50%);
 	}
 	
 }
 
 .base__button.primary{
-	background: var(--primary-color);
+	/* background: var(--primary-color); */
+	background: linear-gradient(90deg, var(--primary-color-opacity) 0%, var(--primary-color) 100%);
 }
 
 .base__button.centered{

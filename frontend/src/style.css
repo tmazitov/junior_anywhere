@@ -51,7 +51,8 @@
 	--eerie-black: #201f1eff;
 	--jet: #403b3bff;
 	--silver: #b8b3b1ff;
-	--timberwolf: rgb(247, 241, 238);
+	/* --timberwolf: rgb(247, 241, 238); */
+	--timberwolf: #f1f1f1;
 
 	--primary-color: var(--pumpkin);
 	--primary-color-hover: var(--pumpkin-2);
@@ -62,9 +63,22 @@
 	--border-color-hover: var(--timberwolf);
 	--button-background: var(--timberwolf);
 	--button-background-hover: var(--silver);
+	--card-background-color: var(--timberwolf);
 	
 	--text-color: var(--eerie-black);
 	color: var(--text-color)
+}
+
+@media (max-width: 868px) {
+	.desktop {
+		display: none;
+	}
+}
+
+@media (min-width: 868px) {
+	.mobile {
+		display: none;
+	}
 }
 
 

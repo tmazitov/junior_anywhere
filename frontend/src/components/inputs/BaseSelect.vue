@@ -184,7 +184,6 @@ const closeHandler = () => {
 .base-select{
 	position: relative;
 	font-size: 14px;
-	width: 100%;
 	min-width: 160px;
 }
 
