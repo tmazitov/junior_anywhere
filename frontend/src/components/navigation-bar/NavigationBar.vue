@@ -1,7 +1,7 @@
 <template>
 	<ContentBlock class="nav-bar">
 		<div class="nav-bar__links">
-			<div class="nav-bar__logo">
+			<div class="nav-bar__logo" @click="navigateTo('home')">
 				<Icon icon="tabler:brightness-up-filled" color="var(--primary-color)" height="26px"/>
 			</div>
 			<div class="nav-bar__link desktop"
@@ -40,10 +40,17 @@ import ContentBlock from '../ContentBlock.vue';
 import BaseButton from '../inputs/BaseButton.vue';
 import BaseIconButton from '../inputs/BaseIconButton.vue';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const isOpen = ref(false);
 const toggleMenu = () => {
 	isOpen.value = !isOpen.value;
+}
+
+const router = useRouter();
+
+const navigateTo = (routeName:string) => {
+	router.push({name: routeName})
 }
 
 type NavbarItem = {
@@ -54,7 +61,7 @@ type NavbarItem = {
 }
 
 const navbarItems:Array<NavbarItem> = [
-	{id: 0, title: "Events", icon: "tabler:search", action: () => console.log("Vacancies") },
+	{id: 0, title: "Events", icon: "tabler:search", action: () => navigateTo('vacancy-list') },
 	{id: 0, title: "Vacancies", icon: "tabler:search", action: () => console.log("Vacancies") },
 	{id: 1, title: "Companies", icon: "tabler:building", action: () => console.log("Companies") },
 	{id: 2, title: "About", icon: "tabler:info-circle", action: () => console.log("About") },
@@ -77,7 +84,10 @@ const navbarItems:Array<NavbarItem> = [
 	display: flex;
 	gap: 16px;
 	height: 100%;
+	align-items: center;
+
 }
+
 
 .nav-bar__link {
 	display: flex;
@@ -94,12 +104,13 @@ const navbarItems:Array<NavbarItem> = [
 }
 
 .nav-bar__logo {
-	height: 100%;
+	height: 36px;
 	aspect-ratio: 1 / 1;
 	border: 1.5px solid var(--border-color);
 	border-radius: 8px;
 
 	display: flex;
+	box-sizing: border-box;
 	justify-content: center;
 	align-items: center;
 }
@@ -108,8 +119,10 @@ const navbarItems:Array<NavbarItem> = [
 	transition: transform 0.3s ease;
 }
 
-.nav-bar__logo:hover > svg  {
-	animation: rotate 3.5s linear infinite;
+@media (min-width: 868px) {
+	.nav-bar__logo:hover > svg  {
+		animation: rotate 3.5s linear infinite;
+	}
 }
 
 @keyframes rotate {

@@ -10,8 +10,10 @@
 
 					<div class="buttons">
 						<BaseInput :left-icon="icons['search']" placeholder="Field of interest" v-model="search"/>
-						<BaseSelect icon="tabler:briefcase" placeholder="Employment" :items="options" v-model="selected"/>
-						<BaseButton id="search-desktop" title="Search" primary/>
+						<BaseSelect icon="tabler:briefcase" placeholder="Employment" 
+							:items="employments" v-model="selected"
+							with-multiselect/>
+						<BaseButton id="search-desktop" title="Search" primary @click="navigateTo('vacancy-list')"/>
 					</div>
 
 					<div class="some-info">
@@ -20,7 +22,7 @@
 						<Category title="Absolutely Free" color="#f09156"/>
 					</div>
 
-					<BaseButton class="search-mobile" title="Search" primary/>
+					<BaseButton class="search-mobile" title="Search" primary @click="navigateTo('vacancy-list')"/>
 					<BaseButton class="search-mobile" title="For Bysiness" primary outlined/>
 				</div>
 			</div>
@@ -34,33 +36,39 @@ import BaseButton from '../components/inputs/BaseButton.vue';
 import BaseInput from '../components/inputs/BaseInput.vue';
 import BaseSelect from '../components/inputs/BaseSelect.vue';
 import Category from '../components/inputs/Category.vue';
+import { useRouter } from 'vue-router';
+import employments from '../info/employments';
 
-const selected = ref(null)
+const selected = ref(employments[0])
 const search = ref('');
 const icons = {
 	"search" : {
 		name: "tabler:search",
 	},
 }
+const router = useRouter();
+const navigateTo = (routeName:string) => {
+	const query:{s:string|undefined, e:number|number[]|undefined} = {
+		s: undefined,
+		e: undefined,
+	}
 
-const options = [
-	{
-		value: "all",
-		title: "All"
-	},
-	{
-		value: "internship",
-		title: "Internship"
-	},
-	{
-		value: "full-time",
-		title: "Full Time"
-	},
-	{
-		value: "part-time",
-		title: "Part Time"
-	},
-]
+	if (search.value){
+		query['s'] = search.value
+	} 
+
+	if (selected.value){
+		if (Array.isArray(selected.value)){
+			query['e'] = selected.value.map(item => item.value)
+		} else {
+			query['e'] = selected.value.value
+		}
+	}
+
+	router.push({name: routeName, query})
+}
+
+
 
 </script>
 

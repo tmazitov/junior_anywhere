@@ -31,20 +31,23 @@ defineProps({
 	border-radius: 6px;
 
 	cursor: pointer;
+	box-sizing: border-box;
 	transition: background .15s;
 }
 
-.base-icon-button:hover{
-	background: var(--button-background-hover);
-}
 
+@media (min-width: 868px){
+	.base-icon-button:hover{
+		background: var(--button-background-hover);
+	}
+	.primary:hover{
+		background: var(--primary-color-hover);
+	}
+}
 
 .primary{
 	background: var(--primary-color);
 	border-color: transparent;
 }
 
-.primary:hover{
-	background: var(--primary-color-hover);
-}
 </style>

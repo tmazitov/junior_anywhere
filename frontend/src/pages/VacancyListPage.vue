@@ -14,17 +14,32 @@
 					</ContentBlock>
 					<ContentBlock style="flex:1; max-height: 450px" class="desktop more-filters">
 						<h4>Filters</h4>
-						<BaseSelect icon="tabler:briefcase" placeholder="Employment" :items="options" v-model="selected"/>
+						<BaseSelect icon="tabler:briefcase" 
+							placeholder="Employment" 
+							:items="employments" 
+							v-model="filters.employments"
+							with-multiselect/>
 						<BaseSelect icon="tabler:map-pin" 
 							placeholder="Locations" 
 							:items="locations" 
-							v-model="selectedLocations"
+							v-model="filters.locations"
 							with-multiselect with-search/>
+						Todo: add checkbox "salary is defined"<br/>
+						Todo: add checkbox "degree is required" 
 					</ContentBlock>
 				</div>
 				<div class="block">
 					<ContentBlock class="filters">
-						<BaseInput :left-icon="icons['search']" placeholder="Search" v-model="search"/>
+						<BaseInput :left-icon="icons['search']" placeholder="Search" 
+							v-model="filters.search"/>
+						<BaseIconButton class="mobile" 
+							:icon="mobileFiltersIsOpen ? 'tabler:x' : 'tabler:filter'" 
+							@click="toggleMobileFilters"/>
+						<span class="mobile">
+							<transition name="open">
+								<div class="mobile-menu" v-if="mobileFiltersIsOpen"></div>
+							</transition>
+						</span>
 					</ContentBlock>
 					<ContentBlock style="flex:1;">Vacancy List</ContentBlock>
 				</div>
@@ -34,40 +49,36 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import BaseSelect from '../components/inputs/BaseSelect.vue';
 import BaseInput from '../components/inputs/BaseInput.vue';
 import ContentBlock from '../components/ContentBlock.vue';
 import NavigationBar from '../components/navigation-bar/NavigationBar.vue';
 import locations from '../info/locations';
+import BaseIconButton from '../components/inputs/BaseIconButton.vue';
+import VacancyListFilters from '../types/vacancyListFilters';
+import { useRoute } from 'vue-router';
+import employments from '../info/employments';
+import router from '../router';
 
-const selectedLocations = ref(null)
-const selected = ref(null)
-const search = ref('');
+const mobileFiltersIsOpen = ref(false)
+const toggleMobileFilters = () => {
+	mobileFiltersIsOpen.value = !mobileFiltersIsOpen.value;
+}
+
+const route = useRoute()
+const filters = ref(new VacancyListFilters(route.query))
+
 const icons = {
 	"search" : {
 		name: "tabler:search",
 	},
 }
 
-const options = [
-	{
-		value: "all",
-		title: "All"
-	},
-	{
-		value: "internship",
-		title: "Internship"
-	},
-	{
-		value: "full-time",
-		title: "Full Time"
-	},
-	{
-		value: "part-time",
-		title: "Part Time"
-	},
-]
+watch(() => filters.value, () => {
+	const query = filters.value.toQuery()
+	router.replace({name: 'vacancy-list', query})
+}, {deep: true})
 
 </script>
 
@@ -75,15 +86,16 @@ const options = [
 .filters{
 	display: flex;
 	flex-direction: row;
-
 	gap: 10px;
-	padding: 0;
 	background: none;
-	width: fit-content;
+	padding: 0;
+	position: relative;
 }
 
-.filters > * {
-	width: max(50%, 220px);
+.filters > .base-input {
+	width: max(30%, 220px);
+	max-width: 300px;
+	border-radius: 16px;
 }
 
 .more-filters {
