@@ -15,6 +15,11 @@
 					<ContentBlock style="flex:1; max-height: 450px" class="desktop more-filters">
 						<h4>Filters</h4>
 						<BaseSelect icon="tabler:briefcase" placeholder="Employment" :items="options" v-model="selected"/>
+						<BaseSelect icon="tabler:map-pin" 
+							placeholder="Locations" 
+							:items="locations" 
+							v-model="selectedLocations"
+							with-multiselect with-search/>
 					</ContentBlock>
 				</div>
 				<div class="block">
@@ -34,7 +39,9 @@ import BaseSelect from '../components/inputs/BaseSelect.vue';
 import BaseInput from '../components/inputs/BaseInput.vue';
 import ContentBlock from '../components/ContentBlock.vue';
 import NavigationBar from '../components/navigation-bar/NavigationBar.vue';
+import locations from '../info/locations';
 
+const selectedLocations = ref(null)
 const selected = ref(null)
 const search = ref('');
 const icons = {

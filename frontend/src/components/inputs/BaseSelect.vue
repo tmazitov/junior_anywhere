@@ -245,12 +245,14 @@ const closeHandler = () => {
 	display: flex;
 	flex-direction: column;
 	max-height: 164px;
+	z-index: 4;
 	overflow-y: auto;
 }
 
 .search-container{
 	width: 100%;
 	padding: 5px 7px;
+	box-sizing: border-box;
 }
 
 .select__item{
