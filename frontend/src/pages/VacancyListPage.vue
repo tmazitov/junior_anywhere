@@ -1,26 +1,28 @@
 <template>
 	<div class="page">
-		<div class="page-frame grid-container">
-			<div class="block-child nav">
-				<NavigationBar/>
-			</div>
-			<div class="block">
-				<ContentBlock class="add" outlined>
-					<div class="add-cover">
-						<h3>Hard to make the CV?</h3>
-						<div>Let our specialists help you to find your strong sides</div>
-					</div>
-				</ContentBlock>
-				<ContentBlock style="flex:1; max-height: 450px" class="desktop">
-					<h4>Filters</h4>
-				</ContentBlock>
-			</div>
-			<div class="block">
-				<ContentBlock class="filters">
-					<BaseInput :left-icon="icons['search']" placeholder="Field of interest" v-model="search"/>
-					<BaseSelect icon="tabler:briefcase" placeholder="Employment" :items="options" v-model="selected"/>
-				</ContentBlock>
-				<ContentBlock style="flex:1;">Vacancy List</ContentBlock>
+		<div class="page-frame">
+			<div class="page-frame__content  grid-container">
+				<div class="block-child nav">
+					<NavigationBar/>
+				</div>
+				<div class="block">
+					<ContentBlock class="add" outlined>
+						<div class="add-cover">
+							<h3>Hard to make the CV?</h3>
+							<div>Let our specialists help you to find your strong sides</div>
+						</div>
+					</ContentBlock>
+					<ContentBlock style="flex:1; max-height: 450px" class="desktop more-filters">
+						<h4>Filters</h4>
+						<BaseSelect icon="tabler:briefcase" placeholder="Employment" :items="options" v-model="selected"/>
+					</ContentBlock>
+				</div>
+				<div class="block">
+					<ContentBlock class="filters">
+						<BaseInput :left-icon="icons['search']" placeholder="Search" v-model="search"/>
+					</ContentBlock>
+					<ContentBlock style="flex:1;">Vacancy List</ContentBlock>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -74,13 +76,18 @@ const options = [
 }
 
 .filters > * {
-	width: max(50%, 160px);
+	width: max(50%, 220px);
+}
+
+.more-filters {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
 }
 
 .add {
 	border-color: var(--primary-color);
 	background: linear-gradient(90deg, var(--primary-color-opacity) 0%, var(--primary-color) 100%);
-	height: 120px;
 	padding: 0;
 	overflow: hidden;
 	cursor: pointer;
@@ -116,7 +123,7 @@ const options = [
 	grid-row-gap: 32px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 868px) {
 	.grid-container {
 		display: flex;
 		flex-direction: column;

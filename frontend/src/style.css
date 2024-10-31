@@ -100,26 +100,31 @@ h1 {
 	height: 100dvh;
 	width: 100dvw;
 	background: var(--alabaster);
-	padding: 32px max(20%, 160px);
+	padding: 32px;
 	box-sizing: border-box;
 	overflow: hidden;
+	display: flex;
+	justify-content: center;
 }
 
 .page-frame__content{
 	height: 100%;
-	width: 100%;
+	width: min(800px, 60%);
+	max-width: 800px;
 	display: flex;
 	flex-direction: column;
 	gap: 18px;
 	box-sizing: border-box;
 
 	border-radius: 4px;
-	justify-content: center;
 }
 
-@media (max-width: 768px){
+@media (max-width: 868px){
 	.page-frame{
 		padding: 24px 16px;
+	}
+	.page-frame__content{
+		width: 100%;
 	}
 }
 
