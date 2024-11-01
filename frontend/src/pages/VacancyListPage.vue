@@ -24,6 +24,7 @@
 							:items="locations" 
 							v-model="filters.locations"
 							with-multiselect with-search/>
+						<BaseRange v-model="salaryRange"/>
 						Todo: add checkbox "salary is defined"<br/>
 						Todo: add checkbox "degree is required" 
 					</ContentBlock>
@@ -52,6 +53,7 @@
 import { ref, watch } from 'vue';
 import BaseSelect from '../components/inputs/BaseSelect.vue';
 import BaseInput from '../components/inputs/BaseInput.vue';
+import BaseRange from '../components/inputs/BaseRange.vue';
 import ContentBlock from '../components/ContentBlock.vue';
 import NavigationBar from '../components/navigation-bar/NavigationBar.vue';
 import locations from '../info/locations';
@@ -60,6 +62,8 @@ import VacancyListFilters from '../types/vacancyListFilters';
 import { useRoute } from 'vue-router';
 import employments from '../info/employments';
 import router from '../router';
+
+const salaryRange=ref([0, 100])
 
 const mobileFiltersIsOpen = ref(false)
 const toggleMobileFilters = () => {
