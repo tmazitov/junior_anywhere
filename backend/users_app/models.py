@@ -12,7 +12,7 @@ class User(models.Model):
     phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True) # Validators should be a list
 
     def __str__(self):
-        return self.second_name
+        return f'{self.second_name} {self.name}'
 
 
 class UserApply(models.Model):
