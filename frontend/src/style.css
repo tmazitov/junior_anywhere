@@ -1,44 +1,4 @@
-:root {
-	--background-color: #1a1a1a;
-	--border-color: #2d2d2d;
-	--border-radius: 6px;
 
-	--input-background-color: #242424;
-	--card-background-color: #1a1a1a;
-	--button-background: #242424;
-	--button-background-hover: #3a3a3a;
-
-
-	--text-color: #ffffffef;
-	--text-color-light: #868686;
-	--text-color-hover: #aaaaaa;
-
-	--primary-color: #5aa7eb;
-	--primary-color-opacity: #5aa7eb17;
-	--primary-color-hover: #549bd8;
-
-	--mobile-padding: 18px;
-	
-}
-
-@media (prefers-color-scheme: light) {
-	:root {
-		--background-color: #f9f9f9;
-		--border-color: #acacac;
-		
-		
-		--input-background-color: #ececec;
-		--card-background-color: #f9f9f9;
-		--button-background: #ececec;
-
-
-		--text-color: #213547;
-		--text-color-light: #868686;
-		--text-color-hover: #aaaaaa;
-	
-		--button-background-hover: #dfdfdf;
-	}
-}
 
 :root {
 	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -53,16 +13,18 @@
 	--silver: #b8b3b1ff;
 	/* --timberwolf: rgb(247, 241, 238); */
 	--timberwolf: #f1f1f1;
+	--timberwolf-2: #dfdfdf;
 
 	--primary-color: var(--pumpkin);
 	--primary-color-hover: var(--pumpkin-2);
 	--primary-color-opacity:  #f4803787;
 
-	--input-background-color: var(--timberwolf);
 	--border-color: var(--silver);
 	--border-color-hover: var(--timberwolf);
+	--input-background: var(--timberwolf);
+	--input-background-hover: var(--timberwolf-2);
 	--button-background: var(--timberwolf);
-	--button-background-hover: var(--silver);
+	--button-background-hover: var(--timberwolf-2);
 	--card-background-color: var(--timberwolf);
 	
 	--text-color: var(--eerie-black);

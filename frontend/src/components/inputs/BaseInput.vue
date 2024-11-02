@@ -21,9 +21,10 @@
 		</div>
 
 		<input 
-			type="text" 
+			:type="type ? type : 'text'" 
 			:placeholder="placeholder"
 			:value="value" @input="updateValue"
+			:min="min" :max="max" :step="step"
 			@focus="isFocused = true"
 			@blur="isFocused = false">
 
@@ -50,18 +51,28 @@ import { defineModel, defineProps, ref } from 'vue';
 import IconT from '../../types/icon';
 import {Icon} from '@iconify/vue'
 
+const emits = defineEmits([
+	'on-input'
+])
+
 const value = defineModel<string>({required: true})
 defineProps({
 	placeholder: String,
 	rightIcon: 	Object as () => IconT,
 	leftIcon: 	Object as () => IconT,
 	label: String,
+	type: String,
+	min: Number,
+	max: Number,
+	step: Number,
 })
 
 const isFocused = ref(false)
 const updateValue = (ev: any) => {
 	value.value = ev.target["value"]
+	emits('on-input', ev)
 }
+
 </script>
 
 <style scoped>
@@ -70,7 +81,7 @@ const updateValue = (ev: any) => {
 	flex-direction: row;
 	gap: 8px;
 
-	background: var(--input-background-color);
+	background: var(--input-background);
 	border: 1px solid var(--border-color);
 	border-radius: 6px;
 	box-sizing: border-box;
@@ -78,6 +89,13 @@ const updateValue = (ev: any) => {
 	font-size: 15px;
 	padding: 7px 11px;
 	height: 36px;
+	transition: background .3s;
+}
+
+@media (min-width: 868px){
+	.base-input:hover{
+		background: var(--input-background-hover);
+	}
 }
 
 .icon{

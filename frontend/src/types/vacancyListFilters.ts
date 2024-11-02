@@ -1,10 +1,15 @@
 import employments from "../info/employments";
 import locations from "../info/locations";
+import workFormats from "../info/workFormats";
 import LocationArea from "./location";
 
 class VacancyListFilters {
 	search: string = ""
 	locations: Array<LocationArea> = []
+	salaryRange: Array<number> = [0, 0]
+	withSalary: boolean = false
+	degreeIsRequired: boolean = false
+	workFormats: Array<{value:number, title:string}> = []
 	employments: Array<{value:number, title:string}> = []
 	constructor(data:any) {
 		if (data["s"]) {
@@ -36,6 +41,33 @@ class VacancyListFilters {
 				})
 			}
 		}
+
+		if (data["wf"]) {
+			if (Array.isArray(data["wf"])){
+				data["wf"] = data["wf"].map((f) => Number(f))
+				this.workFormats = workFormats.filter((f) => {
+					return data["wf"].includes(f.value)
+				})
+			} else {
+				data["wf"] = Number(data["wf"])
+				this.locations = locations.filter((f) => {
+					return f.value === data["wf"] 
+				})
+			}
+		}
+
+		if (data["s_min"]) {
+			this.salaryRange[0] = Number(data["s_min"]) ?? 0
+		}
+		if (data["s_max"]) {
+			this.salaryRange[1] = Number(data["s_max"]) ?? 0
+		}
+		if (data["s_max"] || data["s_min"]) {
+			this.withSalary = true
+		}
+		if (data["d"]) {
+			this.degreeIsRequired = true
+		}
 	}
 
 	toQuery(){
@@ -55,6 +87,21 @@ class VacancyListFilters {
 			query["l"] = this.locations.map((loc) => {
 				return loc.value
 			})
+		}
+
+		if (this.workFormats.length) {
+			query["wf"] = this.workFormats.map((loc) => {
+				return loc.value
+			})
+		}
+
+		if (this.withSalary) {
+			query["s_min"] = this.salaryRange[0]
+			query["s_max"] = this.salaryRange[1]
+		}
+
+		if (this.degreeIsRequired) {
+			query["d"] = true
 		}
 
 		return query

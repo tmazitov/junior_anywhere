@@ -12,27 +12,13 @@
 							<div>Let our specialists help you to find your strong sides</div>
 						</div>
 					</ContentBlock>
-					<ContentBlock style="flex:1; max-height: 450px" class="desktop more-filters">
+					<ContentBlock class="desktop more-filters">
 						<h4>Filters</h4>
-						<BaseSelect icon="tabler:briefcase" 
-							placeholder="Employment" 
-							:items="employments" 
-							v-model="filters.employments"
-							with-multiselect/>
-						<BaseSelect icon="tabler:map-pin" 
-							placeholder="Locations" 
-							:items="locations" 
-							v-model="filters.locations"
-							with-multiselect with-search/>
-						<BaseRange v-model="salaryRange"/>
-						Todo: add checkbox "salary is defined"<br/>
-						Todo: add checkbox "degree is required" 
+						<Filters v-model="filters"/>
 					</ContentBlock>
 				</div>
 				<div class="block">
-					<ContentBlock class="filters">
-						<BaseInput :left-icon="icons['search']" placeholder="Search" 
-							v-model="filters.search"/>
+					<ContentBlock class="filters mobile">
 						<BaseIconButton class="mobile" 
 							:icon="mobileFiltersIsOpen ? 'tabler:x' : 'tabler:filter'" 
 							@click="toggleMobileFilters"/>
@@ -51,19 +37,14 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import BaseSelect from '../components/inputs/BaseSelect.vue';
-import BaseInput from '../components/inputs/BaseInput.vue';
-import BaseRange from '../components/inputs/BaseRange.vue';
 import ContentBlock from '../components/ContentBlock.vue';
 import NavigationBar from '../components/navigation-bar/NavigationBar.vue';
-import locations from '../info/locations';
 import BaseIconButton from '../components/inputs/BaseIconButton.vue';
 import VacancyListFilters from '../types/vacancyListFilters';
 import { useRoute } from 'vue-router';
-import employments from '../info/employments';
 import router from '../router';
+import Filters from '../components/vacancy-list/Filters.vue';
 
-const salaryRange=ref([0, 100])
 
 const mobileFiltersIsOpen = ref(false)
 const toggleMobileFilters = () => {
@@ -72,12 +53,6 @@ const toggleMobileFilters = () => {
 
 const route = useRoute()
 const filters = ref(new VacancyListFilters(route.query))
-
-const icons = {
-	"search" : {
-		name: "tabler:search",
-	},
-}
 
 watch(() => filters.value, () => {
 	const query = filters.value.toQuery()
@@ -106,6 +81,9 @@ watch(() => filters.value, () => {
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
+	background: transparent;
+	border: 1px solid var(--border-color);
+	transition: height .3s;
 }
 
 .add {

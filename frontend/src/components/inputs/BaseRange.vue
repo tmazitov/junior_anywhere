@@ -1,35 +1,42 @@
 <template>
 	<div class="range">
+		<div class="range-label" v-if="label">
+			{{ label }}
+		</div>
 		<div class="range-slider">
 			<span class="range-selected" ref="rangeSelected"></span>
 		</div>
+
 		<div class="range-input" v-if="fromValue != undefined && toValue != undefined">
 			<input type="range" @input="calcRangeSize" ref="fromPoint" 
-				class="min" 
+				class="min"
 				:min="min" 
 				:max="max" 
-				:value="fromValue" 
+				:value="fromValue || '0'" 
 				:step="step">
 			<input type="range" @input="calcRangeSize" ref="toPoint" 
 				class="max" 
 				:min="min" 
 				:max="max" 
-				:value="toValue"
+				:value="toValue || '0'"
 				:step="step">
 		</div>
-		<div class="range-price">      
-			<label for="min">Min</label>
-			<input type="number" name="min" 
-				:min="min" :max="max" :step="step" :value="fromValue">      
-			<label for="max">Max</label>
-			<input type="number" name="max" 
-				:min="min" :max="max" :step="step" :value="toValue">      
+		<div class="range-price" v-if="fromValue != undefined && toValue != undefined">     
+			<BaseInput v-model="fromValue" type="number"
+				:right-icon="icons['dollar']"
+				:min="min" :max="max" :step="step"
+				@on-input="onEnterValue"/>
+			<BaseInput v-model="toValue" type="number"
+				:right-icon="icons['dollar']"
+				:min="min" :max="max" :step="step"
+				@on-input="onEnterValue"/>
 		</div>
 	</div> 
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
+import BaseInput from './BaseInput.vue';
 
 const fromPoint = ref<HTMLInputElement | null>(null)
 const toPoint = ref<HTMLInputElement | null>(null)
@@ -37,9 +44,14 @@ const rangeSelected = ref<HTMLSpanElement | null>(null)
 
 const range = defineModel<number|number[]|undefined>()
 
+const icons = {
+	"dollar" : {
+		name: 'tabler:currency-dollar'
+	}
+}
 
 const fromValue = computed({
-	get: () => Array.isArray(range.value) ? range.value[0] : undefined,
+	get: () => Array.isArray(range.value) ? range.value[0].toString() : undefined,
 	set: (val: number) => {
 		if (Array.isArray(range.value)) {
 			range.value[0] = val
@@ -48,7 +60,7 @@ const fromValue = computed({
 })
 
 const toValue = computed({
-	get: () => Array.isArray(range.value) ? range.value[1] : undefined,
+	get: () => Array.isArray(range.value) ? range.value[1].toString() : undefined,
 	set: (val:number) => {
 		if (Array.isArray(range.value)) {
 			range.value[1] = val
@@ -56,15 +68,15 @@ const toValue = computed({
 	},
 })
 
-const singleValue = computed({
-	get: () => Array.isArray(range.value) ? undefined : range.value,
-	set: (val: number) => {
-		range.value = val
-	},
-})
+// const singleValue = computed({
+// 	get: () => Array.isArray(range.value) ? undefined : range.value,
+// 	set: (val: number) => {
+// 		range.value = val
+// 	},
+// })
 
 
-const props = defineProps({
+defineProps({
 	label: {
 		type: String,
 		default: "Select Range",
@@ -81,6 +93,10 @@ const props = defineProps({
 		type: Number,
 		default: 1,
 	},
+	withConcurrency: {
+		type: Boolean,
+		default: false,
+	}
 })
 
 const calcRangeSize = (e:any) => {
@@ -89,14 +105,15 @@ const calcRangeSize = (e:any) => {
 	}
 	let minRange = Number(fromPoint.value.value);
 	let maxRange = Number(toPoint.value.value);
-	console.log('values :>> ', range.value, minRange, maxRange);
 
-	if (e && e.target.className == "min" && minRange > maxRange) {   
+	if (e && e.target.className == "min" && minRange > maxRange && fromValue.value) {   
 		fromValue.value = maxRange
+		fromPoint.value.value = maxRange.toString() 
 		e.preventDefault();
 		return
-	} else if (e && e.target.className == "max" && maxRange < minRange) {
+	} else if (e && e.target.className == "max" && maxRange < minRange && toPoint.value) {
 		toValue.value = minRange
+		toPoint.value.value = minRange.toString() 
 		e.preventDefault();
 		return      
 	} else {
@@ -109,6 +126,31 @@ const calcRangeSize = (e:any) => {
 	}
 }
 
+const onEnterValue = (e:any) => {
+	if (!fromPoint.value || !toPoint.value || !rangeSelected.value) {
+		return
+	}
+	let minPrice = Number(fromValue.value) ?? 0
+	let maxPrice = Number(toValue.value) ?? 0
+	if (Number.isNaN(minPrice) || Number.isNaN(maxPrice)) {
+		return
+	}
+	if (e && minPrice > maxPrice) {   
+		fromValue.value = maxPrice
+		fromPoint.value.value = maxPrice.toString()
+		e.target.value = maxPrice
+		minPrice = maxPrice
+	} else if (e && maxPrice < minPrice) {
+		toValue.value = minPrice
+		toPoint.value.value = minPrice.toString()
+		e.target.value = minPrice
+		maxPrice = minPrice
+	}
+
+	rangeSelected.value.style.left = (minPrice / Number(fromPoint.value.max)) * 100 + "%"
+	rangeSelected.value.style.right = 100 - (maxPrice / Number(toPoint.value.max)) * 100 + "%"
+}
+
 onMounted(() => {
 	calcRangeSize(null)
 })
@@ -116,6 +158,12 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
+.range-label {
+	margin-bottom: 16px;
+	font-size: 14px;
+}
+
 .range-slider {
 	height: 2.25px;
 	position: relative;
@@ -161,21 +209,23 @@ onMounted(() => {
 	-moz-appearance: none;
 }
 .range-price {
-	margin: 30px 0;
+	margin-top: 16px;
 	width: 100%;
 	display: flex;
-	justify-content: center;
-	align-items: center;
+	flex-direction: row;
+	gap: 16px;
 }
-.range-price label {
-  margin-right: 5px;
+
+.range-hints {
+	position: relative;
 }
-.range-price input {
-	width: 40px;
-	padding: 5px;
-}
-.range-price input:first-of-type {
-	margin-right: 15px;
+
+.range-hint {
+	position: absolute;
+	top: 7px;
+	height: 20px;
+	border: 1px solid var(--primary-color);
+	border-radius: 4px;
 }
 </style>
   

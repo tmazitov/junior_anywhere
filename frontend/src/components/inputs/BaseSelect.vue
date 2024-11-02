@@ -194,7 +194,7 @@ const closeHandler = () => {
 	padding: 7px 11px;
 
 	align-items: center;
-	background: var(--input-background-color);
+	background: var(--input-background);
 	border: 1px solid var(--border-color);
 	border-radius: 6px;
 	width: 100%;
@@ -204,7 +204,10 @@ const closeHandler = () => {
 	cursor: pointer;
 	height: 36px;
 	outline: none;
+	transition: background .3s;
 }
+
+
 
 .base-select__field.active{
 	border-color: var(--border-color-hover);
@@ -238,7 +241,7 @@ const closeHandler = () => {
 	box-sizing: border-box;
 	width: 100%;
 
-	background: var(--input-background-color);
+	background: var(--input-background);
 	border: 1px solid var(--border-color);
 	border-radius: 6px;
 
@@ -263,6 +266,7 @@ const closeHandler = () => {
 	cursor: pointer;
 	padding: 7px 11px;
 	box-sizing: border-box;
+	transition: background .3s;
 }
 
 .select__item + .select__item {
@@ -298,6 +302,17 @@ const closeHandler = () => {
 	to {
 		top: 48px;
 		opacity: 1;
+	}
+}
+
+
+@media (min-width: 868px){
+	.base-select__field:hover{
+		background: var(--input-background-hover);
+	}
+	
+	.select__item:hover{
+		background: var(--input-background-hover);
 	}
 }
 
