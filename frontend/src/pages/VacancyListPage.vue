@@ -13,7 +13,7 @@
 						</ContentBlock>
 						<ContentBlock class="desktop more-filters">
 							<h4>
-								<Icon icon="tabler:filter" style="margin-right: 4px" height="16px"/>
+								<Icon icon="tabler:filter" style="margin-right: 4px" height="16px" color="var(--primary-color)"/>
 								Filters
 							</h4>
 							<Filters v-model="filters"/>

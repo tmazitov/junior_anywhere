@@ -9,7 +9,7 @@
 		</div>
 		<div class="vacancy-card__footer">
 			<div class="vacancy-card__info">
-				<Icon icon="tabler:map-pin" height="16px"/>
+				<Icon icon="tabler:map-pin"  height="16px" color="var(--primary-color)"/>
 				{{ vacancy.city }}
 			</div>
 
@@ -71,13 +71,12 @@ defineProps({
 .vacancy-card__footer{
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	gap: 10px;
 }
 
 .vacancy-card__info{
 	padding: 4px 10px 4px 6px;
 	border-radius: 4px;
-	background: var(--input-background);
 	width: fit-content;
 	display: flex;
 	flex-direction: row;
