@@ -1,34 +1,38 @@
 <template>
 	<div class="page">
 		<div class="page-frame">
-			<div class="page-frame__content  grid-container">
+			<div class="page-frame__content grid-container">
 				<div class="block-child nav">
 					<NavigationBar/>
 				</div>
-				<div class="block">
-					<ContentBlock class="add" outlined>
-						<div class="add-cover">
-							<h3>Hard to make the CV?</h3>
-							<div>Let our specialists help you to find your strong sides</div>
-						</div>
-					</ContentBlock>
-					<ContentBlock class="desktop more-filters">
-						<h4>Filters</h4>
-						<Filters v-model="filters"/>
-					</ContentBlock>
-				</div>
-				<div class="block">
-					<ContentBlock class="filters mobile">
-						<BaseIconButton class="mobile" 
-							:icon="mobileFiltersIsOpen ? 'tabler:x' : 'tabler:filter'" 
-							@click="toggleMobileFilters"/>
-						<span class="mobile">
-							<transition name="open">
-								<div class="mobile-menu" v-if="mobileFiltersIsOpen"></div>
-							</transition>
-						</span>
-					</ContentBlock>
-					<ContentBlock style="flex:1;">Vacancy List</ContentBlock>
+				<div class="content">
+					<div class="block">
+						<ContentBlock class="add" outlined>
+							<div class="add-cover">
+								<h3>Hard to make the CV?</h3>
+								<div>Let our specialists help you to find your strong sides</div>
+							</div>
+						</ContentBlock>
+						<ContentBlock class="desktop more-filters">
+							<h4>Filters</h4>
+							<Filters v-model="filters"/>
+						</ContentBlock>
+					</div>
+					<div class="block">
+						<ContentBlock class="filters mobile">
+							<BaseIconButton class="mobile" 
+								:icon="mobileFiltersIsOpen ? 'tabler:x' : 'tabler:filter'" 
+								@click="toggleMobileFilters"/>
+							<span class="mobile">
+								<transition name="open">
+									<div class="mobile-menu" v-if="mobileFiltersIsOpen"></div>
+								</transition>
+							</span>
+						</ContentBlock>
+						<ContentBlock style="flex:1; background:transparent; padding: 16px; overflow-y: auto">
+							<Card v-for="vacancy in vacancies" :key="`vacancy-${vacancy.id}`" :vacancy="vacancy"/>
+						</ContentBlock>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -44,6 +48,8 @@ import VacancyListFilters from '../types/vacancyListFilters';
 import { useRoute } from 'vue-router';
 import router from '../router';
 import Filters from '../components/vacancy-list/Filters.vue';
+import Vacancy from '../types/vacancy';
+import Card from '../components/vacancy-list/Card.vue';
 
 
 const mobileFiltersIsOpen = ref(false)
@@ -53,10 +59,41 @@ const toggleMobileFilters = () => {
 
 const route = useRoute()
 const filters = ref(new VacancyListFilters(route.query))
+let timeout:number|null = null
+
+const vacancies = ref([
+	new Vacancy({id: 1, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
+	new Vacancy({id: 2, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
+	new Vacancy({id: 3, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
+	new Vacancy({id: 4, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
+	new Vacancy({id: 5, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
+	new Vacancy({id: 6, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
+	new Vacancy({id: 7, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
+	new Vacancy({id: 8, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
+	new Vacancy({id: 9, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
+	new Vacancy({id: 10, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
+	new Vacancy({id: 11, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
+	new Vacancy({id: 12, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
+	new Vacancy({id: 13, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
+	new Vacancy({id: 14, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
+	new Vacancy({id: 15, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
+	new Vacancy({id: 16, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
+	new Vacancy({id: 17, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
+	new Vacancy({id: 18, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
+	new Vacancy({id: 19, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
+	new Vacancy({id: 20, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
+])
 
 watch(() => filters.value, () => {
-	const query = filters.value.toQuery()
-	router.replace({name: 'vacancy-list', query})
+	
+	if (timeout) {
+		clearTimeout(timeout)
+	} 
+	
+	timeout = setTimeout(() => {
+		const query = filters.value.toQuery()
+		router.replace({name: 'vacancy-list', query})
+	}, 200)
 }, {deep: true})
 
 </script>
@@ -114,18 +151,25 @@ watch(() => filters.value, () => {
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
+	height: 100%;
+	overflow: hidden;
 }
 
 .grid-container {
 	display: grid;
-	grid-template-columns: 240px 1fr;
 	grid-template-rows: auto 1fr;
-	grid-column-gap: 16px;
-	grid-row-gap: 32px;
+	grid-row-gap: 16px;
+	height: 100%;
+}
+.content {
+	display: grid;
+	grid-template-columns: 240px 1fr;
+	height: 100%;
+	overflow: hidden;
 }
 
 @media (max-width: 868px) {
-	.grid-container {
+	.content {
 		display: flex;
 		flex-direction: column;
 		gap: 16px;
@@ -144,5 +188,7 @@ watch(() => filters.value, () => {
 	}
 }
 
-.nav { grid-area: 1 / 1 / 2 / 3; }
+.page-frame__content > .grid-container {
+	flex: 1;
+}
 </style>

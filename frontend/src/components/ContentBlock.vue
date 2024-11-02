@@ -15,9 +15,11 @@ defineProps({
 
 <style scoped>
 .content-block {
-	background-color: var(--card-background-color);
+	background-color: #f9f9f9;
 	border-radius: 16px;
 	padding: 16px;
+	max-height: 100%;
+	overflow: hidden;
 }
 .outlined{
 	border: 1px solid var(--border-color);

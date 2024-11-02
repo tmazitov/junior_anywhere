@@ -29,7 +29,7 @@
 		
 	<transition name="show">
 		<BaseRange v-if="filters.withSalary" 
-		v-model="filters.salaryRange" label="Salary range"
+		v-model="filters.salaryRange" label="Salary range (Monthly)"
 		:min="0" :max="10000" :step="100"/>
 	</transition>
 
