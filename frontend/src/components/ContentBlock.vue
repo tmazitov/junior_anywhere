@@ -19,7 +19,6 @@ defineProps({
 	border-radius: 16px;
 	padding: 16px;
 	max-height: 100%;
-	overflow: hidden;
 }
 .outlined{
 	border: 1px solid var(--border-color);

@@ -64,16 +64,15 @@ h1 {
 	background: var(--alabaster);
 	
 	box-sizing: border-box;
-	overflow: hidden;
-	display: flex;
-	justify-content: center;
+	padding-left: 15%;
+	padding-right: 15%;
+	overflow-y: auto;
+	position: relative;
 }
 
 .page-frame__content{
-	padding-top: 32px;
-	width: min(800px, 60%);
+	padding-top: 24px;
 	box-sizing: border-box;
-	height: 100%;
 	max-width: 800px;
 	display: flex;
 	flex-direction: column;

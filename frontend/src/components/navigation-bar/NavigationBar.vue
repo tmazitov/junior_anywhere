@@ -77,7 +77,14 @@ const navbarItems:Array<NavbarItem> = [
 	border-radius: 12px;
 	height: 54px;
 	box-sizing: border-box;
-	position: relative;
+	position: sticky;
+	top: 16px;
+	z-index: 4;
+
+	background: rgba( 255, 255, 255, 0.15 );
+	box-shadow: 0 8px 32px 0 rgba(162, 165, 199, 0.37);
+	backdrop-filter: blur( 13px );
+	-webkit-backdrop-filter: blur( 13px );
 }
 
 .nav-bar__links {

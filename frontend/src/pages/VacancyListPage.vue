@@ -1,12 +1,10 @@
 <template>
 	<div class="page">
 		<div class="page-frame">
+				<NavigationBar/>
 			<div class="page-frame__content grid-container">
-				<div class="block-child nav">
-					<NavigationBar/>
-				</div>
 				<div class="content">
-					<div class="block">
+					<div class="block"  style="padding-top: 16px">
 						<ContentBlock class="add" outlined>
 							<div class="add-cover">
 								<h3>Hard to make the CV?</h3>
@@ -14,7 +12,10 @@
 							</div>
 						</ContentBlock>
 						<ContentBlock class="desktop more-filters">
-							<h4>Filters</h4>
+							<h4>
+								<Icon icon="tabler:filter" style="margin-right: 4px" height="16px"/>
+								Filters
+							</h4>
 							<Filters v-model="filters"/>
 						</ContentBlock>
 					</div>
@@ -29,7 +30,7 @@
 								</transition>
 							</span>
 						</ContentBlock>
-						<ContentBlock style="flex:1; background:transparent; padding: 16px; overflow-y: auto">
+						<ContentBlock style="flex:1; background:transparent; padding: 16px;">
 							<Card v-for="vacancy in vacancies" :key="`vacancy-${vacancy.id}`" :vacancy="vacancy"/>
 						</ContentBlock>
 					</div>
@@ -50,6 +51,7 @@ import router from '../router';
 import Filters from '../components/vacancy-list/Filters.vue';
 import Vacancy from '../types/vacancy';
 import Card from '../components/vacancy-list/Card.vue';
+import { Icon } from '@iconify/vue/dist/iconify.js';
 
 
 const mobileFiltersIsOpen = ref(false)
@@ -152,20 +154,11 @@ watch(() => filters.value, () => {
 	flex-direction: column;
 	gap: 16px;
 	height: 100%;
-	overflow: hidden;
 }
 
-.grid-container {
-	display: grid;
-	grid-template-rows: auto 1fr;
-	grid-row-gap: 16px;
-	height: 100%;
-}
 .content {
 	display: grid;
 	grid-template-columns: 240px 1fr;
-	height: 100%;
-	overflow: hidden;
 }
 
 @media (max-width: 868px) {
@@ -188,7 +181,7 @@ watch(() => filters.value, () => {
 	}
 }
 
-.page-frame__content > .grid-container {
-	flex: 1;
+.grid-container {
+	display: block;
 }
 </style>

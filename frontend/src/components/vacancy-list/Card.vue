@@ -55,7 +55,7 @@ defineProps({
 }
 
 .vacancy-card + .vacancy-card {
-	margin-top: 12px;
+	margin-top: 16px;
 }
 
 .vacancy-card__company-name{
