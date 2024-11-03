@@ -30,7 +30,7 @@
 								</transition>
 							</span>
 						</ContentBlock>
-						<ContentBlock class="vacancy-lise">
+						<ContentBlock class="vacancy-list">
 							<Card v-for="vacancy in vacancies" :key="`vacancy-${vacancy.id}`" :vacancy="vacancy"/>
 						</ContentBlock>
 					</div>

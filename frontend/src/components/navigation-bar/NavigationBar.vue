@@ -7,7 +7,9 @@
 			<div class="nav-bar__link desktop"
 			v-for="item in navbarItems"
 			:key="`nav-bar-item-${item.id}`"
+			v-bind:class="{active: routeName == item.pageName}"
 			@click="item.action">
+				<Icon :icon="item.icon" height="16px"/>
 				{{ item.title}}
 			</div>
 		</div>
@@ -39,8 +41,8 @@ import { Icon } from '@iconify/vue/dist/iconify.js';
 import ContentBlock from '../ContentBlock.vue';
 import BaseButton from '../inputs/BaseButton.vue';
 import BaseIconButton from '../inputs/BaseIconButton.vue';
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { computed, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 const isOpen = ref(false);
 const toggleMenu = () => {
@@ -48,23 +50,29 @@ const toggleMenu = () => {
 }
 
 const router = useRouter();
+const route = useRoute();
 
-const navigateTo = (routeName:string) => {
-	router.push({name: routeName})
+const routeName = computed(() => route.name);
+
+const navigateTo = (name:string) => {
+	if (name == routeName.value || name == "") 
+		return;
+	router.push({name})
 }
 
 type NavbarItem = {
 	id: number;
 	icon: string;
 	title: string;
+	pageName: string;
 	action: (payload: MouseEvent) => void;
 }
 
 const navbarItems:Array<NavbarItem> = [
-	{id: 0, title: "Events", icon: "tabler:search", action: () => navigateTo('vacancy-list') },
-	{id: 0, title: "Vacancies", icon: "tabler:search", action: () => console.log("Vacancies") },
-	{id: 1, title: "Companies", icon: "tabler:building", action: () => console.log("Companies") },
-	{id: 2, title: "About", icon: "tabler:info-circle", action: () => console.log("About") },
+	{id: 1, pageName: "vacancy-list", title: "Vacancies", icon: "tabler:search", action: () => console.log("Vacancies") },
+	{id: 2, pageName: "", title: "Events", icon: "tabler:calendar-event", action: () => navigateTo('vacancy-list') },
+	{id: 3, pageName: "", title: "Companies", icon: "tabler:building", action: () => console.log("Companies") },
+	{id: 4, pageName: "", title: "About", icon: "tabler:info-circle", action: () => console.log("About") },
 ]
 </script>
 
@@ -82,7 +90,7 @@ const navbarItems:Array<NavbarItem> = [
 	z-index: 4;
 
 	background: rgba( 255, 255, 255, 0.15 );
-	box-shadow: 0 8px 32px 0 rgba(162, 165, 199, 0.37);
+	box-shadow: 0 3px 24px 0 rgba(162, 165, 199, 0.37);
 	backdrop-filter: blur( 13px );
 	-webkit-backdrop-filter: blur( 13px );
 }
@@ -92,18 +100,27 @@ const navbarItems:Array<NavbarItem> = [
 	gap: 16px;
 	height: 100%;
 	align-items: center;
-
 }
 
 
 .nav-bar__link {
 	display: flex;
+	gap: 8px;
 	align-items: center;
-	border-radius: 8px;
 	cursor: pointer;
 	transition: background .3s;
+	padding: 6px 11px;
 	flex: 1;
+	transition: border-color 0.3s;
+	user-select: none;
+	border-bottom: 1.5px solid transparent;
 }
+
+.nav-bar__link.active {
+	border-color: var(--primary-color);
+}
+
+
 
 .nav-bar__profile {
 	display: flex;
@@ -181,6 +198,9 @@ const navbarItems:Array<NavbarItem> = [
 @media (min-width: 868px) {
 	.mobile {
 		display: none;
+	}
+	.nav-bar__link:hover:not(.active) {
+		border-color: var(--border-color);
 	}
 }
 </style>
