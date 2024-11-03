@@ -1,7 +1,7 @@
 <template>
 	<div class="page">
-		<div class="page-frame">
-			<div class="page-frame__content centered">
+		<div class="page-frame centered">
+			<div class="page-frame__content">
 				<div class="info-card">
 					<div class="header">
 						<h4>Junior Sunflower</h4>
@@ -85,13 +85,27 @@ const navigateTo = (routeName:string) => {
 	gap: 10px;
 }
 
-@media (max-width: 768px){
+
+.centered {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+
+
+@media (max-width: 868px){
 	#search-desktop {
 		display: none;
 	}
+
+	.centered{
+		align-items: normal;
+	}
 }
 
-@media (min-width: 768px) {
+@media (min-width: 868px) {
 	.search-mobile {
 		display: none;
 	}
@@ -114,10 +128,5 @@ const navigateTo = (routeName:string) => {
 	gap: 10px;
 }
 
-.centered{
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-}
 
 </style>

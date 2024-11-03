@@ -30,7 +30,7 @@
 								</transition>
 							</span>
 						</ContentBlock>
-						<ContentBlock style="flex:1; background:transparent; padding: 16px;">
+						<ContentBlock class="vacancy-lise">
 							<Card v-for="vacancy in vacancies" :key="`vacancy-${vacancy.id}`" :vacancy="vacancy"/>
 						</ContentBlock>
 					</div>
@@ -161,11 +161,19 @@ watch(() => filters.value, () => {
 	grid-template-columns: 240px 1fr;
 }
 
+.vacancy-list {
+	background:transparent; 
+	padding: 16px;
+}
+
 @media (max-width: 868px) {
 	.content {
 		display: flex;
 		flex-direction: column;
 		gap: 16px;
+	}
+	.vacancy-list {
+		padding: 0;
 	}
 }
 

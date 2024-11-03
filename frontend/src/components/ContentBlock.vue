@@ -23,4 +23,10 @@ defineProps({
 .outlined{
 	border: 1px solid var(--border-color);
 }
+
+@media (max-width: 868px){
+	.content-block{
+		padding: 0;
+	}
+}
 </style>

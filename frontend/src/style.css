@@ -78,12 +78,15 @@ h1 {
 	flex-direction: column;
 	gap: 18px;
 	border-radius: 4px;
+	
 }
 
 @media (max-width: 868px){
+	.page-frame{
+		padding: 0 16px;
+	}
 	.page-frame__content{
-		margin: 24px 16px;
-		width: 100%;
+		padding-top: 16px;
 	}
 }
 
