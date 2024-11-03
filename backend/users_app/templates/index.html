@@ -5,6 +5,14 @@
         <title>TITLE</title>
     </head>
     <body>
-        <h1>HELLO WORLD</h1>
+
+        <h1>USERS</h1>
+        <h2>Registration form</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit">Register</button>
+        </form>
+
     </body>
 </html>

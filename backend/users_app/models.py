@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import RegexValidator
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class User(models.Model):
@@ -17,5 +18,6 @@ class User(models.Model):
 
 class UserApply(models.Model):
     pass
+
 class UserResume(models.Model):
     pass
