@@ -1,24 +1,32 @@
 from django.shortcuts import render, redirect
 from users_app.models import User
-from .forms import UserRegistrationForm
-
-# Create your views here.
+from django.contrib import messages
+from .forms import UserRegisterForm
+from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.urls import path
+from . import views
+# from blog.urls import urls
 
 def index_page(request):
     all_users = User.objects.all()
-    return render(request, 'index.html', {'data': all_users})
+    return render(request, 'home.html', {'data': all_users})
 
 def register(request):
     if request.method == 'POST':
-        form = UserRegistrationForm(request.POST)
+        form = UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('index_page')
+            username = form.cleaned_data.get('name')
+            messages.success(request, f'Welcome to SunflowerJunior {username}')
+            return redirect('blog:home')
     else:
-        form = UserRegistrationForm()
+        form = UserRegisterForm()
     return render(request, 'register.html', {'form': form})
 
-
+@login_required
+def profile(request):
+    return render(request, 'users/profile.html')
 
 
 
