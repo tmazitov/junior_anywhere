@@ -19,12 +19,13 @@ from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from users_app import views as user_views
+import users_app.user_handlers
+import users_app.user_handlers.user_register
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('register/', user_views.register, name='register'),
-    path('profile/', user_views.profile, name='profile'),
+    path('register/', users_app.user_handlers.user_register.register, name='register'),
+    path('profile/', users_app.user_handlers.user_register.profile, name='profile'),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
     path('', include('blog.urls', namespace='blog')),
