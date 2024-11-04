@@ -1,47 +1,53 @@
 <template>
-	<div class="base-input" v-bind:class="{
-		focused: isFocused,
-	}">
-		<div class="label" v-if="label">
-			{{label}}
-		</div>
-		<div class="left icon" 
-		v-if="leftIcon && !leftIcon.isHidden" 
-		v-bind:class="{
-			'is-button' : leftIcon.onClick
+	<div class="base-input-container">
+		<div class="base-input" v-bind:class="{
+			focused: isFocused,
 		}">
-			<Icon  
-				:icon="leftIcon.name" 
-				:width="leftIcon.width" 
-				:height="leftIcon.height" 
-				:color="leftIcon.color"
-				@click="leftIcon.onClick ? 
-					leftIcon.onClick() : null"
-			/>
+			<div class="label" v-if="label">
+				{{label}}
+			</div>
+			<div class="left icon" 
+			v-if="leftIcon && !leftIcon.isHidden" 
+			v-bind:class="{
+				'is-button' : leftIcon.onClick
+			}">
+				<Icon  
+					:icon="leftIcon.name" 
+					:width="leftIcon.width" 
+					:height="leftIcon.height" 
+					:color="leftIcon.color"
+					@click="leftIcon.onClick ? 
+						leftIcon.onClick() : null"
+				/>
+			</div>
+
+			<input 
+				:type="type ? type : 'text'" 
+				:placeholder="placeholder"
+				:value="value" @input="updateValue"
+				:min="min" :max="max" :step="step"
+				@focus="isFocused = true"
+				@blur="isFocused = false">
+
+			<div class="right icon" 
+			v-if="rightIcon"
+
+			v-bind:class="{
+				'is-button' : rightIcon.onClick
+			}">
+				<Icon v-show="!rightIcon.isHidden"
+					:icon="rightIcon.name" 
+					:width="rightIcon.width" 
+					:height="rightIcon.height" 
+					:color="rightIcon.color"
+					@click="rightIcon.onClick ?
+						rightIcon.onClick() : null"
+				/>
+			</div>
 		</div>
 
-		<input 
-			:type="type ? type : 'text'" 
-			:placeholder="placeholder"
-			:value="value" @input="updateValue"
-			:min="min" :max="max" :step="step"
-			@focus="isFocused = true"
-			@blur="isFocused = false">
-
-		<div class="right icon" 
-		v-if="rightIcon"
-
-		v-bind:class="{
-			'is-button' : rightIcon.onClick
-		}">
-			<Icon v-show="!rightIcon.isHidden"
-				:icon="rightIcon.name" 
-				:width="rightIcon.width" 
-				:height="rightIcon.height" 
-				:color="rightIcon.color"
-				@click="rightIcon.onClick ?
-					rightIcon.onClick() : null"
-			/>
+		<div class="base-input__support-message" v-if="supportMessage">
+			{{ supportMessage }}
 		</div>
 	</div>
 </template>
@@ -65,6 +71,7 @@ defineProps({
 	min: Number,
 	max: Number,
 	step: Number,
+	supportMessage: String,
 })
 
 const isFocused = ref(false)
@@ -76,6 +83,7 @@ const updateValue = (ev: any) => {
 </script>
 
 <style scoped>
+
 .base-input{
 	display: flex;
 	flex-direction: row;
@@ -141,5 +149,9 @@ input{
 
 input:focus{
 	outline: none;
+}
+
+.base-input__support-message{
+	font-size: 0.8em;
 }
 </style>

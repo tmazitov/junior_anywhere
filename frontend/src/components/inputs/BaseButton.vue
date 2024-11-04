@@ -3,6 +3,7 @@
 		primary: primary,
 		centered: centered,
 		outlined: outlined,
+		disabled: disabled,
 	}">
 		<div class="base__button-icon" v-if="icon">
 			<Icon :icon="icon" color="var(--text-color)" height="18px" width="18px"/> 
@@ -23,6 +24,7 @@ defineProps({
 	primary: Boolean,
 	centered: Boolean,
 	outlined: Boolean,
+	disabled: Boolean,
 })
 </script>
 
@@ -44,7 +46,10 @@ defineProps({
 	width: 100%;
 }
 
-
+.disabled{
+	pointer-events: none;
+	opacity: .5;
+}
 
 @media (max-width: 768px) {
 	.base__button:hover{

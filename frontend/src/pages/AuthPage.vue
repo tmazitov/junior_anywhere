@@ -2,27 +2,53 @@
 	<div class="page">
 		<div class="page-frame centered">
 			<div class="page-frame__content">
-				<div class="card">
-					<div class="card-header">
+
+				<!-- Auth card -->
+
+				<FormCard v-if="!isRegister">
+					<template #header>
 						<BaseIconButton icon="tabler:arrow-back-up"
 							@click="navigateToBack"
 							fill="clear"/>
 						<div class="card-header__title">Sign In</div>	
-					</div>
-					<div class="card-content">
-						<BaseInput v-model="email" type="email" ref="emailField"
-							:left-icon="icons['email']"
-							placeholder="Email"/>
-						<BaseInput v-model="password" type="password" ref="passwordField" 
-							:left-icon="icons['pass']" 
-							placeholder="Password"/>
-						<a href="">Forget password</a>
-						<a href="">Register account</a>
-					</div>
-					<div class="card-footer">
+					</template>
+					<template #default>
+						<SignInUserForm v-model="signInUser"/>
+						<a href="">Forgot password</a>
+					</template>
+					<template #footer>
 						<BaseButton title="Continue" primary/>
-					</div>
-				</div>
+					</template>
+				</FormCard>
+
+				<!-- Registration card -->
+
+				<FormCard v-else>
+					<template #header>
+						<BaseIconButton icon="tabler:arrow-back-up"
+							@click="navigateToBack"
+							fill="clear"/>
+						<div class="card-header__title">Registration</div>	
+					</template>
+					<template #default>
+						<RegisterUserForm v-model="registerUser"/>
+					</template>
+					<template #footer>
+						<BaseButton title="Continue" primary :disabled="!registrationFormIsValid"/>
+					</template>
+				</FormCard>
+
+				<!-- Redirect to register -->
+
+				<FormCard v-if="!isRegister">
+					<h5>Don't have an account? Create them <a @click="toggleRegister">here</a></h5>
+				</FormCard>
+
+				<!-- Redirect to sign in -->
+
+				<FormCard v-else>
+					<h5>Already have an account? Sign in <a @click="toggleRegister">here</a></h5>
+				</FormCard>
 			</div>
 		</div>
 	</div>
@@ -30,16 +56,36 @@
 
 <script setup lang="ts">
 
-import { ref } from 'vue';
-import BaseInput from '../components/inputs/BaseInput.vue';
+import { computed, ref } from 'vue';
 import BaseButton from '../components/inputs/BaseButton.vue';
 import BaseIconButton from '../components/inputs/BaseIconButton.vue';
 import { useRouter } from 'vue-router';
+import RegisterUser from '../types/forms/registerUser';
+import RegisterUserForm from '../components/forms/RegisterUserForm.vue';
+import FormCard from '../components/forms/FormCard.vue';
+import SignInUser from '../types/forms/signInUser';
+import SignInUserForm from '../components/forms/SignInUserForm.vue';
+
+const signInUser = ref(new SignInUser());
+const registerUser = ref(new RegisterUser());
+
+const isRegister = ref(false);
+const toggleRegister = () => {
+	isRegister.value = !isRegister.value;
+}
 
 const router = useRouter();
 const navigateToBack = () => {
+	if (isRegister.value) {
+		isRegister.value = false;
+		return;
+	}
 	router.back();
 }
+
+const registrationFormIsValid = computed(() => {
+	return registerUser.value.validate()
+})
 
 const email = ref('');
 const emailField = ref<HTMLElement|null>(null)
@@ -51,7 +97,7 @@ const icons = {
 		name: 'tabler:mail',
 	},
 	'pass' : {
-		name: 'tabler:key',
+		name: 'tabler:password',
 	}
 }
 
@@ -66,56 +112,16 @@ const icons = {
 	align-items: center;
 }
 
-.card{
-	width: 100%;
-	border-radius: 16px;
-	box-sizing: border-box;
-
-	position: relative;
-	box-shadow: 0 0 14px -7px  var(--border-color);
-	transition: box-shadow .3s;
-
-	display: flex;
-	flex-direction: column;
-	gap: 16px;
-	padding: 20px;
-}
-
-@media (min-width: 868px) {
-	.card {
-		width: 100%;
-	}
-}
-
-.card-header{
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	gap: 12px;
-}
-
-.card-content {
-	display: flex;
-	flex-direction: column;
-	gap: 14px;
-}
-
-.card-header__title{
-	font-size: 20px;
-	font-weight: 500;
-}
-
-
-@media (max-width: 868px){
-
+@media (max-width: 368px){
 	.centered{
 		align-items: normal;
 	}
 }
 
-.card-footer{
-	display: flex;
-	flex-direction: column;
-	gap: 16px;
+
+.card-header__title{
+	font-size: 18px;
+	font-weight: 400;
 }
+
 </style>
