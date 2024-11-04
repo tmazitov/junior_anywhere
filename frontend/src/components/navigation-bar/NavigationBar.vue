@@ -28,7 +28,11 @@
 				<BaseIconButton icon="tabler:arrow-bar-to-right" primary/>
 			</span>
 			<span class="desktop">
-				<BaseButton style="width:78px" title="Sign In" icon="tabler:arrow-bar-to-right" primary />
+				<BaseButton style="width:78px" 
+					@click="navigateTo('auth')"
+					title="Sign In" 
+					icon="tabler:arrow-bar-to-right" 
+					primary />
 			</span>
 
 		</div>
@@ -86,7 +90,7 @@ const navbarItems:Array<NavbarItem> = [
 	height: 54px;
 	box-sizing: border-box;
 	position: sticky;
-	top: 16px;
+	top: 0;
 	z-index: 4;
 
 	background: rgba( 255, 255, 255, 0.15 );

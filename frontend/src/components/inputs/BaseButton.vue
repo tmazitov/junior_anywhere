@@ -39,6 +39,10 @@ defineProps({
 	display: flex;
 	gap: 8px;
 }
+.base__button-title{
+	text-align: center;
+	width: 100%;
+}
 
 
 

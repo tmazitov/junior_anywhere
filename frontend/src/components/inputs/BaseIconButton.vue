@@ -1,6 +1,7 @@
 <template>
 	<div class="base-icon-button" v-bind:class="{
 		primary: primary,
+		[fill]: true
 	}">
 		<Icon :icon="icon" color="var(--text-color)" height="18px" width="18px"/> 
 	</div>
@@ -13,6 +14,13 @@ defineProps({
 	icon: {
 		type: String,
 		required: true,
+	},
+	fill: {
+		type: String,
+		default: 'default',
+		validation(value:string){
+			return ['default', 'clear', 'outline'].includes(value)
+		}
 	},
 	primary: Boolean,
 })
@@ -35,6 +43,10 @@ defineProps({
 	transition: background .15s;
 }
 
+.clear {
+	background: transparent;
+	border-color: transparent;
+}
 
 @media (min-width: 868px){
 	.base-icon-button:hover{
