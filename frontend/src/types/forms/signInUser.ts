@@ -3,7 +3,7 @@ import validateEmail from "../../utils/emailValidation";
 class SignInUser {
 	email: string = ""
 	password: string = ""
-	validation() : boolean {
+	validate() : boolean {
 		if (this.email.length < 3 || !validateEmail(this.email)) {
 			return false;
 		}

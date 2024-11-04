@@ -2,6 +2,7 @@
 	<div class="base-input-container">
 		<div class="base-input" v-bind:class="{
 			focused: isFocused,
+			'number-without-arrows': type === 'number' && numberIsWithoutArrows
 		}">
 			<div class="label" v-if="label">
 				{{label}}
@@ -24,6 +25,7 @@
 			<input 
 				:type="type ? type : 'text'" 
 				:placeholder="placeholder"
+				
 				:value="value" @input="updateValue"
 				:min="min" :max="max" :step="step"
 				@focus="isFocused = true"
@@ -71,7 +73,9 @@ defineProps({
 	min: Number,
 	max: Number,
 	step: Number,
+	len: Number,
 	supportMessage: String,
+	numberIsWithoutArrows: Boolean,
 })
 
 const isFocused = ref(false)
@@ -153,5 +157,17 @@ input:focus{
 
 .base-input__support-message{
 	font-size: 0.8em;
+}
+
+
+.number-without-arrows > input::-webkit-outer-spin-button,
+.number-without-arrows > input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.number-without-arrows > input[type=number] {
+  -moz-appearance: textfield;
 }
 </style>
