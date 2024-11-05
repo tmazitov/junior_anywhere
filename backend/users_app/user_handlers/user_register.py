@@ -5,8 +5,6 @@ from ..forms import UserRegisterForm
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.urls import path
-# from . import views
-# from blog.urls import urls
 
 def index_page(request):
     all_users = User.objects.all()
