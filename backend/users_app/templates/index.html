@@ -19,6 +19,12 @@
             	{{ message }}
           	</div>
         	{% endfor %}
+
+        {% if user.is_authenticated %}
+            <p>Hello, {{ user.username }} | <a href="{% url 'logout' %}">Exit</a> | <a href="{% url 'profile' %}">Profile</a></p>
+        {% else %}
+            <a href="{% url 'login' %}">Log in</a> | <a href="{% url 'register' %}">Register</a>
+        {% endif %}
         {% endif %}
 
     </body>

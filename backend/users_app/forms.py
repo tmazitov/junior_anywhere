@@ -17,3 +17,7 @@ class UserRegisterForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+class UserLoginForm(forms.Form):
+    email = forms.EmailField(label="email", max_length=254)
+    password =forms.CharField(widget=forms.PasswordInput, label="Password")

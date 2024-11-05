@@ -26,8 +26,6 @@ def register(request):
 def profile(request):
     return render(request, 'users/profile.html')
 
-
-
     # NEW USER
     # new_user = User(name='new', second_name='user', email='newuser@gmail.com', password='1234', phone_number='+971540000000')
     # new_user.save()
