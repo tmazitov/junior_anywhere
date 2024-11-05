@@ -3,7 +3,6 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 	<title>Register your company</title>
 </head>
 <body>
@@ -11,11 +10,8 @@
 		<h2>Rgister your company here</h2>
 		<form method="post">
 			{% csrf_token %}
-			{{ form.name }} <br>
-			{{ form.email }} <br>
-			{{ form.password }} <br>
-			<span>{{ error }}</span>
-			<button class="btn-btn-success" type="submit">Add company</button>
+			
+
 		</form>
 </body>
 </html>
