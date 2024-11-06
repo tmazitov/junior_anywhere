@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from app1.models import Company
 from .forms import CompanyForm
@@ -16,6 +16,7 @@ def create(request):
 		form = CompanyForm(request.POST)
 		if form.is_valid():
 			form.save()
+			return redirect('create')  # Redirect to the same page after saving
 		else:
 			error = 'invalid form'
 	form = CompanyForm()
