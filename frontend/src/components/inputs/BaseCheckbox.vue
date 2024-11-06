@@ -43,12 +43,12 @@ defineProps({
 /* Create a custom checkbox */
 .checkmark {
 	position: absolute;
-	top: 0;
-	left: 0;
+	top: 1px;
+	left: -1px;
 	height: 16px;
 	width: 16px;
 	border: 1px solid var(--border-color);
-	border-radius: 4px;
+	border-radius: var(--border-radius);
 	background: var(--input-background);
 	transition: background .3s;
 	user-select: none

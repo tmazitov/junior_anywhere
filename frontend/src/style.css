@@ -19,6 +19,7 @@
 	--primary-color-hover: var(--pumpkin-2);
 	--primary-color-opacity:  #f4803787;
 
+	--border-radius: 6px;
 	--border-color: var(--silver);
 	--border-color-hover: var(--timberwolf);
 	--input-background: var(--timberwolf);

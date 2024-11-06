@@ -31,6 +31,8 @@
 	gap: 16px;
 	padding: 20px;
 	width: 300px;
+
+	transition: height .3s;
 }
 
 @media (min-width: 868px) {

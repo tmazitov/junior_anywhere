@@ -30,13 +30,22 @@
 						<BaseIconButton icon="tabler:arrow-back-up"
 							@click="navigateToBack"
 							fill="clear"/>
-						<div class="card-header__title">Registration</div>	
+						<div class="card-header__title">
+							<span v-if="isRegisterCompany">{{ "Company Registration" }}</span>
+							<span v-else>Registration</span>
+						</div>
+						<div class="card-header__title small" 
+						v-if="!isRegisterCompany"
+						@click="isRegisterCompany = true">
+							For Companies
+						</div>
 					</template>
 					<template #default>
-						<RegisterUserForm v-model="registerUser"/>
+						<RegisterUserForm v-if="!isRegisterCompany" v-model="registerUser"/>
+						<RegisterCompanyForm v-else v-model="registerCompany"/>
 					</template>
 					<template #footer>
-						<BaseButton title="Continue" 
+						<BaseButton title="Continue"
 							:disabled="!registrationFormIsValid"
 							@click="submitHandler"
 							primary />
@@ -53,6 +62,11 @@
 						<div class="card-header__title">Verification code</div>	
 					</template>
 					<template #default>
+
+						<div class="message">The verification code was send on your email. 
+							Enter them below to continue.
+						</div>
+
 						<div class="verification-code" ref="codeField">
 							<BaseInput v-for="i in 6" v-model="code[i-1]"
 							type="number"
@@ -68,16 +82,16 @@
 							primary/>
 					</template>
 				</FormCard>
- 
+
 				<!-- Redirect to register -->
 
-				<FormCard v-if="!isRegister">
+				<FormCard v-if="!isRegister && !isSubmitted">
 					<h5>Don't have an account? Create them <a @click="toggleRegister">here</a></h5>
 				</FormCard>
 
 				<!-- Redirect to sign in -->
 
-				<FormCard v-if="isRegister">
+				<FormCard v-if="isRegister && !isSubmitted">
 					<h5>Already have an account? Sign in <a @click="toggleRegister">here</a></h5>
 				</FormCard>
 			</div>
@@ -97,26 +111,36 @@ import FormCard from '../components/forms/FormCard.vue';
 import SignInUser from '../types/forms/signInUser';
 import BaseInput from '../components/inputs/BaseInput.vue';
 import SignInUserForm from '../components/forms/SignInUserForm.vue';
+import RegisterCompanyForm from '../components/forms/RegisterCompanyForm.vue';
+import RegisterCompany from '../types/forms/registerCompany';
 
 const signInUser = ref(new SignInUser());
 const registerUser = ref(new RegisterUser());
+const registerCompany = ref(new RegisterCompany())
 
 const codeField = ref<HTMLElement|null>(null);
 const isSubmitted = ref(false)
 const isRegister = ref(false);
+
+const isRegisterCompany = ref(false)
 const toggleRegister = () => {
 	isRegister.value = !isRegister.value;
 }
 
 const router = useRouter();
 const navigateToBack = () => {
-	if (isRegister.value) {
-		isRegister.value = false;
+	if (isSubmitted.value) {
+		isSubmitted.value = false;
 		return;
 	}
 
-	if (isSubmitted.value) {
-		isSubmitted.value = false;
+	if (isRegisterCompany.value) {
+		isRegisterCompany.value = false
+		return 
+	}
+
+	if (isRegister.value) {
+		isRegister.value = false;
 		return;
 	}
 
@@ -198,6 +222,9 @@ const submitHandler = () => {
 }
 
 const registrationFormIsValid = computed(() => {
+	if (isRegisterCompany.value) {
+		return registerCompany.value.validate()
+	}
 	return registerUser.value.validate()
 })
 </script>
@@ -220,6 +247,18 @@ const registrationFormIsValid = computed(() => {
 .card-header__title{
 	font-size: 18px;
 	font-weight: 400;
+	padding: 6px 0;
+	height: 100%;
+	box-sizing: border-box;
+	display: flex;
+	align-items: flex-end;
+}
+
+.card-header__title.small{
+	font-size: 14px;
+	cursor: pointer;
+	text-decoration: underline;
+	color: var(--primary-color);
 }
 
 .verification-code{
@@ -229,5 +268,18 @@ const registrationFormIsValid = computed(() => {
 
 .verification-code > * {
 	flex: 1;
+}
+
+.message{
+	font-size: 0.9em;
+}
+
+.register-company{
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	font-size: 0.9em;
+	cursor: pointer;
+	justify-content: center;
 }
 </style>

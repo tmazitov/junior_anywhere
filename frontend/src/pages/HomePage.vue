@@ -23,7 +23,7 @@
 					</div>
 
 					<BaseButton class="search-mobile" title="Search" primary @click="navigateTo('vacancy-list')"/>
-					<BaseButton class="search-mobile" title="For Bysiness" primary outlined/>
+					<BaseButton class="search-mobile" title="For Bysiness" primary fill="outlined"/>
 				</div>
 			</div>
 		</div>

@@ -196,7 +196,7 @@ const closeHandler = () => {
 	align-items: center;
 	background: var(--input-background);
 	border: 1px solid var(--border-color);
-	border-radius: 6px;
+	border-radius: var(--border-radius);
 	width: 100%;
 	box-sizing: border-box;
 	transition: box-shadow .15s;
@@ -243,7 +243,7 @@ const closeHandler = () => {
 
 	background: var(--input-background);
 	border: 1px solid var(--border-color);
-	border-radius: 6px;
+	border-radius: var(--border-radius);
 
 	display: flex;
 	flex-direction: column;
