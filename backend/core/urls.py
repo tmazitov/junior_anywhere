@@ -20,15 +20,23 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 import users_app.user_handlers
-import users_app.user_handlers.user_register
+import users_app.user_handlers.user_auth
+from users_app.forms import UserLoginForm
+from users_app.user_handlers import user_auth, user_register
+from blog import views as blog_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', users_app.user_handlers.user_register.register, name='register'),
     path('profile/', users_app.user_handlers.user_register.profile, name='profile'),
-    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('login/', auth_views.LoginView.as_view(
+        template_name='login.html',
+        authentication_form=UserLoginForm
+    ), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='logout.html'), name='logout'),
-    path('', include('blog.urls', namespace='blog')),
+     path('', include('blog.urls', namespace='blog')),
+    path('test-auth/', user_auth.test_authentication, name='test_auth'),
+
 ]
 
 if settings.DEBUG:

@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.hashers import make_password
 from .models import User
+from django.contrib.auth.forms import AuthenticationForm
 # from django.contrib.auth.models import User
 # from django.contrib.auth.forms import UserCreationForm
 
@@ -18,6 +19,7 @@ class UserRegisterForm(forms.ModelForm):
             user.save()
         return user
 
-class UserLoginForm(forms.Form):
-    email = forms.EmailField(label="email", max_length=254)
-    password =forms.CharField(widget=forms.PasswordInput, label="Password")
+class UserLoginForm(AuthenticationForm):
+    class Meta:
+        model = User
+        fields = ['email', 'password']
