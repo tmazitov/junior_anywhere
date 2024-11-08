@@ -201,10 +201,13 @@ const submitChange = () => {
 }
 
 const submitVerificationCode = () => {
-	if (codeIsValid.value) {
+	if (!codeIsValid.value) {
 		return
 	}
-
+	if (isRegisterCompany.value) {
+		return 
+	}
+	router.push({name:'user-profile'})
 }
 
 const submitHandler = () => {
