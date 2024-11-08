@@ -2,54 +2,70 @@
 	<div class="page">
 		<div class="page-frame">
 			<NavigationBar/>
-			<div class="page-frame__content grid-container">
-				<ContentBlock outlined style="height: fit-content">
-					<Menu v-model="currentPage" :options="profilePages"/>
-				</ContentBlock>
+			<div class="page-frame__content centered">
+				<div class="profile-card">
+					<FormCard>
+						<template v-slot:header>
+							<h2>Timur Mazitov</h2>
+						</template>
+						<template v-slot:default>
+							<div class="support-message">
+								No Data
+							</div>		
+						</template>
+					</FormCard>
+					
+					<FormCard>
+						<template v-slot:header>
+							<h3>Resume</h3>
+						</template>
 
-				<ContentBlock outlined style="height: 300px">
-					<span class="content" v-if="currentPage == 0">
-						<h2>Main Info</h2>
-						<div>Timur Mazitov</div>
-					</span>
-					<span class="content" v-else-if="currentPage == 1">
-						<h2>Resume</h2>
+						<template v-slot:default>
+							<div class="support-message">
+								Go ahead and create a summary about your skills and strong sides
+							</div>							 
+						</template>
 
-						<BaseButton title="Add resume"/>
-					</span>
-					<span class="content" v-else-if="currentPage == 2">
-						<h2>Applies</h2>
-						<div class="support-message">
-							No applies
-						</div>
-					</span>
-				</ContentBlock>
+						<template v-slot:footer>
+							<BaseButton title="Create Resume" width="100%" primary/>
+						</template>
+					</FormCard>
+
+					<!-- <FormCard>
+						<template v-slot:header>
+							<h3>Applies</h3>
+						</template>
+						<template v-slot:default>
+							<div class="support-message block">
+								Empty list
+							</div>
+						</template>
+					</FormCard> -->
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import ContentBlock from '../components/ContentBlock.vue';
 import NavigationBar from '../components/navigation-bar/NavigationBar.vue';
-import Menu from '../components/profile/Menu.vue';
+import FormCard from '../components/forms/FormCard.vue';
 import BaseButton from '../components/inputs/BaseButton.vue';
 
-const currentPage = ref<number>(0)
-const profilePages = [
-	{icon: "tabler:user", title: "Main Info", value: 0},
-	{icon: "tabler:address-book", title: "Resume", value: 1},
-	{icon: "tabler:archive", title: "Applies", value: 2},
-]
+// const currentPage = ref<number>(0)
+// const profilePages = [
+// 	{icon: "tabler:user", title: "Main Info", value: 0},
+// 	{icon: "tabler:address-book", title: "Resume", value: 1},
+// 	{icon: "tabler:archive", title: "Applies", value: 2},
+// ]
 
 </script>
 
 <style scoped>
-.grid-container {
-	display: grid;
+.centered {
 	padding-top: 16px;
-	grid-template-columns: 240px 1fr;
+	align-items: center;
+	max-width: 100%;
 }
 
 .content{
@@ -61,10 +77,22 @@ const profilePages = [
 
 .support-message{
 	width: 100%;
-	flex: 1;
-	color: var(--silver);
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	color: #616161;
+	font-size: 0.85em;
+}
+
+.support-message.block {
+	color: var(--silver);
+	text-align: center;
+	height: 150px;
+}
+
+.profile-card{
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	
 }
 </style>

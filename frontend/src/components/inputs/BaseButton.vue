@@ -1,5 +1,9 @@
 <template>
-	<div class="base__button" v-bind:class="{
+	<div class="base__button" 
+	v-bind:style="{
+		width: width,
+	}"
+	v-bind:class="{
 		primary: primary,
 		disabled: disabled,
 		[fill]: true,
@@ -22,6 +26,7 @@ defineProps({
 	icon: String,
 	primary: Boolean,
 	disabled: Boolean,
+	width: String,
 	fill: {
 		type: String,
 		default: 'default',
@@ -42,7 +47,7 @@ defineProps({
 	transition: background .3s;
 	font-weight: 500;
 	outline: 1.5px solid transparent;
-
+	box-sizing: border-box;
 	display: flex;
 	gap: 8px;
 	transition: all .3s;

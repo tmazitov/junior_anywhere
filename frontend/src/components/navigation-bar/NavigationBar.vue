@@ -8,7 +8,7 @@
 			v-for="item in navbarItems"
 			:key="`nav-bar-item-${item.id}`"
 			v-bind:class="{active: routeName == item.pageName}"
-			@click="item.action">
+			@click="item.action(item.pageName)">
 				<Icon :icon="item.icon" height="16px"/>
 				{{ item.title}}
 			</div>
@@ -16,7 +16,16 @@
 		<div class="nav-bar__profile">
 			<span class="mobile">
 				<transition name="open">
-					<div class="mobile-menu" v-if="isOpen"></div>
+					<div class="mobile-menu" v-if="isOpen">
+						<div class="nav-bar__link centered"
+						v-for="item in navbarItems"
+						:key="`nav-bar-item-${item.id}`"
+						v-bind:class="{active: routeName == item.pageName}"
+						@click="item.action(item.pageName)">
+							<Icon :icon="item.icon" height="18px"/>
+							{{ item.title}}
+						</div>
+					</div>
 				</transition>
 			</span>
 			<span class="mobile">
@@ -25,14 +34,20 @@
 					@click="toggleMenu"/>
 			</span>
 			<span class="mobile">
-				<BaseIconButton icon="tabler:arrow-bar-to-right" primary/>
+				<BaseIconButton v-if="!isAuthorized" icon="tabler:arrow-bar-to-right" primary/>
+				<BaseIconButton v-else @click="navigateTo('user-profile')" icon="tabler:user"/>
 			</span>
 			<span class="desktop">
-				<BaseButton style="width:78px" 
+				<BaseButton v-if="!isAuthorized" 
 					@click="navigateTo('auth')"
 					title="Sign In" 
 					icon="tabler:arrow-bar-to-right" 
 					primary />
+				<div class="nav-bar__link" v-else @click="navigateTo('user-profile')"
+				v-bind:class="{active: routeName?.toString().includes('profile')}">
+					<Icon icon="tabler:user" height="16px"/>
+					Timur Mazitov
+				</div>
 			</span>
 
 		</div>
@@ -45,13 +60,16 @@ import { Icon } from '@iconify/vue/dist/iconify.js';
 import ContentBlock from '../ContentBlock.vue';
 import BaseButton from '../inputs/BaseButton.vue';
 import BaseIconButton from '../inputs/BaseIconButton.vue';
-import { computed, ref } from 'vue';
+import { computed, ref, App } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import UserAuth from '../../utils/authUser';
 
 const isOpen = ref(false);
 const toggleMenu = () => {
 	isOpen.value = !isOpen.value;
 }
+const userId = UserAuth.getUserId()
+const isAuthorized = userId != undefined
 
 const router = useRouter();
 const route = useRoute();
@@ -69,14 +87,13 @@ type NavbarItem = {
 	icon: string;
 	title: string;
 	pageName: string;
-	action: (payload: MouseEvent) => void;
+	action: (pageName:string) => void;
 }
 
 const navbarItems:Array<NavbarItem> = [
-	{id: 1, pageName: "vacancy-list", title: "Vacancies", icon: "tabler:search", action: () => console.log("Vacancies") },
-	{id: 2, pageName: "", title: "Events", icon: "tabler:calendar-event", action: () => navigateTo('vacancy-list') },
-	{id: 3, pageName: "", title: "Companies", icon: "tabler:building", action: () => console.log("Companies") },
-	{id: 4, pageName: "", title: "About", icon: "tabler:info-circle", action: () => console.log("About") },
+	{id: 1, pageName: "vacancy-list", title: "Vacancies", icon: "tabler:search", action: navigateTo},
+	{id: 2, pageName: "", title: "Events", icon: "tabler:calendar-event", action: () => {} },
+	{id: 3, pageName: "", title: "Companies", icon: "tabler:building", action: () => {} },
 ]
 </script>
 
@@ -118,6 +135,11 @@ const navbarItems:Array<NavbarItem> = [
 	transition: border-color 0.3s;
 	user-select: none;
 	border-bottom: 1.5px solid transparent;
+}
+
+.nav-bar__link.centered{
+	padding: 0;
+	gap: 12px;
 }
 
 .nav-bar__link.active {
@@ -168,10 +190,13 @@ const navbarItems:Array<NavbarItem> = [
 	right: 0;
 	left: 0;
 	z-index: 100;
-	height: 200px;
 	background: var(--card-background-color);
 	border-radius: 8px;
 	box-shadow: 0 0 8px 1px var(--border-color);
+	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
 }
 
 .open-enter-active {

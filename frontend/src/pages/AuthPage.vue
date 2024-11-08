@@ -113,6 +113,7 @@ import BaseInput from '../components/inputs/BaseInput.vue';
 import SignInUserForm from '../components/forms/SignInUserForm.vue';
 import RegisterCompanyForm from '../components/forms/RegisterCompanyForm.vue';
 import RegisterCompany from '../types/forms/registerCompany';
+import UserAuth from '../utils/authUser';
 
 const signInUser = ref(new SignInUser());
 const registerUser = ref(new RegisterUser());
@@ -207,6 +208,7 @@ const submitVerificationCode = () => {
 	if (isRegisterCompany.value) {
 		return 
 	}
+	UserAuth.setUserId(1)
 	router.push({name:'user-profile'})
 }
 
