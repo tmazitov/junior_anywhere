@@ -24,20 +24,24 @@ import users_app.user_handlers.user_auth
 from users_app.forms import UserLoginForm
 from users_app.user_handlers import user_auth, user_register
 from blog import views as blog_views
+from users_app.user_handlers import user_profile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', users_app.user_handlers.user_register.register, name='register'),
-    path('profile/', users_app.user_handlers.user_register.profile, name='profile'),
+    path('profile/', users_app.user_handlers.user_profile.profile, name='profile'),
     path('login/', auth_views.LoginView.as_view(
         template_name='login.html',
         authentication_form=UserLoginForm
     ), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='logout.html'), name='logout'),
-     path('', include('blog.urls', namespace='blog')),
+    path('', include('blog.urls', namespace='blog')),
     path('test-auth/', user_auth.test_authentication, name='test_auth'),
-
+    path('profile/', user_profile.profile, name='profile'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

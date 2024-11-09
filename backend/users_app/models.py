@@ -1,7 +1,8 @@
 from django.db import models
 from django.core.validators import RegexValidator
 from phonenumber_field.modelfields import PhoneNumberField
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.conf import settings
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -21,13 +22,12 @@ class CustomUserManager(BaseUserManager):
             raise ValueError("Superuser must have is_staff=True.")
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must have is_superuser=True.")
-
         return self.create_user(email, password, **extra_fields)
 
     def get_by_natural_key(self, email):
         return self.get(email=email)
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     userId = models.AutoField(primary_key=True)
     name = models.CharField(max_length=20, blank=False)
     second_name = models.CharField(max_length=35, blank=False)
@@ -37,8 +37,9 @@ class User(AbstractBaseUser):
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
 
-    objects = CustomUserManager()  # Указываем менеджер
+    objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name', 'second_name', 'phone_number']
@@ -47,10 +48,14 @@ class User(AbstractBaseUser):
         return f'{self.second_name} {self.name}'
 
 class UserProfile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile', null=True)
     profile_picture = models.ImageField(blank=True)
     resume = models.FileField(blank=True)
     about_me = models.TextField(max_length=500, help_text="Tell future employer more about yourself", blank=True)
 
+    def __str__(self):
+        return f'{self.user.email} Profile'
+    
     def __str__(self):
         return f'{self.profile_picture} Profile'
 
