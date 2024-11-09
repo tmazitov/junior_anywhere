@@ -235,7 +235,6 @@ const registrationFormIsValid = computed(() => {
 </script>
 
 <style scoped>
-
 .centered {
 	display: flex;
 	flex-direction: column;
@@ -243,8 +242,9 @@ const registrationFormIsValid = computed(() => {
 	align-items: center;
 }
 
-@media (max-width: 368px){
+@media (max-width: 468px){
 	.centered{
+		padding: 32px;
 		align-items: normal;
 	}
 }

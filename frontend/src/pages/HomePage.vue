@@ -22,8 +22,10 @@
 						<Category title="Absolutely Free" color="#f09156"/>
 					</div>
 
-					<BaseButton class="search-mobile" title="Search" primary @click="navigateTo('vacancy-list')"/>
-					<BaseButton class="search-mobile" title="For Bysiness" primary fill="outlined"/>
+					<BaseButton class="search-mobile" title="Search" primary 
+						@click="navigateTo('vacancy-list')"/>
+					<BaseButton class="search-mobile" title="For Bysiness" fill="clear"
+						@click="navigateTo('auth')"/>
 				</div>
 			</div>
 		</div>
