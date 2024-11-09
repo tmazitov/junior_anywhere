@@ -63,7 +63,7 @@ const emits = defineEmits([
 	'on-input'
 ])
 
-const value = defineModel<string>({required: true})
+const value = defineModel<string|number|null>({required: true})
 defineProps({
 	placeholder: String,
 	rightIcon: 	Object as () => IconT,
@@ -131,6 +131,7 @@ const updateValue = (ev: any) => {
 .base-input.focused{
 	border-color: var(--border-color-hover);
 	box-shadow: 0 0 1px 1px var(--primary-color-hover);
+	background: var(--input-background-hover);
 }
 
 .label {

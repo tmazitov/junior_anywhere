@@ -15,7 +15,7 @@
 						</template>
 					</FormCard>
 					
-					<FormCard>
+					<FormCard v-if="!isFillResumeForm">
 						<template v-slot:header>
 							<h3>Resume</h3>
 						</template>
@@ -27,10 +27,30 @@
 						</template>
 
 						<template v-slot:footer>
-							<BaseButton title="Create Resume" width="100%" primary/>
+							<BaseButton title="Create Resume" width="100%" 
+								@click="() => isFillResumeForm = true"
+								primary/>
 						</template>
 					</FormCard>
+				
 
+					<FormCard v-if="isFillResumeForm">
+						<template v-slot:header>
+							<h3>New Resume Form</h3>
+						</template>
+
+						<template v-slot:default>
+							<UserResumeForm v-model="resumeForm"/>
+						</template>
+
+						<template v-slot:footer>
+							<div class="buttons">
+								<BaseButton title="Cancel" width="100%" fill="outline"
+									@click="() => isFillResumeForm = false"/>
+								<BaseButton title="Upload" width="100%" primary :disabled="!resumeFormIsValid"/>
+							</div>
+						</template>
+					</FormCard>
 					<!-- <FormCard>
 						<template v-slot:header>
 							<h3>Applies</h3>
@@ -51,6 +71,13 @@
 import NavigationBar from '../components/navigation-bar/NavigationBar.vue';
 import FormCard from '../components/forms/FormCard.vue';
 import BaseButton from '../components/inputs/BaseButton.vue';
+import UserResumeForm from '../components/forms/UserResumeForm.vue';
+import { computed, ref } from 'vue';
+import UserResume from '../types/forms/userResume';
+
+const isFillResumeForm = ref(false)
+const resumeForm = ref(new UserResume())
+const resumeFormIsValid = computed(() => resumeForm.value.validate())
 
 // const currentPage = ref<number>(0)
 // const profilePages = [
@@ -62,10 +89,14 @@ import BaseButton from '../components/inputs/BaseButton.vue';
 </script>
 
 <style scoped>
-.centered {
-	padding-top: 16px;
-	align-items: center;
-	max-width: 100%;
+
+@media (min-width:868px) {
+	.centered {
+		padding-top: 16px;
+		align-items: center;
+		max-width: 100%;
+	}
+	
 }
 
 .content{
@@ -83,6 +114,24 @@ import BaseButton from '../components/inputs/BaseButton.vue';
 	font-size: 0.85em;
 }
 
+.blur-enter-active{
+	animation: blur .3s;
+}
+
+.blur-leave-active{
+	animation: blur .3s reverse;
+}
+
+@keyframes blur {
+	from {
+		opacity: 1;
+
+	}
+	to {
+		opacity: 0;
+	}
+}
+
 .support-message.block {
 	color: var(--silver);
 	text-align: center;
@@ -93,6 +142,11 @@ import BaseButton from '../components/inputs/BaseButton.vue';
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
-	
+}
+
+.buttons{
+	display: flex;
+	flex-direction: row;
+	gap: 16px;
 }
 </style>

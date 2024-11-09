@@ -212,6 +212,7 @@ const closeHandler = () => {
 .base-select__field.active{
 	border-color: var(--border-color-hover);
 	box-shadow: 0 0 1px 1px var(--primary-color-hover);
+	background: var(--input-background-hover);
 }
 
 .base-select__field:active{

@@ -85,6 +85,10 @@ defineProps({
 	.base__button.primary:hover{
 		background: linear-gradient(90deg, var(--primary-color-opacity) 0%, var(--primary-color) 50%);
 	}
+	
+	.base__button.outline:hover{
+		outline: 1.5px solid var(--primary-color-hover);
+	}
 }
 
 .base__button.primary{
@@ -92,7 +96,7 @@ defineProps({
 	background: linear-gradient(90deg, var(--primary-color-opacity) 0%, var(--primary-color) 100%);
 }
 
-.base__button.outlined{
+.base__button.outline{
 	background: transparent;
 	transition: outline .3s;
 
