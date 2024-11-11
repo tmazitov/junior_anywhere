@@ -21,6 +21,11 @@ from app1 import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.create, name='create'),  # Use 'create' view as the home page
-	path('', index_page)
+    # path('', views.register, name='register'),  # Use 'create' view as the home page
+	path('', views.index_page, name='index'),
+	path('company/login/', views.auth, name='company_login'),
+    path('company/register/', views.register, name='company_register'),
+    path('company/register_success/', views.register_success, name='register_success'),
+    path('company/<int:id>/', views.get_company, name='company_data'),
 ]
+    

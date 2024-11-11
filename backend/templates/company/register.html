@@ -12,6 +12,7 @@
 		<form method="post">
 			{% csrf_token %}
 			{{ form.name }} <br>
+			{{ form.LLC_Number }} <br>
 			{{ form.email }} <br>
 			{{ form.password }} <br>
 			<span>{{ error }}</span>
