@@ -116,7 +116,7 @@ const navbarItems:Array<NavbarItem> = [
 	align-items: center;
 	padding: 8px;
 	border-radius: 12px;
-	height: 54px;
+	height: 52px;
 	box-sizing: border-box;
 	position: sticky;
 	top: 0;
@@ -163,6 +163,8 @@ const navbarItems:Array<NavbarItem> = [
 .nav-bar__profile {
 	display: flex;
 	gap: 16px;
+	height: 100%;
+	align-items: center;
 }
 
 .nav-bar__logo {
