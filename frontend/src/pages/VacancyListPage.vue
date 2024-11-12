@@ -1,7 +1,7 @@
 <template>
 	<div class="page">
 		<div class="page-frame">
-				<NavigationBar/>
+			<NavigationBar/>
 			<div class="page-frame__content grid-container">
 				<div class="content">
 					<div class="block"  style="padding-top: 16px">
@@ -13,7 +13,7 @@
 						</ContentBlock>
 						<ContentBlock class="desktop more-filters">
 							<h4>
-								<Icon icon="tabler:filter" style="margin-right: 4px" height="16px" color="var(--primary-color)"/>
+								<Icon icon="tabler:filter" style="margin-right: 4px" height="1.2em" color="var(--primary-color)"/>
 								Filters
 							</h4>
 							<Filters v-model="filters"/>
@@ -63,27 +63,37 @@ const route = useRoute()
 const filters = ref(new VacancyListFilters(route.query))
 let timeout:number|null = null
 
+function getRandomInt(max:number, min:number = 0) {
+  return Math.max(Math.floor(Math.random() * max), min);
+}
+
+
 const vacancies = ref([
-	new Vacancy({id: 1, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
-	new Vacancy({id: 2, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
-	new Vacancy({id: 3, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
-	new Vacancy({id: 4, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
-	new Vacancy({id: 5, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
-	new Vacancy({id: 6, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
-	new Vacancy({id: 7, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
-	new Vacancy({id: 8, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
-	new Vacancy({id: 9, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
-	new Vacancy({id: 10, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
-	new Vacancy({id: 11, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
-	new Vacancy({id: 12, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
-	new Vacancy({id: 13, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
-	new Vacancy({id: 14, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
-	new Vacancy({id: 15, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
-	new Vacancy({id: 16, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
-	new Vacancy({id: 17, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
-	new Vacancy({id: 18, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
-	new Vacancy({id: 19, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
-	new Vacancy({id: 20, name: "Super Duper Frontend developer", city: "Moscow", companyName: "Yandex", salary: 10000}),
+	new Vacancy({id: 1, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 2, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 3, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 2, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 3, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 4, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 5, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 6, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 4, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 5, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 6, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 7, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 8, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 9, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 10, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 11, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 12, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 13, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 14, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 15, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 16, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 17, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 18, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 19, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
+	new Vacancy({id: 20, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
 ])
 
 watch(() => filters.value, () => {

@@ -41,7 +41,7 @@ defineProps({
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
-	padding: 20px;
+	padding: 16px;
 	width: 300px;
 
 	transition: height .3s;

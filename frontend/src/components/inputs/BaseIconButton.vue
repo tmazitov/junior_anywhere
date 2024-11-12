@@ -3,7 +3,7 @@
 		primary: primary,
 		[fill]: true
 	}">
-		<Icon :icon="icon" color="var(--text-color)" height="18px" width="18px"/> 
+		<Icon :icon="icon" color="var(--text-color)" height="1.2em" width="1.2em"/> 
 	</div>
 </template>
 

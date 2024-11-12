@@ -6,7 +6,7 @@ interface Icon {
 	width?:		IconifyIconSize
 	color?:		string	
 	onClick?: 	Function
-	isHidden?:	Boolean
+	isHidden?:	Function
 }
 
 export default Icon

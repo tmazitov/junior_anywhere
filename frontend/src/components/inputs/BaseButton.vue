@@ -9,7 +9,7 @@
 		[fill]: true,
 	}">
 		<div class="base__button-icon" v-if="icon">
-			<Icon :icon="icon" color="var(--text-color)" height="18px" width="18px"/> 
+			<Icon :icon="icon" color="var(--text-color)" height="1.2em" width="1.2em"/> 
 		</div>
 		<div class="base__button-title">
 			{{ title }}
@@ -76,7 +76,7 @@ defineProps({
 }
 
 @media (min-width: 868px) {
-	.base__button.default:hover{
+	.base__button.default:not(.primary):hover{
 		outline: 1.5px solid var(--border-color);
 	}
 	.base__button.clear:hover{

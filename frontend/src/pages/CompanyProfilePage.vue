@@ -30,22 +30,25 @@
 							</div>
 						</div>
 					</FormCard>
+
+					<FormCard width="240px">
+						<h4>
+							<Icon icon="tabler:filter" style="margin-right: 4px" height="1.2em" color="var(--primary-color)"/>
+							Filters
+						</h4>
+						<Filters v-model="filters"/>
+					</FormCard>
 				</div>
 				<div class="main-content">
 					<FormCard width="100%">
 						<template v-slot:header>
-							<h3>Vacancies</h3>
-						</template>
-						<template v-slot:default>
-							<div class="support-message">
-								Hire new workers electively
+							<div class="header-container">
+								<h3>Vacancies</h3>
+								<BaseButton title="Upload" width="fit-content" primary/>
 							</div>
-							<CompanyPersonalVacancyList :vacancies="vacancyList"/>
-						</template>
-						<template v-slot:footer>
-							<BaseButton title="Create Vacancy" width="200px"/>
 						</template>
 					</FormCard>
+					<CompanyPersonalVacancyList :vacancies="vacancyList"/>
 				</div>
 			</div>
 		</div>
@@ -59,6 +62,26 @@ import BaseButton from '../components/inputs/BaseButton.vue';
 import Vacancy from '../types/vacancy';
 import CompanyPersonalVacancyList from '../components/vacancy-list/CompanyPersonalVacancyList.vue';
 import { Icon } from '@iconify/vue/dist/iconify.js';
+import BaseInput from '../components/inputs/BaseInput.vue';
+import { ref } from 'vue';
+import Filters from '../components/vacancy-list/Filters.vue';
+import VacancyListFilters from '../types/vacancyListFilters';
+import { useRoute } from 'vue-router';
+
+const route = useRoute()
+
+const filters = ref(new VacancyListFilters(route.query))
+const search = ref("")
+
+const icons = {
+	search: {
+		name: 'tabler:search'
+	},
+	clear: {
+		name: 'tabler:x',
+		onClick: () => search.value = ""
+	}
+}
 
 const vacancyList:Vacancy[] = [
 	new Vacancy({id: 1, name: "Super Duper Frontend developer", locationId:1, companyName: "Yandex", salary: 10000, applies: 195,}),
@@ -69,7 +92,9 @@ const vacancyList:Vacancy[] = [
 	new Vacancy({id: 6, name: "Super Duper Frontend developer", locationId:4, companyName: "Yandex", salary: 10000, applies: 106}),
 	new Vacancy({id: 7, name: "Super Duper Frontend developer", locationId:4, companyName: "Yandex", salary: 10000, applies: 106}),
 	new Vacancy({id: 8, name: "Super Duper Frontend developer", locationId:4, companyName: "Yandex", salary: 10000, applies: 106}),
+	new Vacancy({id: 9, name: "Super Duper Frontend developer", locationId:4, companyName: "Yandex", salary: 10000, applies: 106}),
 ]
+
 
 </script>
 
@@ -134,10 +159,13 @@ const vacancyList:Vacancy[] = [
 	gap: 16px;
 }
 
-.buttons{
+.header-container{
 	display: flex;
 	flex-direction: row;
 	gap: 16px;
+	width: 100%;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .side-menu {

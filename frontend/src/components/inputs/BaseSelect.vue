@@ -4,7 +4,7 @@
 			active: isOpen,
 		}">
 			<div class="field_icon" v-if="icon">
-				<Icon :icon="icon" color="var(--text-color)" height="16px" width="16px"/>
+				<Icon :icon="icon" color="var(--text-color)" height="1.2em" width="1.2em"/>
 			</div>
 		
 			<div class="field_title" v-if="getSelectTitle()">
@@ -17,7 +17,7 @@
 			<div class="field_selector" v-bind:class="{
 				'is-open': isOpen,
 			}">
-				<Icon icon="tabler:chevron-down" color="var(--text-color)" height="16px" width="16px"/>
+				<Icon icon="tabler:chevron-down" color="var(--text-color)" height="1.2em" width="1.2em"/>
 			</div>
 		</div>
 		<transition name="show">

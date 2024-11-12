@@ -1,20 +1,24 @@
 <template>
 	<div class="vacancy-card">
-		<div class="vacancy-card__company-name">
+		<div class="vacancy-card__subtitle" v-if="isCompanyView">
+			<!-- <Icon icon="tabler:user" size="1.2em" color="var(--primary-color)" /> -->
+			{{ vacancy.applies }} users
+		</div>
+		<div class="vacancy-card__subtitle" v-else>
 			{{ vacancy.companyName }}
 		</div>
 
-		<div class="vacancy-card__name">
+		<div class="vacancy-card__title">
 			{{ vacancy.name }}
 		</div>
 		<div class="vacancy-card__footer">
-			<div class="vacancy-card__info">
-				<Icon icon="tabler:map-pin"  height="16px" color="var(--primary-color)"/>
-				{{ vacancy.city }}
-			</div>
 
 			<div class="vacancy-card__info">
 				{{ vacancy.salary }} AED
+			</div>
+
+			<div class="vacancy-card__info">
+				{{ getLocationName(vacancy.locationId)}}
 			</div>
 		</div>
 	</div>
@@ -24,20 +28,31 @@
 import Vacancy from '../../types/vacancy';
 import { defineProps } from 'vue';
 import { Icon } from '@iconify/vue/dist/iconify.js';
+import locations from '../../info/locations';
 
 defineProps({
 	vacancy : {
 		type: Vacancy,
-		required: true
+		required: true,
+	},
+	isCompanyView:{
+		type: Boolean,
+		required: false,
 	}
 })
+
+
+const getLocationName = (id:number) => {
+    return locations.find(loc => loc.value == id)?.title
+}
+
 
 </script>
 
 <style scoped>
 .vacancy-card {
 	width: 100%;
-	padding: 12px;
+	padding: 16px;
 	border-radius: 16px;
 	box-sizing: border-box;
 
@@ -58,31 +73,34 @@ defineProps({
 	margin-top: 16px;
 }
 
-.vacancy-card__company-name{
-	margin-bottom: 10px;
+.vacancy-card__subtitle{
+	display: flex;
+	flex-direction: row;
+	gap: 6px;
 }
 
-.vacancy-card__name {
+.vacancy-card__title {
 	font-size: 20px;
 	font-weight: 500;
-	margin-bottom: 20px;
+	margin-bottom: 16px;
+	margin-top: 12px;
 }
 
 .vacancy-card__footer{
 	display: flex;
 	flex-direction: row;
-	gap: 10px;
+	gap: 16px;
 }
 
 .vacancy-card__info{
-	padding: 4px 10px 4px 6px;
 	border-radius: 4px;
 	width: fit-content;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	gap: 4px;
+	gap: 6px;
 	user-select: none;
+	color: #616161;
 }
 
 </style>

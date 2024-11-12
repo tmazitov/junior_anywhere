@@ -10,7 +10,7 @@
 			v-for="_, index in form.skills" 
 			:key="`skill-${index}`">
 				<BaseInput v-model="form.skills[index]" :id="`input-${index}`"/>
-				<Icon icon="tabler:x" height="18px" color="#f73149"
+				<Icon icon="tabler:x" height="1.2em" color="#f73149"
 					@click="delSkill(index)"/>
 			</div>
 			<BaseButton title="Add Skill" @click="addSkill"/>

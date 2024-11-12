@@ -163,12 +163,22 @@ input:focus{
 
 .number-without-arrows > input::-webkit-outer-spin-button,
 .number-without-arrows > input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+	-webkit-appearance: none;
+	margin: 0;
 }
 
 /* Firefox */
 .number-without-arrows > input[type=number] {
-  -moz-appearance: textfield;
+  	-moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {
+  opacity: 1;
 }
 </style>
