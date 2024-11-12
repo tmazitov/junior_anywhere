@@ -94,6 +94,23 @@ h1 {
 	
 }
 
+.page-frame > * {
+	max-width: 926px;
+}
+
+@media (min-width: 1326px) {
+	.page-frame{
+		padding: 0;
+		padding-top: 24px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	.page-frame > * {
+		width: 926px;
+	}
+}
+
 @media (max-width: 868px){
 	.page-frame{
 		padding: 0 16px;
