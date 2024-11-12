@@ -9,16 +9,9 @@ from django.contrib.auth.hashers import make_password
 
 class Company(models.Model) :
 	name = models.CharField(max_length=30, blank=False)
-	password = models.CharField(max_length=128, blank=False, default='',
-		validators=[RegexValidator(
-			regex='^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$',  # At least one letter and one number, minimum 8 chars
-			message="Password must contain at least one letter, one number, and be at least 8 characters."
-		)]
-	)
-	# email = models.EmailField(unique=True, null=True, blank=True)
+	password = models.CharField(max_length=128, blank=False, default='')
 	email = models.EmailField(unique=True, default='', blank=False)
-	#should be unique=True
-	LLC_Number = models.CharField(max_length=55, default='', blank=False)
+	LLC_Number = models.CharField(max_length=55, unique=True, default='', blank=False)
 	id = models.AutoField(primary_key=True)
 
 	def set_password(self, raw_password):

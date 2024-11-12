@@ -16,16 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from app1.views import index_page
 from app1 import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('', views.register, name='register'),  # Use 'create' view as the home page
-	path('', views.index_page, name='index'),
-	path('company/login/', views.auth, name='company_login'),
+	path('company/auth/', views.auth, name='company_login'), #указать метод запроса GET/POST/DELETE etc
     path('company/register/', views.register, name='company_register'),
-    path('company/register_success/', views.register_success, name='register_success'),
-    path('company/<int:id>/', views.get_company, name='company_data'),
+    path('company/<int:company_id>/', views.get_company_data, name='company_id'),
 ]
     

@@ -1,3 +1,5 @@
+# Connect models and templates 
+
 from django.shortcuts import redirect, render
 from django.contrib.auth.hashers import check_password
 
@@ -5,82 +7,53 @@ from app1.models import Company
 from .forms import CompanyForm
 from django.http import JsonResponse
 
+import json
 
-# Connect models and templates 
-
-def auth(request):
-    email = request.POST.get('email')
-    password = request.POST.get('password')
-    company = Company.objects.filter(email=email).first()
-
-    if company and check_password(password, company.password):
-        return JsonResponse({'id': company.id, 'name': company.name})
-    else:
-        return JsonResponse({'error': 'Invalid credentials'}, status=400)
-
-def get_company(request, id):
+def get_company_data(request, company_id):
     try:
-        company = Company.objects.get(id=id)
+        company = Company.objects.get(id=company_id)
         data = {
-            'name': company.name,
-            'llc_number': company.llc_number,
             'id': company.id,
+            'name': company.name,
+            'llcNumber': company.LLC_Number,
         }
-        return JsonResponse(data)
+        return JsonResponse(data, status=200)
     except Company.DoesNotExist:
         return JsonResponse({'error': 'Company not found'}, status=404)
 
-from django.shortcuts import render, redirect
-from .forms import CompanyForm
-
-# def index_page(request):
-# 	# get all records from the model OR all objects of this model
-# 	all_companies = Company.objects.all()
-# 	form = CompanyForm()
-# 	return render(request, 'company/login.html', {'form': form})
-
-
-def index_page(request):
-    # Получаем все записи из модели
-    all_companies = Company.objects.all()
-    form = CompanyForm()
-
-    # Проверка, если форма отправлена методом POST
+def auth(request):
     if request.method == 'POST':
-        print("Form submitted")  # Проверяем, что форма отправлена
-        action = request.POST.get('action')  # Получаем значение кнопки (login или register)
-        print(f"Action: {action}")  # Проверяем, какое действие было выбрано
+        try:
+            data = json.loads(request.body)  # Парсим JSON данные из тела запроса
+            print("JSON data:", data)
+        except json.JSONDecodeError:
+            data = request.POST  # Если это не JSON, используем request.POST
+            print("Form data:", data)
 
-        if action == 'log in':
-            response_data = {
-                'status': 'login',
-                'message': 'Login button pressed'
-            }
-            print("Login button pressed")
-            return render(request, 'company/login.html', {'form': form})
-        
-        elif action == 'sign up':
-            print("Register button pressed")
-            return render(request, 'company/register.html', {'form': form})
-    
-    # Если запрос не POST, просто рендерим страницу login по умолчанию
-    return render(request, 'company/login.html', {'form': form}) 
+    email = data.get('email')
+    password = data.get('password')
+    company = Company.objects.filter(email=email).first()
 
-
-
-def register_success(request):
-    return render(request, 'company/register_success.html')
-
-# def render_register(request):
-# 	return render(request, 'company/register.html') 
+    if company and check_password(password, company.password):
+        return JsonResponse({'id': company.id}, status=200)
+    else:
+        return JsonResponse({'error': 'Invalid credentials'}, status=400)
 
 def register(request):
     # Обработка POST-запроса
     if request.method == 'POST':
-        form = CompanyForm(request.POST)
+        # Попробуем сначала получить JSON данные из тела запроса
+        try:
+            data = json.loads(request.body)  # Парсим JSON данные из тела запроса
+            print("JSON data:", data)
+        except json.JSONDecodeError:
+            data = request.POST  # Если это не JSON, используем request.POST
+            print("Form data:", data)
+        
+        form = CompanyForm(data)  # Передаем данные в форму
         
         # Проверка, существует ли компания с таким email
-        email = request.POST.get('email')
+        email = data.get('email')
         if Company.objects.filter(email=email).exists():
             return JsonResponse({'error': 'Email already in use'}, status=400)
         
@@ -89,7 +62,7 @@ def register(request):
             company = form.save(commit=False)
             company.set_password(form.cleaned_data['password'])  # Хешируем пароль
             company.save()
-            return JsonResponse({'id': company.id, 'name': company.name, 'status': 'success'})
+            return JsonResponse({'id': company.id}, status=200)
         else:
             return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
     
@@ -97,20 +70,3 @@ def register(request):
     form = CompanyForm()
     form_data = {field.name: field.value() for field in form}  # Пример структуры формы
     return JsonResponse({'form': form_data})
-
-
-# def register(request):
-#     name = request.POST.get('name')
-#     email = request.POST.get('email')
-#     password = request.POST.get('password')
-#     llc_number = request.POST.get('llc_number')
-
-#     if Company.objects.filter(email=email).exists():
-#         return JsonResponse({'error': 'Email already in use'}, status=400)
-
-#     company = Company(name=name, email=email, llc_number=llc_number)
-#     company.set_password(password)  # Сохранение с хешированием
-#     company.save()
-
-#     return JsonResponse({'id': company.id, 'name': company.name})
-# retun .json, not index.html
