@@ -1,7 +1,7 @@
 <template>
 	<div class="page">
 		<div class="page-frame centered">
-			<div class="page-frame__content">
+			<div class="page-frame__content centered">
 
 				<!-- Auth card -->
 

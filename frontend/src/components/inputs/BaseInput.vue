@@ -157,6 +157,7 @@ input:focus{
 }
 
 .base-input__support-message{
+	margin-top: 0.3em;
 	font-size: 0.8em;
 }
 
