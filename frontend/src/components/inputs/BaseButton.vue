@@ -77,7 +77,7 @@ defineProps({
 
 @media (min-width: 868px) {
 	.base__button.default:hover{
-		background: var(--button-background-hover);
+		outline: 1.5px solid var(--border-color);
 	}
 	.base__button.clear:hover{
 		outline: 1.5px solid var(--primary-color-hover);

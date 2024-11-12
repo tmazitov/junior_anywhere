@@ -101,10 +101,10 @@
 
 <script setup lang="ts">
 
-import { computed, nextTick, ref } from 'vue';
+import { computed, nextTick, ref, onBeforeMount } from 'vue';
 import BaseButton from '../components/inputs/BaseButton.vue';
 import BaseIconButton from '../components/inputs/BaseIconButton.vue';
-import { useRouter } from 'vue-router';
+import {  useRouter } from 'vue-router';
 import RegisterUser from '../types/forms/registerUser';
 import RegisterUserForm from '../components/forms/RegisterUserForm.vue';
 import FormCard from '../components/forms/FormCard.vue';
@@ -114,6 +114,18 @@ import SignInUserForm from '../components/forms/SignInUserForm.vue';
 import RegisterCompanyForm from '../components/forms/RegisterCompanyForm.vue';
 import RegisterCompany from '../types/forms/registerCompany';
 import UserAuth from '../utils/authUser';
+import CompanyAuth from '../utils/authCompany';
+
+const router = useRouter();
+
+onBeforeMount(() => {
+	const userId = UserAuth.getUserId()
+	const companyId = CompanyAuth.getCompanyId()
+	if (userId || companyId) {
+		router.replace({name:'vacancy-list'})
+	}
+});
+
 
 const signInUser = ref(new SignInUser());
 const registerUser = ref(new RegisterUser());
@@ -128,7 +140,6 @@ const toggleRegister = () => {
 	isRegister.value = !isRegister.value;
 }
 
-const router = useRouter();
 const navigateToBack = () => {
 	if (isSubmitted.value) {
 		isSubmitted.value = false;
@@ -207,6 +218,11 @@ const submitVerificationCode = () => {
 	}
 	if (isRegisterCompany.value) {
 		return 
+	}
+	if (isRegister.value && isRegisterCompany.value || !isRegister.value && signInUser.value.email.includes("corp")) {
+		CompanyAuth.setCompanyId(1)
+		router.push({name:'company-profile'})
+		return
 	}
 	UserAuth.setUserId(1)
 	router.push({name:'user-profile'})

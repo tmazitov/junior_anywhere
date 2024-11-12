@@ -1,5 +1,8 @@
 <template>
-	<div class="card">
+	<div class="card" v-bind:style="{
+		width,
+		height,
+	}">
 		<div class="card-header" v-if="$slots['header']">
 			<slot name="header"></slot>
 		</div>
@@ -13,7 +16,16 @@
 </template>
 
 <script setup lang="ts">
-  
+defineProps({
+	width: {
+		type: String,
+		default: "300px",
+	},
+	height: {
+		type: String,
+		default: "auto",
+	}
+})
 </script>
 
 <style scoped>

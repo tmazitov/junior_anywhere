@@ -43,10 +43,19 @@
 					title="Sign In" 
 					icon="tabler:arrow-bar-to-right" 
 					primary />
-				<div class="nav-bar__link" v-else @click="navigateTo('user-profile')"
+				
+				<div class="nav-bar__link" v-else-if="isAuthorized && userId"
+				@click="navigateTo('user-profile')"
 				v-bind:class="{active: routeName?.toString().includes('profile')}">
 					<Icon icon="tabler:user" height="16px"/>
 					Timur Mazitov
+				</div>
+				
+				<div class="nav-bar__link" v-else-if="isAuthorized && companyId"
+				@click="navigateTo('company-profile')"
+				v-bind:class="{active: routeName?.toString().includes('profile')}">
+					<Icon icon="tabler:briefcase" height="16px"/>
+					Yandex
 				</div>
 			</span>
 
@@ -60,16 +69,19 @@ import { Icon } from '@iconify/vue/dist/iconify.js';
 import ContentBlock from '../ContentBlock.vue';
 import BaseButton from '../inputs/BaseButton.vue';
 import BaseIconButton from '../inputs/BaseIconButton.vue';
-import { computed, ref, App } from 'vue';
+import { computed, ref  } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import UserAuth from '../../utils/authUser';
+import CompanyAuth from '../../utils/authCompany';
 
 const isOpen = ref(false);
 const toggleMenu = () => {
 	isOpen.value = !isOpen.value;
 }
 const userId = UserAuth.getUserId()
-const isAuthorized = userId != undefined
+const companyId = CompanyAuth.getCompanyId()
+console.log(companyId)
+const isAuthorized = userId || companyId
 
 const router = useRouter();
 const route = useRoute();
