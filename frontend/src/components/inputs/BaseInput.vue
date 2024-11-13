@@ -22,14 +22,16 @@
 				/>
 			</div>
 
-			<input 
+			<input ref="input"
 				:type="type ? type : 'text'" 
 				:placeholder="placeholder"
-				
-				:value="value" @input="updateValue"
+				:pattern="type == 'number' ? '[0-9]' : undefined"
+				:value="value" 
 				:min="min" :max="max" :step="step"
-				@focus="isFocused = true"
-				@blur="isFocused = false">
+				@input="updateValue"
+				@keydown="keyDownHandler"
+				@focus="onFocus"
+				@blur="onBlur">
 
 			<div class="right icon" 
 			v-if="rightIcon"
@@ -60,9 +62,13 @@ import IconT from '../../types/icon';
 import {Icon} from '@iconify/vue'
 
 const emits = defineEmits([
-	'on-input'
+	'on-input',
+	'on-press-enter',
+	'on-focus',
+	'on-blur',
 ])
 
+const input = ref<HTMLElement|null>(null)
 const value = defineModel<string|number|null>({required: true})
 defineProps({
 	placeholder: String,
@@ -82,6 +88,39 @@ const isFocused = ref(false)
 const updateValue = (ev: any) => {
 	value.value = ev.target["value"]
 	emits('on-input', ev)
+}
+
+const keyDownHandler = (ev:KeyboardEvent) => {
+	
+	const keysToHandle = [
+		{value: "Enter", action: () => emits('on-press-enter')}
+	]
+
+	const currentKey = keysToHandle.find(key => {
+		return key.value == ev.key
+	})
+	if (!currentKey)
+		return
+	currentKey.action()
+}
+
+const focus = () => {
+	if (!input.value)
+		return
+	input.value.focus()
+}
+
+defineExpose({
+	focus,
+})
+
+const onFocus = () => {
+	isFocused.value = true
+    emits('on-focus')
+}
+const onBlur = () => {
+	isFocused.value = false
+    emits('on-blur')
 }
 
 </script>

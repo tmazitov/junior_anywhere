@@ -76,7 +76,7 @@ const props = defineProps({
 	modelValue: {
 		type: [
 			Object as () => SelectableItem, 
-			Object as () => null, 
+			null,
 			Array<SelectableItem>
 		],
 		nullable: true,

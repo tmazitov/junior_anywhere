@@ -1,68 +1,70 @@
 <template>
 <div class="page">
-		<div class="page-frame">
-			<NavigationBar/>
-			<div class="page-frame__content grid-container">
-				<div class="side-menu">
-					<FormCard width="240px">
-						<template v-slot:header>
-							<h2>Yandex</h2>
-						</template>
-						<template v-slot:default>
-							<div class="support-message">
-								LLC: test-llc-number
-							</div>		
-						</template>
-					</FormCard>
-					<FormCard width="240px">
-						<div class="menu-list">
-							<div class="menu-list__item active">
-								<Icon icon="tabler:user" height="1.2em" color="var(--primary-color)"/>
-								Vacancies
-							</div>
-							<div class="menu-list__item disabled">
-								<Icon icon="tabler:folder" height="1.2em"/>
-								Documents
-							</div>
-							<div class="menu-list__item disabled">
-								<Icon icon="tabler:archive" height="1.2em"/>
-								Archive
-							</div>
+	<div class="page-frame">
+		<NavigationBar/>
+		<div class="page-frame__content grid-container">
+			<div class="side-menu">
+				<FormCard width="240px">
+					<template v-slot:header>
+						<h2>Yandex</h2>
+					</template>
+					<template v-slot:default>
+						<div class="support-message">
+							LLC: test-llc-number
+						</div>		
+					</template>
+				</FormCard>
+				<FormCard width="240px">
+					<div class="menu-list">
+						<div class="menu-list__item active">
+							<Icon icon="tabler:user" height="1.2em" color="var(--primary-color)"/>
+							Vacancies
 						</div>
-					</FormCard>
+						<div class="menu-list__item disabled">
+							<Icon icon="tabler:folder" height="1.2em"/>
+							Documents
+						</div>
+						<div class="menu-list__item disabled">
+							<Icon icon="tabler:archive" height="1.2em"/>
+							Archive
+						</div>
+					</div>
+				</FormCard>
 
-					<FormCard width="240px">
-						<h4>
-							<Icon icon="tabler:filter" height="1.2em" color="var(--primary-color)"/>
-							Filters
-						</h4>
-						<Filters v-model="filters" :fields="{
-							search: true,
-							employment: true,
-							locations: true,
-							salary: false,
-							workFormat: true,
-							degree: false,
-							status: true,
-						}"/>
-					</FormCard>
+				<FormCard width="240px">
+					<h4>
+						<Icon icon="tabler:filter" height="1.2em" color="var(--primary-color)"/>
+						Filters
+					</h4>
+					<Filters v-model="filters" :fields="{
+						search: true,
+						employment: true,
+						locations: true,
+						salary: false,
+						workFormat: true,
+						degree: false,
+						status: true,
+					}"/>
+				</FormCard>
 
-					<BaseButton title="Log Out"/>
-				</div>
-				<div class="main-content">
-					<FormCard width="100%">
-						<template v-slot:header>
-							<div class="header-container">
-								<h3>Vacancies</h3>
-								<BaseButton title="Create" width="fit-content" primary/>
-							</div>
-						</template>
-					</FormCard>
-					<CompanyPersonalVacancyList :vacancies="vacancyList"/>
-				</div>
+				<BaseButton title="Log Out" @click="logOut"/>
+			</div>
+			<div class="main-content">
+				<FormCard width="100%">
+					<template v-slot:header>
+						<div class="header-container">
+							<h3>Vacancies</h3>
+							<BaseButton title="Create" width="fit-content" primary
+								@click="isCreateVacancy = true"/>
+						</div>
+					</template>
+				</FormCard>
+				<CompanyPersonalVacancyList :vacancies="vacancyList"/>
 			</div>
 		</div>
 	</div>
+	<CreateVacancyModal v-model="isCreateVacancy" />
+</div>
 </template>
 
 <script lang="ts" setup>
@@ -76,8 +78,12 @@ import { ref, watch } from 'vue';
 import Filters from '../components/vacancy-list/Filters.vue';
 import VacancyListFilters from '../types/vacancyListFilters';
 import { useRoute, useRouter } from 'vue-router';
+import CreateVacancyModal from '../components/modals/CreateVacancyModal.vue';
+import CompanyAuth from '../utils/authCompany';
 
 const route = useRoute()
+
+const isCreateVacancy = ref(false)
 
 const filters = ref(new VacancyListFilters(route.query))
 let timeout:number|null = null
@@ -95,7 +101,10 @@ watch(() => filters.value, () => {
 	}, 200)
 }, {deep: true})
                                        
-
+const logOut = () => {
+	CompanyAuth.delCompanyId()
+	router.replace({name: "auth"})
+}
 
 const vacancyList:Vacancy[] = [
 	new Vacancy({id: 1, name: "Super Duper Frontend developer", locationId:1, companyName: "Yandex", salary: 10000, applies: 195,}),

@@ -20,7 +20,8 @@ defineProps({
 
 <style scoped>
 .container {
-	display: block;
+	display: flex;
+	align-items: center;
 	position: relative;
 	padding-left: 30px;
 	cursor: pointer;
@@ -29,6 +30,7 @@ defineProps({
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+	height: 1.2em;
 }
 
 /* Hide the browser's default checkbox */
@@ -43,14 +45,15 @@ defineProps({
 /* Create a custom checkbox */
 .checkmark {
 	position: absolute;
-	top: 1px;
+	top: 0px;
 	left: -1px;
-	height: 16px;
-	width: 16px;
+	height: 1.2em;
+	width: 1.2em;
 	border: 1px solid var(--border-color);
 	border-radius: var(--border-radius);
 	background: var(--input-background);
 	transition: background .3s;
+	box-sizing: border-box;
 	user-select: none
 }
 
@@ -79,8 +82,8 @@ defineProps({
 
 /* Style the checkmark/indicator */
 .container .checkmark:after {
-	left: 5.5px;
-	top: 2.5px;
+	left: 5px;
+	top: 2px;
 	width: 3px;
 	height: 6px;
 	border: solid white;

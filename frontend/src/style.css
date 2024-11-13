@@ -26,9 +26,9 @@
 	--input-background-hover: var(--timberwolf-2);
 	--button-background: var(--timberwolf);
 	--button-background-hover: var(--timberwolf-2);
-	--card-background-color: #f9f9f9;
-	
 	--text-color: var(--eerie-black);
+
+	--card-background: transparent;
 	color: var(--text-color)
 }
 

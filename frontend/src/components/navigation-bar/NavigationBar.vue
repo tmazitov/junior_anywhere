@@ -204,7 +204,7 @@ const navbarItems:Array<NavbarItem> = [
 	right: 0;
 	left: 0;
 	z-index: 100;
-	background: var(--card-background-color);
+	background: var(--card-background);
 	border-radius: 8px;
 	box-shadow: 0 0 8px 1px var(--border-color);
 	padding: 12px;

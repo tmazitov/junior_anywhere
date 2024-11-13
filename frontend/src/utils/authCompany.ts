@@ -12,6 +12,11 @@ class CompanyAuth {
         localStorage.setItem("user-type", "company")
         localStorage.setItem(this.keyName, value.toString())
 	}
+
+	static delCompanyId(){
+		localStorage.removeItem("user-type")
+		localStorage.removeItem(this.keyName)
+	}
 }
 
 export default CompanyAuth

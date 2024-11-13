@@ -2,6 +2,7 @@
 	<div class="card" v-bind:style="{
 		width,
 		height,
+		background,
 	}">
 		<div class="card-header" v-if="$slots['header']">
 			<slot name="header"></slot>
@@ -24,6 +25,10 @@ defineProps({
 	height: {
 		type: String,
 		default: "auto",
+	},
+	background: {
+		type: String,
+		default: "var(--card-background)",
 	}
 })
 </script>
@@ -72,9 +77,6 @@ defineProps({
 	flex-direction: column;
 	gap: 14px;
 }
-
-
-
 
 .card-footer{
 	display: flex;
