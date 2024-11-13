@@ -2,12 +2,14 @@
 
 	<!-- Search -->
 
-	<BaseInput :left-icon="icons['search']" placeholder="Search" 
+	<BaseInput v-if="fields.search"
+	:left-icon="icons['search']" placeholder="Search" 
 	v-model="filters.search"/>
 
 	<!-- Employment type -->
 	
-	<BaseSelect icon="tabler:briefcase" 
+	<BaseSelect v-if="fields.employment"
+		icon="tabler:briefcase" 
 		placeholder="Employment" 
 		:items="employments" 
 		v-model="filters.employments"
@@ -15,7 +17,8 @@
 
 	<!-- Locations -->
 
-	<BaseSelect icon="tabler:map-pin" 
+	<BaseSelect v-if="fields.locations"
+		icon="tabler:map-pin" 
 		placeholder="Locations" 
 		:items="locations" 
 		v-model="filters.locations"
@@ -23,26 +26,38 @@
 
 	<!-- With salary -->
 
-	<BaseCheckbox v-model="filters.withSalary" label="With salary"/>
+	<BaseCheckbox v-if="fields.salary"
+	v-model="filters.withSalary" 
+	label="With salary"/>
 
 	<!-- Salary range -->
 		
-	<transition name="show">
+	<transition name="show" v-if="fields.salary">
 		<BaseRange v-if="filters.withSalary" 
 		v-model="filters.salaryRange" label="Salary range (Monthly)"
 		:min="0" :max="10000" :step="100"/>
 	</transition>
 
 	<!-- Work Format -->
-	<BaseSelect icon="tabler:calendar" 
+	<BaseSelect v-if="fields.workFormat" 
+		icon="tabler:calendar" 
 		placeholder="Work format" 
 		:items="workFormats" 
 		v-model="filters.workFormats"
 		with-multiselect/>
+
+	<!-- Work Format -->
+	<BaseSelect v-if="fields.status"
+		icon="tabler:arrow-big-up-line" 
+		placeholder="Status" 
+		:items="statuses" 
+		v-model="filters.statuses"
+		with-multiselect/>
 	
 	<!-- With remote -->
 
-	<BaseCheckbox v-model="filters.degreeIsRequired" label="Degree is required"/>
+	<BaseCheckbox v-if="fields.degree"
+	v-model="filters.degreeIsRequired" label="Degree is required"/>
 
 	
 </template>
@@ -57,6 +72,7 @@ import BaseInput from '../inputs/BaseInput.vue';
 import BaseRange from '../../components/inputs/BaseRange.vue';	
 import BaseSelect from '../../components/inputs/BaseSelect.vue';
 import BaseCheckbox from '../inputs/BaseCheckbox.vue';
+import statuses from '../../info/vacancyStatuses';
 
 const icons = {
 	"search" : {
@@ -64,7 +80,34 @@ const icons = {
 	},
 }
 
+type FilterFields = {
+	search:boolean
+	employment:boolean
+	locations:boolean 
+	salary:boolean
+	degree:boolean
+	workFormat:boolean
+	status:boolean
+}
+
 const filters = defineModel<VacancyListFilters>({required:true})
+
+defineProps({
+	fields: {
+		type: Object as () => FilterFields,
+		default: () => {
+			return {
+				search: true,
+				employment: true,
+				locations: true,
+				salary: true,
+				degree: true,
+				workFormat: true,
+				status: false,
+			}
+		}
+	},
+})
 </script>
 
 <style scoped>

@@ -33,18 +33,28 @@
 
 					<FormCard width="240px">
 						<h4>
-							<Icon icon="tabler:filter" style="margin-right: 4px" height="1.2em" color="var(--primary-color)"/>
+							<Icon icon="tabler:filter" height="1.2em" color="var(--primary-color)"/>
 							Filters
 						</h4>
-						<Filters v-model="filters"/>
+						<Filters v-model="filters" :fields="{
+							search: true,
+							employment: true,
+							locations: true,
+							salary: false,
+							workFormat: true,
+							degree: false,
+							status: true,
+						}"/>
 					</FormCard>
+
+					<BaseButton title="Log Out"/>
 				</div>
 				<div class="main-content">
 					<FormCard width="100%">
 						<template v-slot:header>
 							<div class="header-container">
 								<h3>Vacancies</h3>
-								<BaseButton title="Upload" width="fit-content" primary/>
+								<BaseButton title="Create" width="fit-content" primary/>
 							</div>
 						</template>
 					</FormCard>
@@ -62,26 +72,30 @@ import BaseButton from '../components/inputs/BaseButton.vue';
 import Vacancy from '../types/vacancy';
 import CompanyPersonalVacancyList from '../components/vacancy-list/CompanyPersonalVacancyList.vue';
 import { Icon } from '@iconify/vue/dist/iconify.js';
-import BaseInput from '../components/inputs/BaseInput.vue';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import Filters from '../components/vacancy-list/Filters.vue';
 import VacancyListFilters from '../types/vacancyListFilters';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute()
 
 const filters = ref(new VacancyListFilters(route.query))
-const search = ref("")
+let timeout:number|null = null
+const router = useRouter()
 
-const icons = {
-	search: {
-		name: 'tabler:search'
-	},
-	clear: {
-		name: 'tabler:x',
-		onClick: () => search.value = ""
-	}
-}
+watch(() => filters.value, () => {
+	
+	if (timeout) {
+		clearTimeout(timeout)
+	} 
+	
+	timeout = setTimeout(() => {
+		const query = filters.value.toQuery()
+		router.replace({name: 'company-profile', query})
+	}, 200)
+}, {deep: true})
+                                       
+
 
 const vacancyList:Vacancy[] = [
 	new Vacancy({id: 1, name: "Super Duper Frontend developer", locationId:1, companyName: "Yandex", salary: 10000, applies: 195,}),
@@ -204,5 +218,12 @@ const vacancyList:Vacancy[] = [
 
 .menu-list__item.disabled{
 	color: var(--silver);
+}
+
+h4 {
+	display: flex;
+	flex-direction: row;
+	gap:10px;
+	align-items:center;
 }
 </style>
