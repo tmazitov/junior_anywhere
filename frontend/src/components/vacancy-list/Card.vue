@@ -1,10 +1,7 @@
 <template>
 	<div class="vacancy-card">
-		<div class="vacancy-card__subtitle" v-if="isCompanyView">
-			<!-- <Icon icon="tabler:user" size="1.2em" color="var(--primary-color)" /> -->
-			{{ vacancy.applies }} users
-		</div>
-		<div class="vacancy-card__subtitle" v-else>
+
+		<div class="vacancy-card__subtitle" v-if="!isCompanyView">
 			{{ vacancy.companyName }}
 		</div>
 
@@ -14,11 +11,14 @@
 		<div class="vacancy-card__footer">
 
 			<div class="vacancy-card__info">
+				{{ getLocationName(vacancy.locationId)}}
+			</div>
+			<div class="vacancy-card__info" v-if="!isCompanyView">
 				{{ vacancy.salary }} AED
 			</div>
-
-			<div class="vacancy-card__info">
-				{{ getLocationName(vacancy.locationId)}}
+			<div class="vacancy-card__subtitle" v-else>
+				<!-- <Icon icon="tabler:user" size="1.2em" color="var(--primary-color)" /> -->
+				{{ vacancy.applies }} applies
 			</div>
 		</div>
 	</div>
@@ -83,6 +83,9 @@ const getLocationName = (id:number) => {
 	font-size: 20px;
 	font-weight: 500;
 	margin-bottom: 16px;
+}
+
+.vacancy-card__subtitle + .vacancy-card__title{
 	margin-top: 12px;
 }
 
@@ -90,6 +93,7 @@ const getLocationName = (id:number) => {
 	display: flex;
 	flex-direction: row;
 	gap: 16px;
+	justify-content: space-between;
 }
 
 .vacancy-card__info{

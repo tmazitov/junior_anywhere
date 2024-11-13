@@ -53,7 +53,7 @@
 				<FormCard width="100%">
 					<template v-slot:header>
 						<div class="header-container">
-							<h3>Vacancies</h3>
+							<h3>Active Vacancies</h3>
 							<BaseButton title="Create" width="fit-content" primary
 								@click="isCreateVacancy = true"/>
 						</div>
