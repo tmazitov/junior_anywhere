@@ -2,7 +2,7 @@
 	<BaseInput v-model="form.name" placeholder="Work specialty"/>
 	<BaseInput v-model="form.experienceInYears" type="number" placeholder="Years Experience"	
 		:min="0" :max="100"/>
-	<textarea placeholder="About You" rows="5" maxlength="500"></textarea>
+	<BaseTextarea v-model="form.description" placeholder="About You" :rows="5" :max-length="500"/>
 	<div class="skills" ref="skills">
 		Skills
 		<div class="skill-list">
@@ -25,6 +25,7 @@ import BaseInput from '../inputs/BaseInput.vue';
 import BaseButton from '../inputs/BaseButton.vue';
 import { Icon } from '@iconify/vue/dist/iconify.js';
 import { nextTick, onUnmounted, ref } from 'vue';
+import BaseTextarea from '../inputs/BaseTextarea.vue';
 
 let inputArray:HTMLElement[] = []
 

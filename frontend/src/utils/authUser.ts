@@ -11,6 +11,10 @@ class UserAuth {
 	static setUserId(value:number){
 		localStorage.setItem(this.keyName, value.toString())
 	}
+	
+	static delUserId(){
+		localStorage.removeItem(this.keyName)
+	}
 }
 
 export default UserAuth

@@ -61,6 +61,8 @@
 							</div>
 						</template>
 					</FormCard> -->
+					<BaseButton title="Log Out" @click="logOut"/>
+
 				</div>
 			</div>
 		</div>
@@ -72,19 +74,28 @@ import NavigationBar from '../components/navigation-bar/NavigationBar.vue';
 import FormCard from '../components/forms/FormCard.vue';
 import BaseButton from '../components/inputs/BaseButton.vue';
 import UserResumeForm from '../components/forms/UserResumeForm.vue';
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import UserResume from '../types/forms/userResume';
+import UserAuth from '../utils/authUser';
+import { useRouter } from 'vue-router';
 
 const isFillResumeForm = ref(false)
 const resumeForm = ref(new UserResume())
 const resumeFormIsValid = computed(() => resumeForm.value.validate())
 
-// const currentPage = ref<number>(0)
-// const profilePages = [
-// 	{icon: "tabler:user", title: "Main Info", value: 0},
-// 	{icon: "tabler:address-book", title: "Resume", value: 1},
-// 	{icon: "tabler:archive", title: "Applies", value: 2},
-// ]
+onMounted(() => {
+	if (!UserAuth.getUserId()) {
+		router.replace({name: "auth"})
+		return
+	}
+})
+
+const router = useRouter()
+
+const logOut = () => {
+	UserAuth.delUserId()
+	router.replace({name: "auth"})
+}
 
 </script>
 

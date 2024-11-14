@@ -74,7 +74,7 @@ import BaseButton from '../components/inputs/BaseButton.vue';
 import Vacancy from '../types/vacancy';
 import CompanyPersonalVacancyList from '../components/vacancy-list/CompanyPersonalVacancyList.vue';
 import { Icon } from '@iconify/vue/dist/iconify.js';
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import Filters from '../components/vacancy-list/Filters.vue';
 import VacancyListFilters from '../types/vacancyListFilters';
 import { useRoute, useRouter } from 'vue-router';
@@ -88,6 +88,13 @@ const isCreateVacancy = ref(false)
 const filters = ref(new VacancyListFilters(route.query))
 let timeout:number|null = null
 const router = useRouter()
+
+onMounted(() => {
+	if (!CompanyAuth.getCompanyId()) {
+		router.replace({name: "auth"})
+		return
+	}
+})
 
 watch(() => filters.value, () => {
 	
