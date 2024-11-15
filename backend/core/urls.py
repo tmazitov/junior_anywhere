@@ -16,12 +16,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from app1 import views
+from app1.views import companyVacancyViews, companyViews
+from app1.views.companyVacancyViews import registerVacancy
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-	path('company/auth/', views.auth, name='company_login'), #указать метод запроса GET/POST/DELETE etc
-    path('company/register/', views.register, name='company_register'),
-    path('company/<int:company_id>/', views.get_company_data, name='company_id'),
+	path('company/auth/', companyViews.auth, name='company_login'), #указать метод запроса GET/POST/DELETE etc
+    path('company/register/', companyViews.register, name='company_register'),
+    path('company/<int:company_id>/', companyViews.get_company_data, name='company_id'),
+	
+    # path('company/auth/', views.auth, name='company_login'), #указать метод запроса GET/POST/DELETE etc
+    path('company/<int:company_id>/vacancy/', companyVacancyViews.registerVacancy, name='company_vacancy_register'),
+    path('company/<int:company_id>/vacancy/<int:vacancy_id> >/', companyVacancyViews.get_company_vacancy_data, name='vacancy_id'),
 ]
+
     

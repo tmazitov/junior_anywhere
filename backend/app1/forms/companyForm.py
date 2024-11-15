@@ -1,11 +1,12 @@
-from .models import Company
-from django.forms import ModelForm, TextInput
+from ..models import Company
+from django.forms import ModelForm, TextInput, PasswordInput
 
 class CompanyForm(ModelForm):
 	class Meta:
 		model = Company
-		fileds = ['name', 'llc-number', 'email', 'password']
-		exclude = ['id']
+		
+		fields = ['name', 'LLC_Number', 'email', 'password']
+		# exclude = ['id'] not neccessary to explicitly exclude id
 
 		widgets = {
 			"name": TextInput(attrs={
@@ -20,7 +21,7 @@ class CompanyForm(ModelForm):
 				'class': 'form-control',
 				'placeholder': 'example@mail.com'
 			}),
-			"password": TextInput(attrs={
+			"password": PasswordInput(attrs={
 				'class': 'form-control',
 				'placeholder': 'password1234'
 			}),
