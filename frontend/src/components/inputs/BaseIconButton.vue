@@ -35,12 +35,14 @@ defineProps({
 	width: 36px;
 
 	background: var(--button-background);
-	border: 1px solid var(--border-color);
 	border-radius: var(--border-radius);
+	border: 1.5px solid transparent;
+	box-sizing: border-box;
 
 	cursor: pointer;
 	box-sizing: border-box;
 	transition: background .15s;
+	transition: border-color .15s;
 }
 
 .clear {
@@ -50,7 +52,7 @@ defineProps({
 
 @media (min-width: 868px){
 	.base-icon-button:hover{
-		background: var(--button-background-hover);
+		border: 1.5px solid var(--border-color);
 	}
 	.primary:hover{
 		background: var(--primary-color-hover);

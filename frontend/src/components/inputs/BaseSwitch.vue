@@ -61,11 +61,11 @@ const activeTitle = computed(() => {
 .base-switch{
 	display: flex;
 	flex-direction: row;
-	border: 1px solid var(--border-color);
-	border-radius: var(--border-radius);
 	position: relative;
 	overflow: hidden;
 	height: 36px;
+	box-sizing: border-box;
+	border-bottom: 1.5px solid var(--primary-color);
 }
 
 .base-switch__item{
@@ -89,14 +89,18 @@ const activeTitle = computed(() => {
 .active {
 	position: absolute;
 	top: 0;
-	bottom: 0;
+	height: 100%;
 	flex: 1;
 	z-index: 1;
-	background: linear-gradient(90deg, var(--primary-color-opacity) 0%, var(--primary-color) 100%);
+	/* background: linear-gradient(90deg, var(--primary-color-opacity) 0%, var(--primary-color) 100%); */
 	transition: left .2s;
 
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	border: 1.5px solid var(--primary-color); 
+	border-bottom: none;
+	box-sizing: border-box;
+	border-radius: var(--border-radius) var(--border-radius) 0 0;
 }
 </style>

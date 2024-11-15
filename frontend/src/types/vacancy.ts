@@ -9,8 +9,12 @@ class Vacancy {
 	name: string
 	companyName: string
 	salary: number
+	employmentId:number|undefined
 	locationId: number
+	experience: number|undefined
 	applies: number|undefined
+	skills: string[] = []
+	withDegree: boolean = false
 	status: VacancyStatus = 1
 	/**
 	 *
@@ -22,7 +26,10 @@ class Vacancy {
 		this.salary = data["salary"]
 		this.locationId = data["locationId"]
 		this.applies = data["applies"]
-
+		this.employmentId = data["employmentId"]
+		this.experience = data["experience"]
+		this.withDegree = data["withDegree"]
+		this.skills = data["skills"] ? data["skills"].split(" ") : []
 		if (data["status"]) {
 			this.status = data["status"]
 		}

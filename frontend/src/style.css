@@ -5,6 +5,7 @@
 
 
 	--cocoa-brown: #d4783eff;
+	/* --pumpkin: rgb(240, 145, 86); */
 	--pumpkin: rgb(240, 145, 86);
 	--pumpkin-2: rgb(240, 163, 116);
 	--russet: #8c522dff;
@@ -18,6 +19,8 @@
 	--primary-color: var(--pumpkin);
 	--primary-color-hover: var(--pumpkin-2);
 	--primary-color-opacity:  #f4803787;
+
+	--secondary-color: rgb(86, 125, 240);
 
 	--border-radius: 6px;
 	--border-color: var(--silver);
