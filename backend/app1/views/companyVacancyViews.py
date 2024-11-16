@@ -3,20 +3,25 @@ from django.contrib.auth.hashers import check_password
 from django.forms.models import model_to_dict
 
 from app1.models import CompanyVacancy
+from app1.models import Company
 from app1.forms.companyVacancyForm import CompanyVacancyForm
 from django.http import JsonResponse
+from django.utils.decorators import method_decorator
+from django.views.decorators.http import require_http_methods
 import json
 
 #search for a particular company in database by company_id and return data
 #if this company's vacancy by vacancy_id
+@require_http_methods(["GET"])
 def get_company_vacancy_data(request, company_id, vacancy_id):
 	try:
 		companyVacancy = CompanyVacancy.objects.get(vacancy_id=vacancy_id)
 		data = model_to_dict(companyVacancy)
-		return JsonResponse(data, status=200)
+		return JsonResponse({'status': 'success', 'data': data}, status=200)
 	except CompanyVacancy.DoesNotExist:
 		return JsonResponse({'error': 'CompanyVacancy not found'}, status=404)
-    
+
+@require_http_methods(["GET", "POST"])
 def registerVacancy(request, company_id):
 	if request.method == 'POST':
 		# Попробуем сначала получить JSON данные из тела запроса
@@ -32,7 +37,7 @@ def registerVacancy(request, company_id):
 		form = CompanyVacancyForm(data)  # Передаем данные в форму
 		if form.is_valid():
 			vacancy = form.save(commit=False)
-			vacancy.company_id = company_id  # Хешируем пароль
+			vacancy.company_id = company_id
 			vacancy.save()
 			return JsonResponse({'vacancy_id': vacancy.vacancy_id}, status=200)
 		else:
@@ -42,3 +47,21 @@ def registerVacancy(request, company_id):
 	form = CompanyVacancyForm()
 	form_data = {field.name: field.value() for field in form}  # Пример структуры формы
 	return JsonResponse({'form': form_data})
+
+@require_http_methods(["DELETE"])
+def cancel_vacancy(request, company_id, vacancy_id):
+    print("Request method:", request.method)
+    print("DELETE request received for vacancy:", vacancy_id)
+    try:
+        # Query the vacancy directly using company_id and vacancy_id for efficiency
+        vacancy = CompanyVacancy.objects.get(pk=vacancy_id, company_id=company_id)
+        
+        if vacancy.status == 0:
+            vacancy.status = 2  # Set to canceled
+            vacancy.save()  # Commit the change
+            return JsonResponse({'status': 'success', 'message': 'Vacancy canceled successfully.'}, status=201)
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Vacancy is not active.'}, status=400)
+    except CompanyVacancy.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'No vacancy found with the provided ID for this company.'}, status=404)
+

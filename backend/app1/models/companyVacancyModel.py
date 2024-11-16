@@ -11,8 +11,8 @@ class CompanyVacancy(models.Model) :
 
 	vacancy_id = models.AutoField(primary_key=True)
 	name =  models.CharField(max_length=150, blank=False)
-	# company_id = models.ForeignKey(Company, on_delete=models.CASCADE)
-	company_id = models.IntegerField()
+	company_id = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="vacancies")
+	# company_id = models.IntegerField()
 	# hired_user_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
 	STATUS_CHOICES = [
@@ -27,4 +27,7 @@ class CompanyVacancy(models.Model) :
 	comment = models.CharField(max_length=1000)
 	is_degree_required = models.BooleanField()
 	status = models.PositiveSmallIntegerField(choices=[(status.value, status.name) for status in StatusEnum],
-        default=StatusEnum.active.value)
+		default=StatusEnum.active.value)
+	
+	def __str__(self):
+		return f"{self.name}, {self.company_id}"

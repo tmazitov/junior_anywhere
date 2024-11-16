@@ -27,7 +27,8 @@ urlpatterns = [
 	
     # path('company/auth/', views.auth, name='company_login'), #указать метод запроса GET/POST/DELETE etc
     path('company/<int:company_id>/vacancy/', companyVacancyViews.registerVacancy, name='company_vacancy_register'),
-    path('company/<int:company_id>/vacancy/<int:vacancy_id> >/', companyVacancyViews.get_company_vacancy_data, name='vacancy_id'),
+    path('company/<int:company_id>/vacancy/<int:vacancy_id>/view/', companyVacancyViews.get_company_vacancy_data, name='vacancy_id'),
+    path('company/<int:company_id>/vacancy/<int:vacancy_id>/cancel/', companyVacancyViews.cancel_vacancy, name='cancel_vacancy'),
 ]
 
     

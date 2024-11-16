@@ -12,7 +12,7 @@ class Company(models.Model) :
 	email = models.EmailField(unique=True, default='', blank=False)
 	LLC_Number = models.CharField(max_length=55, unique=True, default='', blank=False)
 	id = models.AutoField(primary_key=True)
-
+	
 	def set_password(self, raw_password):
 		self.password = make_password(raw_password)
 	
