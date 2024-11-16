@@ -50,8 +50,6 @@ def registerVacancy(request, company_id):
 
 @require_http_methods(["DELETE"])
 def cancel_vacancy(request, company_id, vacancy_id):
-    print("Request method:", request.method)
-    print("DELETE request received for vacancy:", vacancy_id)
     try:
         # Query the vacancy directly using company_id and vacancy_id for efficiency
         vacancy = CompanyVacancy.objects.get(pk=vacancy_id, company_id=company_id)
@@ -65,3 +63,17 @@ def cancel_vacancy(request, company_id, vacancy_id):
     except CompanyVacancy.DoesNotExist:
         return JsonResponse({'status': 'error', 'message': 'No vacancy found with the provided ID for this company.'}, status=404)
 
+@require_http_methods(["PATCH"])
+def hire(request, company_id, vacancy_id, hired_user_id):
+	try:
+		vacancy = CompanyVacancy.objects.get(pk=vacancy_id, company_id=company_id)
+				
+		if vacancy.status == 0 & vacancy.hired_user_id == 0:
+			vacancy.status = 1
+			vacancy.hired_user_id = hired_user_id
+			vacancy.save()  # Commit the change
+			return JsonResponse({'status': 'success', 'message': 'User has been hired for vacancy successfully.'}, status=201)
+		else:
+			return JsonResponse({'status': 'error', 'message': 'Vacancy is not active.'}, status=400)
+	except CompanyVacancy.DoesNotExist:
+		return JsonResponse({'status': 'error', 'message': 'No vacancy found with the provided ID for this company.'}, status=404)

@@ -12,8 +12,8 @@ class CompanyVacancy(models.Model) :
 	vacancy_id = models.AutoField(primary_key=True)
 	name =  models.CharField(max_length=150, blank=False)
 	company_id = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="vacancies")
-	# company_id = models.IntegerField()
-	# hired_user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+	# hired_user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="users")
+	hired_user_id = models.IntegerField(default=0)
 
 	STATUS_CHOICES = [
 		(0, 'intership'),

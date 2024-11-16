@@ -29,6 +29,7 @@ urlpatterns = [
     path('company/<int:company_id>/vacancy/', companyVacancyViews.registerVacancy, name='company_vacancy_register'),
     path('company/<int:company_id>/vacancy/<int:vacancy_id>/view/', companyVacancyViews.get_company_vacancy_data, name='vacancy_id'),
     path('company/<int:company_id>/vacancy/<int:vacancy_id>/cancel/', companyVacancyViews.cancel_vacancy, name='cancel_vacancy'),
+    path('company/<int:company_id>/vacancy/<int:vacancy_id>/hire/<int:hired_user_id>', companyVacancyViews.hire, name='cancel_vacancy'),
 ]
 
     
