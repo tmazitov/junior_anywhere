@@ -115,7 +115,7 @@ const logOut = () => {
 }
 
 const vacancyList:Vacancy[] = [
-	new Vacancy({id: 1, name: "Super Duper Frontend developer", locationId:1, companyName: "Yandex", salary: 10000, applies: 195, withDegree: true, employmentId: 1, skills: "Go Vue Golang Git Docker"}),
+	new Vacancy({id: 1, name: "Super Duper Frontend developer", experience: 3, locationId:1, companyName: "Yandex", salary: 10000, applies: 195, withDegree: true, employmentId: 1, skills: "Go Vue Golang Git Docker"}),
 	new Vacancy({id: 2, name: "Super Duper Frontend developer", locationId:2, companyName: "Yandex", salary: 10000, applies: 131,}),
 	new Vacancy({id: 3, name: "Super Duper Frontend developer", locationId:3, companyName: "Yandex", salary: 10000, applies: 73}),
 	new Vacancy({id: 4, name: "Super Duper Frontend developer", locationId:4, companyName: "Yandex", salary: 10000, applies: 106}),
