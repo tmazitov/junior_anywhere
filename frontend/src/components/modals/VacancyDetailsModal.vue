@@ -63,6 +63,9 @@
                         </div>
                     </div>
                     <div class="modal-content__container" v-show="currentTab == 2">
+                        <VacancyApplyList :applies="applies"
+                        @on-hire="() => console.log('hire')"
+                        @on-cancel="() => console.log('cancel')"/>
                     </div>
                 </div>
             </template>
@@ -85,6 +88,8 @@ import locations from '../../info/locations';
 import Category from '../inputs/Category.vue';
 import { Icon } from '@iconify/vue/dist/iconify.js';
 import employments from '../../info/employments';
+import VacancyApplyList from '../vacancy-list/VacancyApplyList.vue';
+import VacancyApply from '../../types/vacancyApply';
 const isOpen = defineModel<boolean>({required:true})
 
 
@@ -111,6 +116,12 @@ const currentTab = ref(1)
 const getEmploymentName = (id:number) => {
     return employments.find(emp => emp.value == id)?.title
 }
+
+const applies = [
+    new VacancyApply({userId: 1, userName: "Timur Mazitov", resumeName: "Supper duper frontend developer"}),
+    new VacancyApply({userId: 2, userName: "Sofa Abdulkina", resumeName: "Supper duper backend developer"}),
+    new VacancyApply({userId: 3, userName: "Lera Lomakina", resumeName: "Supper duper backend developer"}),
+]
 </script>
 
 <style scoped>
@@ -118,7 +129,8 @@ const getEmploymentName = (id:number) => {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    margin-top: 16px
+    flex: 1;
+    overflow: hidden;
 }
 
 .general__main-details{
@@ -162,5 +174,11 @@ const getEmploymentName = (id:number) => {
     flex-direction: row;
     gap: 8px;
     align-items: center;
+}
+
+.modal-content{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 </style>
