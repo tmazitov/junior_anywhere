@@ -27,7 +27,6 @@
 <script setup lang="ts">
 import Vacancy from '../../types/vacancy';
 import { defineProps } from 'vue';
-import { Icon } from '@iconify/vue/dist/iconify.js';
 import locations from '../../info/locations';
 
 defineProps({

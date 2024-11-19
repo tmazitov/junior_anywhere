@@ -80,7 +80,6 @@ import VacancyListFilters from '../types/vacancyListFilters';
 import { useRoute, useRouter } from 'vue-router';
 import CreateVacancyModal from '../components/modals/CreateVacancyModal.vue';
 import CompanyAuth from '../utils/authCompany';
-import employments from '../info/employments';
 
 const route = useRoute()
 

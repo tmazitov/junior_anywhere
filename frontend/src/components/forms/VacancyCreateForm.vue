@@ -43,7 +43,7 @@ import BaseInput from '../inputs/BaseInput.vue';
 import BaseSelect from '../inputs/BaseSelect.vue';
 import BaseButton from '../inputs/BaseButton.vue';
 import { Icon } from '@iconify/vue/dist/iconify.js';
-import { nextTick, onMounted, onUnmounted, Ref, ref } from 'vue';
+import { nextTick, onMounted, onUnmounted, ref } from 'vue';
 import VacancyCreate from '../../types/forms/vacancyCreate';
 import employments from '../../info/employments';
 import BaseCheckbox from '../inputs/BaseCheckbox.vue';

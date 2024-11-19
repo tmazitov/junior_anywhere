@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineModel, onMounted, ref, computed } from 'vue'
+import { defineProps, defineModel, ref, computed } from 'vue'
 
 interface SelectableItem {
 	title: string
