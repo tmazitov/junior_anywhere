@@ -1,6 +1,6 @@
 <template>
     <div class="vacancy-apply-item">
-        <div class="item-card" @click="toggleApply">
+        <div class="item-card" @click="onOpenDetails">
             <div class="item-card__cont">
                 <div class="item__title">
                     <h3>{{ apply.userName }}</h3>
@@ -11,34 +11,20 @@
             </div>
             <div class="item__buttons">
                 <BaseIconButton 
-                    fill="clear"
-                    :icon="isOpenDetails ? 
-                        'tabler:chevron-up' : 
-                        'tabler:chevron-down'"
-                    />
+                fill="clear"
+                icon="tabler:chevron-right"
+                />
             </div>
         </div>
-        <transition name="details">
-            <div class="item-details" v-if="isOpenDetails">
-                <div>info</div>
-                <div>info</div>
-                <div>info</div>
-                <div>info</div>
-                <div>info</div>
-            </div>
-
-        </transition>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import VacancyApply from '../../types/vacancyApply';
 import BaseIconButton from '../inputs/BaseIconButton.vue';
 
 const emits = defineEmits([
-    'on-hire',
-    'on-cancel',
+    'on-details'
 ])
 
 const props = defineProps({
@@ -48,17 +34,8 @@ const props = defineProps({
     }
 })
 
-const isOpenDetails = ref<Boolean>(false)
-
-const toggleApply = () => {
-    isOpenDetails.value = !isOpenDetails.value
-}
-
-const onHireHandler = () => {
-    emits('on-hire', props.apply.userId)
-}
-const onCancelHandler = () => {
-    emits('on-cancel', props.apply.userId)
+const onOpenDetails = () => {
+    emits('on-details', props.apply.userId)
 }
 
 </script>

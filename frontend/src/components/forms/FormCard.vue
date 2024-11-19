@@ -50,6 +50,7 @@ defineProps({
 	width: 300px;
 
 	transition: height .3s;
+	transition: background .3s;
 }
 
 @media (min-width: 868px) {
@@ -73,6 +74,7 @@ defineProps({
 }
 
 .card-content {
+	flex:1;
 	display: flex;
 	flex-direction: column;
 	gap: 14px;

@@ -1,6 +1,7 @@
 <template>
     <ModalWindowLayout v-model="isOpen">
-        <FormCard background="white" width="500px" height="600px" v-if="vacancy">
+        <div class="window-container">
+            <FormCard background="white" width="500px" height="600px" v-if="vacancy">
             <template v-slot:header>
                 <BaseIconButton icon="tabler:arrow-back-up"
                     @click="closeHandler"
@@ -43,29 +44,12 @@
 
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                             Nulla nec purus feugiat, molestie ipsum et, eleifend nunc.
-                            Nulla nec purus feugiat, molestie ipsum et, eleifend nunc.
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Nulla nec purus feugiat, molestie ipsum et, eleifend nunc.
-                            Nulla nec purus feugiat, molestie ipsum et, eleifend nunc.
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Nulla nec purus feugiat, molestie ipsum et, eleifend nunc.
-                            Nulla nec purus feugiat, molestie ipsum et, eleifend nunc.
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Nulla nec purus feugiat, molestie ipsum et, eleifend nunc.
-                            Nulla nec purus feugiat, molestie ipsum et, eleifend nunc.
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Nulla nec purus feugiat, molestie ipsum et, eleifend nunc.
-                            Nulla nec purus feugiat, molestie ipsum et, eleifend nunc.
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Nulla nec purus feugiat, molestie ipsum et, eleifend nunc.
-                            Nulla nec purus feugiat, molestie ipsum et, eleifend nunc.
-                                                        
+                            
                         </div>
                     </div>
                     <div class="modal-content__container" v-show="currentTab == 2">
                         <VacancyApplyList :applies="applies"
-                        @on-hire="() => console.log('hire')"
-                        @on-cancel="() => console.log('cancel')"/>
+                        @on-details="onDetailsHandler"/>
                     </div>
                 </div>
             </template>
@@ -73,6 +57,26 @@
                 <!-- <BaseButton title="Upload" primary :disabled="!formIsValid"/> -->
             <!-- </template> -->
         </FormCard>
+        <FormCard :background="currentApply ? 'white' : 'rgba(215, 215, 215, 0.66)'" width="500px" height="600px">
+            <template  v-slot:header>
+                <div class="content-header" v-if="currentApply">
+                    <h3>{{currentApply.userName}} <span style="font-weight: 300; font-size: 0.9em;">({{currentApply.resumeName}})</span></h3>
+                </div>
+            </template>
+            <template v-slot:default>
+                <div class="content">
+                    There will be a resume details
+                </div>
+            </template>
+
+            <template v-slot:footer>
+                <div class="content-footer" v-if="currentApply">
+                    <BaseButton title="Hire" primary  />
+                    <BaseButton title="Cancel" secondary />
+                </div>
+            </template>
+        </FormCard>
+        </div>
     </ModalWindowLayout>
 </template>
 
@@ -81,7 +85,7 @@ import ModalWindowLayout from './ModalWindowLayout.vue';
 import FormCard from '../forms/FormCard.vue';
 import BaseIconButton from '../inputs/BaseIconButton.vue';
 import BaseButton from '../inputs/BaseButton.vue';
-import { ref , defineProps, defineModel } from 'vue';
+import { ref , defineProps, defineModel, computed } from 'vue';
 import Vacancy from '../../types/vacancy';
 import BaseSwitch from '../inputs/BaseSwitch.vue';
 import locations from '../../info/locations';
@@ -90,8 +94,8 @@ import { Icon } from '@iconify/vue/dist/iconify.js';
 import employments from '../../info/employments';
 import VacancyApplyList from '../vacancy-list/VacancyApplyList.vue';
 import VacancyApply from '../../types/vacancyApply';
-const isOpen = defineModel<boolean>({required:true})
 
+const isOpen = defineModel<boolean>({required:true})
 
 const closeHandler = () => {
     isOpen.value = false
@@ -101,6 +105,23 @@ defineProps({
     vacancy: Vacancy,
     isCompanyView: Boolean,
 })
+
+// APPLY
+
+const applyDetails = ref<number>(0)
+const onDetailsHandler = (userId:number) => {
+    applyDetails.value = userId
+}
+const applies = [
+    new VacancyApply({userId: 1, userName: "Timur Mazitov", resumeName: "Supper duper frontend developer"}),
+    new VacancyApply({userId: 2, userName: "Sofa Abdulkina", resumeName: "Supper duper backend developer"}),
+    new VacancyApply({userId: 3, userName: "Lera Lomakina", resumeName: "Supper duper backend developer"}),
+]
+
+const currentApply = computed<VacancyApply | undefined>(() => {
+    return applies.find(apply => apply.userId == applyDetails.value)
+})
+
 
 const getLocationName = (id:number) => {
     return locations.find(loc => loc.value == id)?.title
@@ -117,14 +138,16 @@ const getEmploymentName = (id:number) => {
     return employments.find(emp => emp.value == id)?.title
 }
 
-const applies = [
-    new VacancyApply({userId: 1, userName: "Timur Mazitov", resumeName: "Supper duper frontend developer"}),
-    new VacancyApply({userId: 2, userName: "Sofa Abdulkina", resumeName: "Supper duper backend developer"}),
-    new VacancyApply({userId: 3, userName: "Lera Lomakina", resumeName: "Supper duper backend developer"}),
-]
+
 </script>
 
 <style scoped>
+.window-container{
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+
 .modal-content__container{
     display: flex;
     flex-direction: column;
@@ -180,5 +203,18 @@ const applies = [
     display: flex;
     flex-direction: column;
     gap: 16px;
+}
+
+.content-header{
+    height: 36px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.content-footer{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 16px;
 }
 </style>

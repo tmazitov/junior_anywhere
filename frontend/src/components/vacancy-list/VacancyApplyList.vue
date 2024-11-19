@@ -2,8 +2,7 @@
     <div class="vacancy-apply-list">
         <VacancyApplyItem v-for="apply in applies" 
         :key="`apply-${apply.userId}`" :apply="apply"
-        @on-hire="onHireHandler"
-        @on-cancel="onCancelHandler"/>
+        @on-details="onDetailsHandler"/>
     </div>
 </template>
 
@@ -12,8 +11,7 @@ import VacancyApply from '../../types/vacancyApply';
 import VacancyApplyItem from './VacancyApplyItem.vue';
 
 const emits = defineEmits([
-    'on-hire',
-    'on-cancel',
+    'on-details',
 ])
 
 defineProps({
@@ -23,12 +21,8 @@ defineProps({
     }
 })
 
-const onHireHandler = (userId:number) => {
-    emits('on-hire', userId)
-}
-
-const onCancelHandler = (userId:number) => {
-    emits('on-cancel', userId)
+const onDetailsHandler = (userId:number) => {
+    emits('on-details', userId)
 }
 
 </script>
