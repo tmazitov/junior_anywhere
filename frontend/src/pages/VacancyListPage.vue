@@ -31,11 +31,15 @@
 							</span>
 						</ContentBlock>
 						<ContentBlock class="vacancy-list">
-							<Card v-for="vacancy in vacancies" :key="`vacancy-${vacancy.id}`" :vacancy="vacancy"/>
+							<Card v-for="vacancy in vacancies" 
+							:key="`vacancy-${vacancy.id}`" 
+							:vacancy="vacancy"
+							@click="() => openModal(vacancy)"/>
 						</ContentBlock>
 					</div>
 				</div>
 			</div>
+			<VacancyDetailsModal v-model="isModalOpen" :vacancy="selectedVacancy"/>
 		</div>
 	</div>
 </template>
@@ -52,7 +56,14 @@ import Filters from '../components/vacancy-list/Filters.vue';
 import Vacancy from '../types/vacancy';
 import Card from '../components/vacancy-list/Card.vue';
 import { Icon } from '@iconify/vue/dist/iconify.js';
+import VacancyDetailsModal from '../components/modals/VacancyDetailsModal.vue';
 
+const isModalOpen = ref(false)
+const selectedVacancy = ref<Vacancy|undefined>()
+const openModal = (vacancy:Vacancy) => {
+	selectedVacancy.value = vacancy
+	isModalOpen.value = true
+}
 
 const mobileFiltersIsOpen = ref(false)
 const toggleMobileFilters = () => {
@@ -66,7 +77,6 @@ let timeout:number|null = null
 function getRandomInt(max:number, min:number = 0) {
   return Math.max(Math.floor(Math.random() * max), min);
 }
-
 
 const vacancies = ref([
 	new Vacancy({id: 1, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),

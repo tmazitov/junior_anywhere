@@ -7,7 +7,8 @@
         is-company-view/>
     </div>
 
-    <VacancyDetailsModal v-model="modalIsOpen" :vacancy="selectedVacancy"/>
+    <VacancyDetailsModal v-model="modalIsOpen" :vacancy="selectedVacancy" 
+        is-company-view/>
 </template>
 
 <script lang="ts" setup>

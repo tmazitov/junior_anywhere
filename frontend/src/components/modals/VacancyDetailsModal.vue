@@ -10,7 +10,7 @@
             </template>
             <template v-slot:default>
                 <div class="modal-content">
-                    <BaseSwitch v-model="currentTab" :items="tabOptions"/>
+                    <BaseSwitch v-if="isCompanyView" v-model="currentTab" :items="tabOptions"/>
 
                     <div class="modal-content__container" v-show="currentTab == 1">
 
@@ -19,7 +19,7 @@
                             <div class="general-location">{{ getLocationName(vacancy.locationId) }}</div>
                         </div>
 
-                        <div class="general__secondary-details">
+                        <div class="general__secondary-details" v-if="vacancy.experience || vacancy.employmentId || vacancy.withDegree">
                             <div class="genera-experience" v-if="vacancy.experience">
                                 from {{vacancy.experience}} years
                             </div>
@@ -33,7 +33,7 @@
                             </div>
                         </div>
                         
-                        <div class="general-skills">
+                        <div class="general-skills" v-if="vacancy.skills.length">
 
                             <Category v-for="skill, index in vacancy.skills"
                                 :key="`skill-${index}`" 
@@ -53,26 +53,65 @@
                     </div>
                 </div>
             </template>
-            <!-- <template v-slot:footer> -->
-                <!-- <BaseButton title="Upload" primary :disabled="!formIsValid"/> -->
-            <!-- </template> -->
+            <template v-slot:footer v-if="!isCompanyView">
+                <BaseButton title="Apply" width="fit-content" primary @click="isNewApply = true"/>
+            </template>
         </FormCard>
-        <FormCard :background="currentApply ? 'white' : 'rgba(215, 215, 215, 0.66)'" width="500px" height="600px">
-            <template  v-slot:header>
-                <div class="content-header" v-if="currentApply">
+        <FormCard 
+        :background="currentApply || isNewApply ? 
+            'white' : 'rgba(215, 215, 215, 0.66)'" 
+        width="500px" 
+        height="600px">
+
+            <!-- Company view -->
+
+            <template  v-slot:header v-if="currentApply && isCompanyView">
+                <div class="content-header">
                     <h3>{{currentApply.userName}} <span style="font-weight: 300; font-size: 0.9em;">({{currentApply.resumeName}})</span></h3>
                 </div>
             </template>
-            <template v-slot:default>
+            <template v-slot:default v-if="currentApply && isCompanyView">
                 <div class="content">
                     There will be a resume details
                 </div>
             </template>
 
-            <template v-slot:footer>
+            <template v-slot:footer v-if="currentApply && isCompanyView">
                 <div class="content-footer" v-if="currentApply">
                     <BaseButton title="Hire" primary  />
                     <BaseButton title="Cancel" secondary />
+                </div>
+            </template>
+
+            <!-- User view -->
+
+            <template v-slot:header v-if="isNewApply && !isCompanyView">
+                <div class="content-header">
+                    <h3>Vacancy Apply</h3>
+                </div>
+            </template>
+            <template v-slot:default v-if="isNewApply && !isCompanyView">
+                <div class="content">
+                    <h4>Resume</h4>
+                    <div class="current-resume">
+                        <Icon icon="tabler:user" height="1.5em"/>
+                        <!-- <div>{{applyForm.resumeName}}</div> -->
+                        <div style="flex:1">Resume name</div>
+                        <div @click="navTo('user-profile')">
+                            Edit
+                        </div>
+                    </div>
+                    <h4>Message</h4>
+                    <VacancyApplyForm v-model="applyForm"/>
+                </div>
+            </template>
+
+            <template v-slot:footer v-if="isNewApply && !isCompanyView">
+                <div class="content-footer">
+                    <BaseButton title="Submit" primary
+                        @click="applyFormSubmit"/>
+                    <BaseButton title="Cancel" secondary 
+                        @click="applyFormCancel"/>
                 </div>
             </template>
         </FormCard>
@@ -94,12 +133,21 @@ import { Icon } from '@iconify/vue/dist/iconify.js';
 import employments from '../../info/employments';
 import VacancyApplyList from '../vacancy-list/VacancyApplyList.vue';
 import VacancyApply from '../../types/vacancyApply';
+import VacancyApplyFormInstance from '../../types/forms/vacancyApply';
+import VacancyApplyForm from '../forms/VacancyApplyForm.vue';
+import { useRouter } from 'vue-router';
 
 const isOpen = defineModel<boolean>({required:true})
 
 const closeHandler = () => {
+    applyDetails.value = 0
     isOpen.value = false
 }
+
+const router = useRouter()
+const navTo = (name:string) => {
+    router.push({name})
+} 
 
 defineProps({
     vacancy: Vacancy,
@@ -113,7 +161,9 @@ const onDetailsHandler = (userId:number) => {
     applyDetails.value = userId
 }
 const applies = [
-    new VacancyApply({userId: 1, userName: "Timur Mazitov", resumeName: "Supper duper frontend developer"}),
+    new VacancyApply({userId: 1, 
+        userName: "Timur Mazitov", 
+        resumeName: "Supper duper frontend developer"}),
     new VacancyApply({userId: 2, userName: "Sofa Abdulkina", resumeName: "Supper duper backend developer"}),
     new VacancyApply({userId: 3, userName: "Lera Lomakina", resumeName: "Supper duper backend developer"}),
 ]
@@ -122,11 +172,22 @@ const currentApply = computed<VacancyApply | undefined>(() => {
     return applies.find(apply => apply.userId == applyDetails.value)
 })
 
-
 const getLocationName = (id:number) => {
     return locations.find(loc => loc.value == id)?.title
 }
 
+const isNewApply = ref<boolean>()
+const applyForm = ref<VacancyApplyFormInstance>(new VacancyApplyFormInstance())
+const closeApplyHandler = () => {
+    applyForm.value.clear()    
+    isNewApply.value = false
+}
+const applyFormSubmit = () => {
+    closeApplyHandler()
+}
+const applyFormCancel = () => {
+    closeApplyHandler()
+}
 // TABS
 const tabOptions = [
     {value : 1, title: 'General'},
@@ -216,5 +277,33 @@ const getEmploymentName = (id:number) => {
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 16px;
+}
+.content{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.current-resume{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    
+    padding: 11px;
+    width: 100%;
+    border-radius: 8px;
+    background: var(--input-background);
+    border: 1px solid var(--border-color);
+
+    cursor: default;
+    transition: background .3s;
+    box-sizing: border-box;
+}
+
+@media (min-width: 868px){
+    .current-resume:hover{
+        background: var(--input-background-hover);
+    }
 }
 </style>
