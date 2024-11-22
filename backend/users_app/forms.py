@@ -4,8 +4,6 @@ from .models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django import forms
 from .models import User, UserProfile
-# from django.contrib.auth.models import User
-# from django.contrib.auth.forms import UserCreationForm
 
 class UserRegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)

@@ -17,7 +17,6 @@ class CustomUserManager(BaseUserManager):
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
-
         if extra_fields.get("is_staff") is not True:
             raise ValueError("Superuser must have is_staff=True.")
         if extra_fields.get("is_superuser") is not True:
@@ -34,13 +33,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True, blank=False)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
     phone_number = models.CharField(validators=[phone_regex], max_length=17)
-
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-
     objects = CustomUserManager()
-
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name', 'second_name', 'phone_number']
 
@@ -53,14 +49,31 @@ class UserProfile(models.Model):
     resume = models.FileField(blank=True)
     about_me = models.TextField(max_length=500, help_text="Tell future employer more about yourself", blank=True)
 
+class UserResume(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default='')
+    name = models.CharField(max_length=100, default='')
+    experience = models.IntegerField(default=0)
+    description = models.TextField(default='No description provided')
+    skills = models.TextField(default='')
+    is_with_degree = models.BooleanField(default=False)
+
+
+    def __str__(self):
+        return f'{self.name} Resume of {self.user.second_name}'
+
     def __str__(self):
         return f'{self.user.email} Profile'
-    
+
     def __str__(self):
         return f'{self.profile_picture} Profile'
 
-class UserApply(models.Model):
-    pass
+class UserVacancyApply(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    resume = models.ForeignKey(UserResume, on_delete=models.CASCADE)
+    vacancy_id = models.IntegerField()
+    company_id = models.IntegerField()
+    message = models.TextField()
+    status = models.IntegerField(default = 0)
 
-class UserResume(models.Model):
-    pass
+    def __str__(self):
+        return f'Application {self.id} by {self.user.second_name}'

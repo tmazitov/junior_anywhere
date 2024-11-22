@@ -1,30 +1,51 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from users_app.models import User
-from django.contrib import messages
 from ..forms import UserRegisterForm
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from django.urls import path
+import json
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
+@csrf_exempt
+
+#Returns all users list as a JSON
 def index_page(request):
-    all_users = User.objects.all()
-    return render(request, 'home.html', {'data': all_users})
+    if request.method == 'GET':
+        all_users = User.objects.all().values('id', 'name', 'email', 'phone_number')
+        return JsonResponse({'users': list(all_users)}, safe=False, status=200)
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
 
+#when register a new user will return JSON
 def register(request):
     if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('name')
-            messages.success(request, f'Welcome to SunflowerJunior {username}')
-            return redirect('blog:home')
-    else:
-        form = UserRegisterForm()
-    return render(request, 'register.html', {'form': form})
+        try:
+            data = json = json.loads(request.body)
+            form = UserRegisterForm(data)
+            if form.is_valid():
+                user = form.save()
+                return JsonResponse({'message': f'Welcome to SunflowerJunior {user.name}', 'user_id': user.id}),
+            else:
+                return JsonResponse({'errors': form.errors}, status=400)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON format'}, status=400)
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
+
 
 @login_required
+#returns profile of a user
 def profile(request):
-    return render(request, 'profile.html')
+    if request.method == 'GET':
+        user = request.user
+        user_data = {
+            'id': user.id,
+            'name': user.name,
+            'email': user.email,
+            'phone_number': user.phone_number,        
+        }
+        return JsonResponse(user_data, status=200)
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
+
 
     # NEW USER
     # new_user = User(name='new', second_name='user', email='newuser@gmail.com', password='1234', phone_number='+971540000000')
