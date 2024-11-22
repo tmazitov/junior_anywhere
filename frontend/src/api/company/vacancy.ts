@@ -16,6 +16,18 @@ class VacancyAPI {
             delay: 1000,
         });
     }
+
+    static async listByCompany(filters:VacancyListFilters, companyId:number) {
+        console.log(companyId)
+        return await fakeRequest({
+            responseData: () => {
+                return this.mockVacancies?.filter(vacancy => {
+                    return filters.check(vacancy)
+                })
+            },
+            delay: 1000,
+        });
+    }
 }
 
 export default VacancyAPI

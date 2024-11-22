@@ -31,7 +31,7 @@
 							</span>
 						</ContentBlock>
 						<ContentBlock class="vacancy-list">
-							<Card v-for="vacancy in vacancies" 
+							<Card v-for="vacancy in vacancyList" 
 							:key="`vacancy-${vacancy.id}`" 
 							:vacancy="vacancy"
 							@click="() => openModal(vacancy)"/>
@@ -57,6 +57,7 @@ import Vacancy from '../types/vacancy';
 import Card from '../components/vacancy-list/Card.vue';
 import { Icon } from '@iconify/vue/dist/iconify.js';
 import VacancyDetailsModal from '../components/modals/VacancyDetailsModal.vue';
+import CompanyAPI from '../api/company/companyApi';
 
 const isModalOpen = ref(false)
 const selectedVacancy = ref<Vacancy|undefined>()
@@ -74,45 +75,21 @@ const route = useRoute()
 const filters = ref(new VacancyListFilters(route.query))
 let timeout:number|null = null
 
-function getRandomInt(max:number, min:number = 0) {
-  return Math.max(Math.floor(Math.random() * max), min);
-}
-
-const vacancies = ref([
-	new Vacancy({id: 1, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 2, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 3, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 2, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 3, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 4, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 5, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 6, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 4, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 5, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 6, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 7, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 8, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 9, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 10, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 11, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 12, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 13, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 14, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 15, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 16, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 17, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 18, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 19, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-	new Vacancy({id: 20, locationId: getRandomInt(50), name: "Super Duper Frontend developer", companyName: "Yandex", salary: getRandomInt(100, 20) * 100}),
-])
+const vacancyList = ref<Vacancy[]>([])
+CompanyAPI.vacancy.list(filters.value).then((res) => {
+	vacancyList.value = res.data
+})
 
 watch(() => filters.value, () => {
 	
 	if (timeout) {
 		clearTimeout(timeout)
-	} 
+	}
 	
 	timeout = setTimeout(() => {
+		CompanyAPI.vacancy.list(filters.value).then((res) => {
+			vacancyList.value = res.data
+		})
 		const query = filters.value.toQuery()
 		router.replace({name: 'vacancy-list', query})
 	}, 200)

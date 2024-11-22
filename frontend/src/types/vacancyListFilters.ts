@@ -131,7 +131,8 @@ class VacancyListFilters {
 	check(vacancy:Vacancy) {
 		const match = {
 			search: this.search ? 
-				vacancy.name.includes(this.search) || vacancy.description?.includes(this.search) : true,
+				vacancy.name.toLowerCase().includes(this.search.toLowerCase()) 
+				|| vacancy.description?.toLowerCase().includes(this.search.toLowerCase()) : true,
 			employments: this.employments.length ? 
 				this.employments.some(e => e.value === vacancy.employmentId) : true,
 			locations: this.locations.length ? 
@@ -140,7 +141,7 @@ class VacancyListFilters {
 				this.workFormats.some(wf => wf.value === vacancy.workFormatId) : true,
 			statuses: this.statuses.length ? 
 				this.statuses.some(st => st.value === vacancy.status) : true,
-			salary: this.withSalary ? 
+			salary: this.withSalary && this.salaryRange[1] > 0 ? 
 				(vacancy.salary >= this.salaryRange[0] && vacancy.salary <= this.salaryRange[1]) : true,
 			degree: this.degreeIsRequired ? 
 				vacancy.withDegree === this.degreeIsRequired : true,

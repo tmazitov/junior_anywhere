@@ -83,6 +83,8 @@ import CreateVacancyModal from '../components/modals/CreateVacancyModal.vue';
 import CompanyAuth from '../utils/authCompany';
 import CompanyAPI from '../api/company/companyApi';
 
+const companyId = CompanyAuth.getCompanyId()
+
 const route = useRoute()
 
 const isCreateVacancy = ref(false)
@@ -92,9 +94,12 @@ let timeout:number|null = null
 const router = useRouter()
 
 const vacancyList = ref<Vacancy[]|undefined>()
-CompanyAPI.vacancy.list(filters.value).then((res) => {
-	vacancyList.value = res.data
-})
+if (companyId) {
+	CompanyAPI.vacancy.listByCompany(filters.value, companyId).then((res) => {
+		vacancyList.value = res.data
+	})
+}
+
 
 onMounted(() => {
 	if (!CompanyAuth.getCompanyId()) {
@@ -111,9 +116,11 @@ watch(() => filters.value, () => {
 	
 	timeout = setTimeout(() => {
 		const query = filters.value.toQuery()
-		CompanyAPI.vacancy.list(filters.value).then((res) => {
-			vacancyList.value = res.data
-		})
+		if (companyId) {
+			CompanyAPI.vacancy.listByCompany(filters.value, companyId).then((res) => {
+				vacancyList.value = res.data
+			})
+		}
 		router.replace({name: 'company-profile', query})
 	}, 200)
 }, {deep: true})

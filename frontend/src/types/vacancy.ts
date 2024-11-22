@@ -29,6 +29,7 @@ class Vacancy {
 		this.salary = data["salary"]
 		this.locationId = data["locationId"]
 		this.applies = data["applies"]
+		this.workFormatId = data["workFormatId"]
 		this.employmentId = data["employmentId"]
 		this.experience = data["experience"]
 		this.withDegree = data["withDegree"]
