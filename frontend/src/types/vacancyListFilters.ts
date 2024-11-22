@@ -2,6 +2,7 @@ import employments from "../info/employments";
 import locations from "../info/locations";
 import workFormats from "../info/workFormats";
 import LocationArea from "./location";
+import Vacancy from "./vacancy";
 
 class VacancyListFilters {
 	search: string = ""
@@ -125,6 +126,27 @@ class VacancyListFilters {
 		}
 
 		return query
+	}
+
+	check(vacancy:Vacancy) {
+		const match = {
+			search: this.search ? 
+				vacancy.name.includes(this.search) || vacancy.description?.includes(this.search) : true,
+			employments: this.employments.length ? 
+				this.employments.some(e => e.value === vacancy.employmentId) : true,
+			locations: this.locations.length ? 
+				this.locations.some(l => l.value === vacancy.locationId) : true,
+			workFormats: this.workFormats.length ? 
+				this.workFormats.some(wf => wf.value === vacancy.workFormatId) : true,
+			statuses: this.statuses.length ? 
+				this.statuses.some(st => st.value === vacancy.status) : true,
+			salary: this.withSalary ? 
+				(vacancy.salary >= this.salaryRange[0] && vacancy.salary <= this.salaryRange[1]) : true,
+			degree: this.degreeIsRequired ? 
+				vacancy.withDegree === this.degreeIsRequired : true,
+		}
+
+		return Object.values(match).every((value) => value)
 	}
 }
 

@@ -9,11 +9,13 @@ class Vacancy {
 	name: string
 	companyName: string
 	salary: number
+	description: string|undefined
 	employmentId:number|undefined
 	locationId: number
 	experience: number|undefined
 	applies: number|undefined
 	skills: string[] = []
+	workFormatId: number|undefined
 	withDegree: boolean = false
 	status: VacancyStatus = 1
 	/**
@@ -22,6 +24,7 @@ class Vacancy {
 	constructor(data:any) {
 		this.id = data["id"]
 		this.name = data["name"]
+		this.description = data["description"]
 		this.companyName = data["companyName"]
 		this.salary = data["salary"]
 		this.locationId = data["locationId"]
