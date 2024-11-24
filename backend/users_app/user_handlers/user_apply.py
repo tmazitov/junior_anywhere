@@ -1,6 +1,6 @@
+import json
 from django.http import JsonResponse
-from ..models import UserResume
-from ..models import UserVacancyApply
+from ..models import UserVacancyApply, UserResume, User
 
 def get_user_resume(request, userId):
     resume = UserResume.objects.filter(user_id=userId).first()
@@ -55,3 +55,23 @@ def cancel_application(request, vacancyId, applyId):
         return JsonResponse({'message': 'Application cancelled'}, status=200)
     else:
         return JsonResponse({'error': 'Application not found'}, status=404)
+
+
+def get_applications_by_vacancy(request, vecencyId):
+    applications = UserVacancyApply.objects.filter(vacancy_id=vacancyId).select_related('resume__user')
+
+    if not applications.exists():
+        return JsonResponse([], safe=False)
+
+    application_list = []
+    for application in applications:
+        resume = application.resume
+        user = resume.user if resume else None
+        application_list.append({
+            'id': application.id,
+            'user_name': user.name if user else None,
+            'resume_name': resume.name if resume else None,
+            'experience': resume.experience if resume else None,
+            'is_with_degree': resume.is_with_degree if resume else False,
+        })
+    return JsonResponse(application_list, safe=False, status=200)

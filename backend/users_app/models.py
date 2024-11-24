@@ -58,14 +58,6 @@ class UserResume(models.Model):
     is_with_degree = models.BooleanField(default=False)
 
 
-    def __str__(self):
-        return f'{self.name} Resume of {self.user.second_name}'
-
-    def __str__(self):
-        return f'{self.user.email} Profile'
-
-    def __str__(self):
-        return f'{self.profile_picture} Profile'
 
 class UserVacancyApply(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -75,5 +67,6 @@ class UserVacancyApply(models.Model):
     message = models.TextField()
     status = models.IntegerField(default = 0)
 
-    def __str__(self):
-        return f'Application {self.id} by {self.user.second_name}'
+
+def __str__(self):
+    return f'{self.name} Resume of {self.user.second_name}'
