@@ -57,7 +57,7 @@ def cancel_application(request, vacancyId, applyId):
         return JsonResponse({'error': 'Application not found'}, status=404)
 
 
-def get_applications_by_vacancy(request, vecencyId):
+def get_applications_by_vacancy(request, vacancyId):
     applications = UserVacancyApply.objects.filter(vacancy_id=vacancyId).select_related('resume__user')
 
     if not applications.exists():
