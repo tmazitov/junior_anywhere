@@ -45,7 +45,7 @@ def apply_vacancy(request, vacancyId):
             message=data['message'],
             status=0
         )
-        return JsonResponse({'message': 'Application submitted', 'id': application.id}, status=201)
+    return JsonResponse({'message': 'Application submitted', 'id': application.id}, status=201)
     
 def cancel_application(request, vacancyId, applyId):
     application = UserVacancyApply.objects.filter(id=applyId, vacancy_id=vacancyId).first()

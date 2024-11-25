@@ -20,16 +20,19 @@ def index_page(request):
 def register(request):
     if request.method == 'POST':
         try:
-            data = json = json.loads(request.body)
+            data = json.loads(request.body)
             form = UserRegisterForm(data)
             if form.is_valid():
                 user = form.save()
-                return JsonResponse({'message': f'Welcome to SunflowerJunior {user.name}', 'user_id': user.id}),
+                return JsonResponse({
+                    'message': f'Welcome to SunflowerJunior {user.name}', 
+                    'user_id': user.userId
+                }, status=201)
             else:
                 return JsonResponse({'errors': form.errors}, status=400)
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON format'}, status=400)
-    return JsonResponse({'error': 'Invalid request method'}, status=400)
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 
 @login_required
@@ -38,13 +41,24 @@ def profile(request):
     if request.method == 'GET':
         user = request.user
         user_data = {
-            'id': user.id,
+            'id': user.userId,
             'name': user.name,
             'email': user.email,
             'phone_number': user.phone_number,        
         }
         return JsonResponse(user_data, status=200)
     return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+#Delete user by id, needed so I can test in postman same email 
+def delete_user(request, user_id):
+    if request.method == 'DELETE':
+        try:
+            user = User.objects.get(userId=user_id)
+            user.delete()
+            return JsonResponse({'message': f'User with ID {user_id} has been deleted.'}, status=200)
+        except User.DoesNotExist:
+            return JsonResponse({'error': f'User with ID {user_id} does not exist.'}, status=404)
+    return JsonResponse({'error': 'Invalid request method. Use DELETE.'}, status=405)
 
 
     # NEW USER

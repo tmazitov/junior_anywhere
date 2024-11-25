@@ -1,11 +1,31 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout
-from django.contrib.auth import get_user_model
+from django.contrib.auth import login, logout, get_user_model, authenticate
 from django.contrib import messages
 from ..forms import UserLoginForm
 from django.http import HttpResponse
-from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
+import json
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+
+@csrf_exempt
+
+def login_user(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            email = data.get('email')
+            password = data.get('password')
+
+            user = authenticate(request, email=email, password=password)
+            if user is not None:
+                login(request, user)
+                return JsonResponse({'message': f'Welcome, {user.name}'}, status=200)
+            else:
+                return JsonResponse({'message': 'Invalid credentials'}, status=401)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON format'}, status=400)
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 User = get_user_model()
 

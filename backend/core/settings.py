@@ -74,6 +74,8 @@ TEMPLATES = [
 ]
 
 
+APPEND_SLASH = False
+
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
