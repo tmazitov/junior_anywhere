@@ -82,7 +82,7 @@ def hire(request, company_id, vacancy_id, hired_user_id):
 		return JsonResponse({'status': 'error', 'message': 'No vacancy found with the provided ID for this company.'}, status=404)
 
 @require_http_methods(["GET"])
-def filter_vacancies(request, company_id):
+def filter_vacancies_in_company(request, company_id):
     # Получаем параметры из запроса
     search = request.GET.get('s', '')
     sal_min = request.GET.get('sal_min')

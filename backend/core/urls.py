@@ -30,7 +30,10 @@ urlpatterns = [
     path('company/<int:company_id>/vacancy/<int:vacancy_id>/view/', companyVacancyViews.get_company_vacancy_data, name='vacancy_id'),
     path('company/<int:company_id>/vacancy/<int:vacancy_id>/cancel/', companyVacancyViews.cancel_vacancy, name='cancel_vacancy'),
     path('company/<int:company_id>/vacancy/<int:vacancy_id>/hire/<int:hired_user_id>', companyVacancyViews.hire, name='hire'),
-    path('company/<int:company_id>/vacancy_filter/', companyVacancyViews.filter_vacancies, name='filter_vacancies'),
+    path('company/<int:company_id>/vacancy_filter/', companyVacancyViews.filter_vacancies_in_company, name='filter_vacancies_in_company'),
+	# global search for vacancies
+    path('company//vacancy_filter/', companyVacancyViews.filter_vacancies, name='filter_vacancies'), 
 ]
+
 
     

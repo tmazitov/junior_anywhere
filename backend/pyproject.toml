@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "backend"
+name = "app1"
 version = "0.1.0"
 description = ""
 authors = ["Sofya <abdulkina.s328@gmail.com>"]
@@ -7,9 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-
-[tool.poetry.group.dev.dependencies]
-Django = "5"
+django = "5"
 
 [build-system]
 requires = ["poetry-core"]

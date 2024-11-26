@@ -28,6 +28,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# settings.py
+
+STATIC_URL = '/static/'  # Define the URL for static files
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Path where collected files will be stored
+
 
 # Application definition
 
