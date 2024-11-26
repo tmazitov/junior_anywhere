@@ -33,6 +33,7 @@ urlpatterns = [
     path('api/user/<int:user_id>/delete/', delete_user, name='delete_user'),
     path('api/user/login/', login_user, name='login_user'),
     path('api/user/logout/', logout_user, name='logout_user'),
+    
     # Web routes
     path('register/', user_register_view, name='register'),
     path('profile/', user_profile_view, name='profile'),
