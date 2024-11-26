@@ -7,6 +7,11 @@ class StatusEnum(Enum):
     hired = 1
     canceled = 2
 
+class WorkFormatEnum(Enum):
+    offline = 0
+    gibrid = 1
+    online = 2
+
 class CompanyVacancy(models.Model) :
 
 	vacancy_id = models.AutoField(primary_key=True)
@@ -28,6 +33,8 @@ class CompanyVacancy(models.Model) :
 	is_degree_required = models.BooleanField()
 	status = models.PositiveSmallIntegerField(choices=[(status.value, status.name) for status in StatusEnum],
 		default=StatusEnum.active.value)
+	work_format = models.PositiveSmallIntegerField(choices=[(status.value, status.name) for status in WorkFormatEnum],
+		default=WorkFormatEnum.offline.value)
 	
 	def __str__(self):
 		return f"{self.name}, {self.company_id}"

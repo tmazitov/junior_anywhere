@@ -129,9 +129,9 @@ def filter_vacancies_in_company(request, company_id):
     if sal_max:
         vacancies = vacancies.filter(salary__lte=sal_max)
     if loc:
-        vacancies = vacancies.filter(location_id__in=loc)
+        vacancies = vacancies.filter(location__in=loc)
     if emp:
-        vacancies = vacancies.filter(employment_type__in=emp)
+        vacancies = vacancies.filter(employment__in=emp)
     if wf:
         vacancies = vacancies.filter(work_format__in=wf)
     if is_degree is not None:
@@ -148,11 +148,11 @@ def filter_vacancies_in_company(request, company_id):
     # Формируем ответ
     result = [
         {
-            'id': vacancy.id,
+            'id': vacancy.vacancy_id,
             'name': vacancy.name,
             'salary': str(vacancy.salary),
-            'company_name': vacancy.company.name,
-            'locationId': vacancy.location_id,
+            'company_name': vacancy.company_id.name,
+            'locationId': vacancy.location,
         }
         for vacancy in vacancies
     ]
