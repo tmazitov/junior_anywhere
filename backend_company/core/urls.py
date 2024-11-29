@@ -20,17 +20,17 @@ from app1.views import companyVacancyViews, companyViews
 from app1.views.companyVacancyViews import registerVacancy
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-	path('company/auth/', companyViews.auth, name='company_login'), #указать метод запроса GET/POST/DELETE etc
-    path('company/register/', companyViews.register, name='company_register'),
-    path('company/<int:company_id>/', companyViews.get_company_data, name='company_id'),
+    path('admin', admin.site.urls),
+	path('company/auth', companyViews.auth, name='company_login'), #указать метод запроса GET/POST/DELETE etc
+    path('company/register', companyViews.register, name='company_register'),
+    path('company/<int:company_id>', companyViews.get_company_data, name='company_id'),
 	
     # path('company/auth/', views.auth, name='company_login'), #указать метод запроса GET/POST/DELETE etc
-    path('company/<int:company_id>/vacancy/', companyVacancyViews.registerVacancy, name='company_vacancy_register'),
-    path('company/<int:company_id>/vacancy/<int:vacancy_id>/view/', companyVacancyViews.get_company_vacancy_data, name='vacancy_id'),
-    path('company/<int:company_id>/vacancy/<int:vacancy_id>/cancel/', companyVacancyViews.cancel_vacancy, name='cancel_vacancy'),
+    path('company/<int:company_id>/vacancy', companyVacancyViews.registerVacancy, name='company_vacancy_register'),
+    path('company/<int:company_id>/vacancy/<int:vacancy_id>/view', companyVacancyViews.get_company_vacancy_data, name='vacancy_id'),
+    path('company/<int:company_id>/vacancy/<int:vacancy_id>/cancel', companyVacancyViews.cancel_vacancy, name='cancel_vacancy'),
     path('company/<int:company_id>/vacancy/<int:vacancy_id>/hire/<int:hired_user_id>', companyVacancyViews.hire, name='hire'),
-    path('company/<int:company_id>/vacancy_filter/', companyVacancyViews.filter_vacancies_in_company, name='filter_vacancies_in_company'),
+    path('company/<int:company_id>/vacancy_filter', companyVacancyViews.filter_vacancies_in_company, name='filter_vacancies_in_company'),
 	# global search for vacancies
     # path('company//vacancy_filter/', companyVacancyViews.filter_vacancies, name='filter_vacancies'), 
 ]
