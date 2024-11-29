@@ -116,8 +116,9 @@ import RegisterCompanyForm from '../components/forms/RegisterCompanyForm.vue';
 import RegisterCompany from '../types/forms/registerCompany';
 import UserAuth from '../utils/authUser';
 import CompanyAuth from '../utils/authCompany';
-import CompanyAPI from '../api/company/companyApi';
+import CompanyAPI from '../api/company/api';
 import BaseCheckbox from '../components/inputs/BaseCheckbox.vue';
+import UserAPI from '../api/user/api';
 
 const router = useRouter();
 
@@ -204,10 +205,17 @@ const submitSignInForm = () => {
 			submitChange()
 		})
 	} else {
-
+		UserAPI.auth.login(signInUser.value)
+		.then(response => {
+			if (response.status >= 400) {
+				return
+			}
+			const data = response.data
+			const userId = data.id
+			UserAuth.setUserId(userId)
+			submitChange()
+		})
 	}
-
-	submitChange()
 }
 
 const submitRegistrationForm = () => {
@@ -236,7 +244,16 @@ const submitRegistrationForm = () => {
 			submitChange()
 		})
 	} else {
-
+		UserAPI.auth.register(registerUser.value)
+		.then(response => {
+			if (response.status >= 400) {
+				return
+			}
+			const data = response.data
+			const userId = data.id
+			UserAuth.setUserId(userId)
+			submitChange()
+		})
 	}
 
 }

@@ -2,7 +2,9 @@ import validateEmail from "../../utils/emailValidation";
 
 
 class RegisterUser {
-	fullName: string = "";
+	firstName: string = "";
+	lastName: string = "";
+	phone: string = "";
 	email: string = "";
 	password: string = "";
 	agree: boolean = false;
@@ -20,11 +22,29 @@ class RegisterUser {
 			return false;
 		}
 
-		if (this.fullName.length < 3) {
+		if (this.firstName.length < 1) {
+			return false;
+		}
+
+		if (this.lastName.length < 1) {
+			return false;
+		}
+
+		if (this.phone.length < 10) {
 			return false;
 		}
 
 		return true
+	}
+
+	toRequestBody() {
+		return {
+			firstName: this.firstName,
+			lastName: this.lastName,
+			email: this.email,
+			phone: this.phone,
+			password: this.password
+		}
 	}
 }
 

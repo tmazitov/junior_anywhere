@@ -1,4 +1,4 @@
-import CompanyAPI from "../api/company/companyApi"
+import CompanyAPI from "../api/company/api"
 import CompanyInfo from "../types/company"
 
 class CompanyAuth {

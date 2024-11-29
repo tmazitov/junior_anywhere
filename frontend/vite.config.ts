@@ -9,7 +9,7 @@ export default defineConfig({
 			'/company': {
 				target: 'http://localhost:8000',
 			},
-			'/user': {
+			'/api/user': {
 				target: 'http://localhost:8001',
 			},
 		},

@@ -57,7 +57,7 @@ import Vacancy from '../types/vacancy';
 import Card from '../components/vacancy-list/Card.vue';
 import { Icon } from '@iconify/vue/dist/iconify.js';
 import VacancyDetailsModal from '../components/modals/VacancyDetailsModal.vue';
-import CompanyAPI from '../api/company/companyApi';
+import CompanyAPI from '../api/company/api';
 
 const isModalOpen = ref(false)
 const selectedVacancy = ref<Vacancy|undefined>()

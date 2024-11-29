@@ -1,7 +1,14 @@
 <template>
-	<BaseInput v-model="form.fullName" ref="firstNameField"
+	<BaseInput v-model="form.firstName" ref="firstNameField"
 		:left-icon="icons['user']"
-		placeholder="Full name"/>
+		placeholder="First name"/>
+	<BaseInput v-model="form.lastName" ref="firstNameField"
+		:left-icon="icons['user']"
+		placeholder="Last name"/>
+
+	<BaseInput v-model="form.phone" ref="firstNameField"
+		:left-icon="icons['phone']"
+		placeholder="Phone number"/>
 
 	<BaseInput v-model="form.email" type="email" ref="emailField"
 		:left-icon="icons['email']"
@@ -31,6 +38,9 @@ const icons = {
 	"user" : {
 		name: "tabler:user-square-rounded",
 	},
+	"phone" : {
+		name: "tabler:phone",
+	}
 }
 
 const form = defineModel<RegisterUser>({required: true})

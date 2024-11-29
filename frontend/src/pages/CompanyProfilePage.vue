@@ -82,7 +82,7 @@ import VacancyListFilters from '../types/vacancyListFilters';
 import { useRoute, useRouter } from 'vue-router';
 import CreateVacancyModal from '../components/modals/CreateVacancyModal.vue';
 import CompanyAuth from '../utils/authCompany';
-import CompanyAPI from '../api/company/companyApi';
+import CompanyAPI from '../api/company/api';
 import VacancyCreate from '../types/forms/vacancyCreate';
 
 const companyId = CompanyAuth.getCompanyId()
