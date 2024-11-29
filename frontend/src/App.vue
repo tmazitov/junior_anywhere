@@ -15,13 +15,7 @@ onBeforeMount(() => {
 	const companyId = CompanyAuth.getCompanyId();
 	const userId = UserAuth.getUserId();
 	if (companyId && !userId) {
-		CompanyAPI.info.general(companyId).then((res) => {
-			if (res.status >= 400) {
-				throw new Error('Get company info failed')
-			}
-			const data = res.data
-			CompanyAuth.info = new CompanyInfo(data)
-		})
+		CompanyAuth.setupInfo(companyId)
 	}
 	if (!companyId && userId) {
 

@@ -1,9 +1,20 @@
+import CompanyAPI from "../api/company/companyApi"
 import CompanyInfo from "../types/company"
 
 class CompanyAuth {
 	static keyName:string="company-key"
 
 	static info:CompanyInfo|undefined = undefined
+
+	static setupInfo(companyId:number){
+		CompanyAPI.info.general(companyId).then((res) => {
+			if (res.status >= 400) {
+				throw new Error('Get company info failed')
+			}
+			const data = res.data
+			this.info = new CompanyInfo(data)
+		})
+	}
 
 	static getCompanyId() : number|undefined{
 		const rawValue = localStorage.getItem(this.keyName)

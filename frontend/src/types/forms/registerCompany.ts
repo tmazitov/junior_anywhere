@@ -35,7 +35,7 @@ class RegisterCompany {
 	toRequestBody(){
 		return {
 			name: this.name,
-			email: "corp" + this.email,
+			email: this.email,
 			LLC_Number: this.documentId,
 			password: this.password
 		}

@@ -14,6 +14,7 @@
 					</template>
 					<template #default>
 						<SignInUserForm v-model="signInUser"/>
+						<BaseCheckbox v-model="isCompany" label="I'm company"/>
 						<a href="">Forgot password</a>
 					</template>
 					<template #footer>
@@ -31,17 +32,17 @@
 							@click="navigateToBack"
 							fill="clear"/>
 						<div class="card-header__title">
-							<span v-if="isRegisterCompany">{{ "Company Registration" }}</span>
+							<span v-if="isCompany">{{ "Company Registration" }}</span>
 							<span v-else>Registration</span>
 						</div>
 						<div class="card-header__title small" 
-						v-if="!isRegisterCompany"
-						@click="isRegisterCompany = true">
+						v-if="!isCompany"
+						@click="isCompany = true">
 							For Companies
 						</div>
 					</template>
 					<template #default>
-						<RegisterUserForm v-if="!isRegisterCompany" v-model="registerUser"/>
+						<RegisterUserForm v-if="!isCompany" v-model="registerUser"/>
 						<RegisterCompanyForm v-else v-model="registerCompany"/>
 					</template>
 					<template #footer>
@@ -116,6 +117,7 @@ import RegisterCompany from '../types/forms/registerCompany';
 import UserAuth from '../utils/authUser';
 import CompanyAuth from '../utils/authCompany';
 import CompanyAPI from '../api/company/companyApi';
+import BaseCheckbox from '../components/inputs/BaseCheckbox.vue';
 
 const router = useRouter();
 
@@ -136,7 +138,7 @@ const codeField = ref<HTMLElement|null>(null);
 const isSubmitted = ref(false)
 const isRegister = ref(false);
 
-const isRegisterCompany = ref(false)
+const isCompany = ref(false)
 const toggleRegister = () => {
 	isRegister.value = !isRegister.value;
 }
@@ -147,8 +149,8 @@ const navigateToBack = () => {
 		return;
 	}
 
-	if (isRegisterCompany.value) {
-		isRegisterCompany.value = false
+	if (isCompany.value) {
+		isCompany.value = false
 		return 
 	}
 
@@ -185,9 +187,26 @@ const goNext = (ev:any) => {
 }
 
 const submitSignInForm = () => {
-	// if (!signInUser.value.validate()) {
-	// 	return
-	// }
+	if (!signInUser.value.validate()) {
+		return
+	}
+
+	if (isCompany.value) {
+		CompanyAPI.auth.login(signInUser.value)
+		.then(response => {
+			if (response.status >= 400) {
+				return
+			}
+			const data = response.data
+			const companyId = data.id
+			CompanyAuth.setCompanyId(companyId)
+			CompanyAuth.setupInfo(companyId)
+			submitChange()
+		})
+	} else {
+
+	}
+
 	submitChange()
 }
 
@@ -196,15 +215,15 @@ const submitRegistrationForm = () => {
 		return
 	}
 
-	if (isRegisterCompany.value && !registerCompany.value.validate()) {
+	if (isCompany.value && !registerCompany.value.validate()) {
 		return
 	}
 
-	if (!isRegisterCompany.value && !registerUser.value.validate()) {
+	if (!isCompany.value && !registerUser.value.validate()) {
 		return
 	}
 
-	if (isRegisterCompany.value) {
+	if (isCompany.value) {
 		CompanyAPI.auth.register(registerCompany.value)
 		.then(response => {
 			if (response.status >= 400) {
@@ -213,6 +232,7 @@ const submitRegistrationForm = () => {
 			const data = response.data
 			const companyId = data.id
 			CompanyAuth.setCompanyId(companyId)
+			CompanyAuth.setupInfo(companyId)
 			submitChange()
 		})
 	} else {
@@ -240,8 +260,7 @@ const submitVerificationCode = () => {
 	if (!codeIsValid.value) {
 		return
 	}
-	if (isRegister.value && isRegisterCompany.value 
-	|| !isRegister.value && signInUser.value.email.includes("corp")) {
+	if (isCompany.value) {
 		router.push({name:'company-profile'})
 		return
 	}
@@ -264,7 +283,7 @@ const submitHandler = () => {
 }
 
 const registrationFormIsValid = computed(() => {
-	if (isRegisterCompany.value) {
+	if (isCompany.value) {
 		return registerCompany.value.validate()
 	}
 	return registerUser.value.validate()

@@ -1,11 +1,12 @@
 import RegisterCompany from "../../types/forms/registerCompany";
+import SignInUser from "../../types/forms/signInUser";
 import client from "./client";
 
 class AuthAPI {
-    static login(email:string, password:string) {
+    static login(form: SignInUser) {
         return client.post('auth', {
-            email: email,
-            password: password
+            email: form.email,
+            password: form.password
         });
     }
     static register(form:RegisterCompany) {
