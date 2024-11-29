@@ -1,4 +1,5 @@
 import vacancies from "../../info/vacancies";
+import VacancyCreate from "../../types/forms/vacancyCreate";
 import VacancyListFilters from "../../types/vacancyListFilters";
 import { fakeRequest } from "../utils/fakeRequest";
 
@@ -24,6 +25,16 @@ class VacancyAPI {
                 return this.mockVacancies?.filter(vacancy => {
                     return filters.check(vacancy)
                 })
+            },
+            delay: 1000,
+        });
+    }
+
+    static async submit(companyId:number, form:VacancyCreate) {
+        console.log(companyId,form)
+        return await fakeRequest({
+            responseData: () => {
+                return null
             },
             delay: 1000,
         });

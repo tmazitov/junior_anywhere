@@ -64,7 +64,8 @@
 			</div>
 		</div>
 	</div>
-	<CreateVacancyModal v-model="isCreateVacancy" />
+	<CreateVacancyModal v-model="isCreateVacancy" 
+	@on-submit="submitVacancy"/>
 </div>
 </template>
 
@@ -82,6 +83,7 @@ import { useRoute, useRouter } from 'vue-router';
 import CreateVacancyModal from '../components/modals/CreateVacancyModal.vue';
 import CompanyAuth from '../utils/authCompany';
 import CompanyAPI from '../api/company/companyApi';
+import VacancyCreate from '../types/forms/vacancyCreate';
 
 const companyId = CompanyAuth.getCompanyId()
 
@@ -128,6 +130,10 @@ watch(() => filters.value, () => {
 const logOut = () => {
 	CompanyAuth.delCompanyId()
 	router.replace({name: "auth"})
+}
+
+const submitVacancy = (form:VacancyCreate) => {
+
 }
 
 </script>

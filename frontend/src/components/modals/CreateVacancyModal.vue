@@ -11,7 +11,8 @@
                 <VacancyCreateForm v-model="form"/>
             </template>
             <template v-slot:footer>
-                <BaseButton title="Upload" primary :disabled="!formIsValid"/>
+                <BaseButton title="Upload" primary :disabled="!formIsValid"
+                @click="submitHandler"/>
             </template>
         </FormCard>
     </ModalWindowLayout>
@@ -25,9 +26,17 @@ import ModalWindowLayout from './ModalWindowLayout.vue';
 import VacancyCreate from '../../types/forms/vacancyCreate';
 import { computed, ref } from 'vue';
 import VacancyCreateForm from '../forms/VacancyCreateForm.vue';
+import CompanyAPI from '../../api/company/companyApi';
+import CompanyAuth from '../../utils/authCompany';
 
 const isOpen = defineModel<boolean>({required:true})
 const form = ref(new VacancyCreate())
+const formIsSubmitted = ref<boolean>(false)
+const isSuccessResponse = ref<boolean|undefined>()
+
+const emits = defineEmits([
+    'on-submit'
+])
 
 const closeHandler = () => {
     isOpen.value = false
@@ -35,6 +44,17 @@ const closeHandler = () => {
 }
 
 const formIsValid = computed(() => form.value.validate())
+
+const submitHandler = () => {
+    if (!formIsSubmitted.value)
+        return
+    const companyId = CompanyAuth.getCompanyId()
+	if (!companyId)
+		return	
+    CompanyAPI.vacancy.submit(companyId, form.value).then(() => {
+        isSuccessResponse.value = true	
+	})
+}
 
 </script>
 
