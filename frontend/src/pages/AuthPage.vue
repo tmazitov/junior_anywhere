@@ -115,6 +115,7 @@ import RegisterCompanyForm from '../components/forms/RegisterCompanyForm.vue';
 import RegisterCompany from '../types/forms/registerCompany';
 import UserAuth from '../utils/authUser';
 import CompanyAuth from '../utils/authCompany';
+import CompanyAPI from '../api/company/companyApi';
 
 const router = useRouter();
 
@@ -191,10 +192,33 @@ const submitSignInForm = () => {
 }
 
 const submitRegistrationForm = () => {
-	if (!registerUser.value.validate()) {
+	if (!isRegister.value) {
 		return
 	}
-	submitChange()
+
+	if (isRegisterCompany.value && !registerCompany.value.validate()) {
+		return
+	}
+
+	if (!isRegisterCompany.value && !registerUser.value.validate()) {
+		return
+	}
+
+	if (isRegisterCompany.value) {
+		CompanyAPI.auth.register(registerCompany.value)
+		.then(response => {
+			if (response.status >= 400) {
+				return
+			}
+			const data = response.data
+			const companyId = data.id
+			CompanyAuth.setCompanyId(companyId)
+			submitChange()
+		})
+	} else {
+
+	}
+
 }
 
 const submitChange = () => {
@@ -216,11 +240,8 @@ const submitVerificationCode = () => {
 	if (!codeIsValid.value) {
 		return
 	}
-	if (isRegisterCompany.value) {
-		return 
-	}
-	if (isRegister.value && isRegisterCompany.value || !isRegister.value && signInUser.value.email.includes("corp")) {
-		CompanyAuth.setCompanyId(1)
+	if (isRegister.value && isRegisterCompany.value 
+	|| !isRegister.value && signInUser.value.email.includes("corp")) {
 		router.push({name:'company-profile'})
 		return
 	}

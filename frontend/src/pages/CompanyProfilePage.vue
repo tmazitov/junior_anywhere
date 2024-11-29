@@ -4,13 +4,13 @@
 		<NavigationBar/>
 		<div class="page-frame__content grid-container">
 			<div class="side-menu">
-				<FormCard width="240px">
+				<FormCard width="240px" v-if="companyInfo">
 					<template v-slot:header>
-						<h2>Yandex</h2>
+						<h2>{{companyInfo.name}}</h2>
 					</template>
 					<template v-slot:default>
 						<div class="support-message">
-							LLC: test-llc-number
+							LLC: {{companyInfo.llcNumber}}
 						</div>		
 					</template>
 				</FormCard>
@@ -76,7 +76,7 @@ import BaseButton from '../components/inputs/BaseButton.vue';
 import Vacancy from '../types/vacancy';
 import CompanyPersonalVacancyList from '../components/vacancy-list/CompanyPersonalVacancyList.vue';
 import { Icon } from '@iconify/vue/dist/iconify.js';
-import { onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import Filters from '../components/vacancy-list/Filters.vue';
 import VacancyListFilters from '../types/vacancyListFilters';
 import { useRoute, useRouter } from 'vue-router';
@@ -135,6 +135,8 @@ const logOut = () => {
 const submitVacancy = (form:VacancyCreate) => {
 
 }
+
+const companyInfo = computed(() => CompanyAuth.info)
 
 </script>
 

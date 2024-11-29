@@ -6,7 +6,6 @@ class RegisterCompany {
 	email: string = "";
 	documentId: string = "";
 	password: string = "";
-	companyType: {value:number, title: string}|null = null
 	agree: boolean = false;
 
 	validate() : boolean {
@@ -17,10 +16,6 @@ class RegisterCompany {
 		if (this.documentId.length == 0) {
 			return false
 		} 
-
-		if (this.companyType == null) {
-			return false
-		}
 
 		if (!validateEmail(this.email)) {
 			return false;
@@ -35,6 +30,15 @@ class RegisterCompany {
 		}
 
 		return true
+	}
+
+	toRequestBody(){
+		return {
+			name: this.name,
+			email: "corp" + this.email,
+			LLC_Number: this.documentId,
+			password: this.password
+		}
 	}
 }
 

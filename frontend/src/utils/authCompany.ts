@@ -1,5 +1,9 @@
+import CompanyInfo from "../types/company"
+
 class CompanyAuth {
 	static keyName:string="company-key"
+
+	static info:CompanyInfo|undefined = undefined
 
 	static getCompanyId() : number|undefined{
 		const rawValue = localStorage.getItem(this.keyName)

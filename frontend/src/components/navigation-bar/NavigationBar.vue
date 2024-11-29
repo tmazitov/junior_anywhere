@@ -51,11 +51,11 @@
 					Timur Mazitov
 				</div>
 				
-				<div class="nav-bar__link" v-else-if="isAuthorized && companyId"
+				<div class="nav-bar__link" v-else-if="isAuthorized && companyId && companyValue"
 				@click="navigateTo('company-profile')"
 				v-bind:class="{active: routeName?.toString().includes('profile')}">
 					<Icon icon="tabler:briefcase" height="16px"/>
-					Yandex
+					{{ companyValue.name }}
 				</div>
 			</span>
 
@@ -107,6 +107,9 @@ const navbarItems:Array<NavbarItem> = [
 	{id: 2, pageName: "", title: "Events", icon: "tabler:calendar-event", action: () => {} },
 	{id: 3, pageName: "", title: "Companies", icon: "tabler:building", action: () => {} },
 ]
+
+const companyValue = computed(() => CompanyAuth.info)
+
 </script>
 
 <style scoped>

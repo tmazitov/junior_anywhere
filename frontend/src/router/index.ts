@@ -17,12 +17,12 @@ const routes: Array<RouteRecordRaw> = [
 		component: () => import('../pages/VacancyListPage.vue')
 	},
 	{
-		path: '/user/profile',
+		path: '/usr/profile',
 		name: 'user-profile',
 		component: () => import('../pages/UserProfilePage.vue')
 	},
 	{
-		path: '/company/profile',
+		path: '/cmp/profile',
 		name: 'company-profile',
 		component: () => import('../pages/CompanyProfilePage.vue')
 	},
