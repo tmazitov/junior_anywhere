@@ -129,6 +129,7 @@ watch(() => filters.value, () => {
                                        
 const logOut = () => {
 	CompanyAuth.delCompanyId()
+	CompanyAuth.info = undefined
 	router.replace({name: "auth"})
 }
 
