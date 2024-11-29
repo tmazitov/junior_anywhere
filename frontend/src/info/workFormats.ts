@@ -1,14 +1,14 @@
 const workFormats = [
 	{
-		value: 0,
+		value: 1,
 		title: "Office",
 	},
 	{
-		value: 1,
+		value: 2,
 		title: "Remote",
 	},
 	{
-		value: 2,
+		value: 3,
 		title: "Hybrid",
 	},
 ]

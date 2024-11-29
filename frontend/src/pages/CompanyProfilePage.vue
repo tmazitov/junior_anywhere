@@ -97,8 +97,20 @@ const router = useRouter()
 
 const vacancyList = ref<Vacancy[]|undefined>()
 if (companyId) {
-	CompanyAPI.vacancy.listByCompany(filters.value, companyId).then((res) => {
-		vacancyList.value = res.data
+	CompanyAPI.vacancy.listByCompany(companyId, filters.value).then((res) => {
+		if (res.status >= 400) {
+			console.error(res)
+			return
+		}
+		const data = res.data
+		if (!data || !data.vacancies) {
+			vacancyList.value = []
+			return
+		}
+		const vacancies = data.vacancies.map((vacancyData:any) => {
+			return new Vacancy(vacancyData)
+		})
+		vacancyList.value = vacancies
 	})
 }
 
@@ -119,7 +131,7 @@ watch(() => filters.value, () => {
 	timeout = setTimeout(() => {
 		const query = filters.value.toQuery()
 		if (companyId) {
-			CompanyAPI.vacancy.listByCompany(filters.value, companyId).then((res) => {
+			CompanyAPI.vacancy.listByCompany(companyId, filters.value).then((res) => {
 				vacancyList.value = res.data
 			})
 		}
@@ -134,7 +146,22 @@ const logOut = () => {
 }
 
 const submitVacancy = (form:VacancyCreate) => {
-
+	if (!companyId) {
+		return
+	}
+	CompanyAPI.vacancy.submit(companyId, form).then((res) => {
+		if (res.status >= 400) {
+			console.error(res)
+			return
+		}
+		const data = res.data
+		const vacancy = new Vacancy(data)
+		if (!vacancyList.value) {
+			vacancyList.value = []
+		}
+		vacancyList.value.push(vacancy)
+		isCreateVacancy.value = false
+	})
 }
 
 const companyInfo = computed(() => CompanyAuth.info)

@@ -2,6 +2,7 @@ class VacancyCreate {
     name: string = "" 
     employment: {title:string, value:number}|null = null
     location: {title:string, value:number}|null = null
+    workFormat: {title:string, value:number}|null = null
     salary: number|null = null
     skills: string[] = []
     experience: number|null = null
@@ -24,6 +25,7 @@ class VacancyCreate {
             !this.name,
             !this.employment,
             !this.location,
+            !this.workFormat,
             this.salary == null,
             this.experience == null,
             !this.comment,
@@ -35,6 +37,20 @@ class VacancyCreate {
         if (failedCheck != undefined)
             return false
         return true
+    }
+
+    toRequestBody(){
+        return {
+            name: this.name,
+            employment: this.employment?.value,
+            location: this.location?.value,
+            salary: this.salary?.toString(),
+            skills: this.skills.join(" "),
+            workFormat: this.workFormat?.value,
+            experience: Number(this.experience),
+            comment: this.comment,
+            isDegreeRequired: this.isDegreeRequired
+        }
     }
 }
 

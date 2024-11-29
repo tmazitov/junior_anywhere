@@ -128,6 +128,19 @@ class VacancyListFilters {
 		return query
 	}
 
+	toQueryStr(){
+		const query = this.toQuery()
+		const queryStr = Object.keys(query).map((key) => {
+			if (Array.isArray(query[key])) {
+				return query[key].map((value) => {
+					return `${key}[]=${value}`
+				}).join("&")
+			}
+			return `${key}=${query[key]}`
+		}).join("&")
+		return queryStr
+	}
+
 	check(vacancy:Vacancy) {
 		const match = {
 			search: this.search ? 

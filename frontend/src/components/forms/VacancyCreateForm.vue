@@ -18,6 +18,7 @@
     <BaseSelect v-model="form.location" placeholder="Location" :items="locations"
         with-search/>
     <BaseSelect v-model="form.employment" placeholder="Employment" :items="employments"/>
+    <BaseSelect v-model="form.workFormat" placeholder="Work Format" :items="workFormats"/>
     
     <div class="skills" ref="skills">
         Expecting skills
@@ -48,6 +49,7 @@ import VacancyCreate from '../../types/forms/vacancyCreate';
 import employments from '../../info/employments';
 import BaseCheckbox from '../inputs/BaseCheckbox.vue';
 import locations from '../../info/locations';
+import workFormats from '../../info/workFormats';
 
 let inputArray:HTMLElement[] = []
 
