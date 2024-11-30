@@ -46,10 +46,10 @@ class VacancyCreate {
             location: this.location?.value,
             salary: this.salary?.toString(),
             skills: this.skills.join(" "),
-            workFormat: this.workFormat?.value,
+            work_format: this.workFormat?.value,
             experience: Number(this.experience),
             comment: this.comment,
-            isDegreeRequired: this.isDegreeRequired
+            is_degree_required: this.isDegreeRequired
         }
     }
 }
