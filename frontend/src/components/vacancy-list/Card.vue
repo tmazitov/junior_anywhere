@@ -134,7 +134,7 @@ const getEmployment = (id:number) => {
 
 
 .info-item{
-	padding: 4px 10px;
+	padding: 7px 11px;
 	background-color: #f3f3f3;
 	border-radius: var(--border-radius);
 	font-size: 0.95em;
@@ -144,6 +144,6 @@ const getEmployment = (id:number) => {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	gap: 6px;
+	gap: 5px;
 }
 </style>
