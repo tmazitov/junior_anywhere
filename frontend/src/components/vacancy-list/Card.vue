@@ -16,10 +16,10 @@
 			<div class="vacancy-card__info" v-if="!isCompanyView">
 				{{ vacancy.salary }} AED
 			</div>
-			<div class="vacancy-card__subtitle" v-else>
-				<!-- <Icon icon="tabler:user" size="1.2em" color="var(--primary-color)" /> -->
+			<!-- <div class="vacancy-card__subtitle" v-else>
+				<Icon icon="tabler:user" size="1.2em" color="var(--primary-color)" />
 				{{ vacancy.applies }} applies
-			</div>
+			</div> -->
 		</div>
 	</div>
 </template>

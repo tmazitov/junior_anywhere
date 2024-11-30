@@ -59,8 +59,7 @@
 						</div>
 					</template>
 				</FormCard>
-				<CompanyPersonalVacancyList v-if="vacancyList" 
-				:vacancies="vacancyList"/>
+				<CompanyPersonalVacancyList :vacancies="vacancies"/>
 			</div>
 		</div>
 	</div>
@@ -95,8 +94,13 @@ const filters = ref(new VacancyListFilters(route.query))
 let timeout:number|null = null
 const router = useRouter()
 
-const vacancyList = ref<Vacancy[]|undefined>()
-if (companyId) {
+const vacancies = ref<Vacancy[]|undefined>()
+
+const updateVacancyList = () => {
+	const companyId = CompanyAuth.getCompanyId()
+	if (!companyId) {
+		return
+	}
 	CompanyAPI.vacancy.listByCompany(companyId, filters.value).then((res) => {
 		if (res.status >= 400) {
 			console.error(res)
@@ -104,16 +108,15 @@ if (companyId) {
 		}
 		const data = res.data
 		if (!data || !data.vacancies) {
-			vacancyList.value = []
+			vacancies.value = []
 			return
 		}
-		const vacancies = data.vacancies.map((vacancyData:any) => {
-			return new Vacancy(vacancyData)
-		})
-		vacancyList.value = vacancies
+		vacancies.value = data.vacancies.map((vacancyData:any) => new Vacancy(vacancyData))
 	})
 }
-
+if (companyId) {
+	updateVacancyList()
+}
 
 onMounted(() => {
 	if (!CompanyAuth.getCompanyId()) {
@@ -130,12 +133,8 @@ watch(() => filters.value, () => {
 	
 	timeout = setTimeout(() => {
 		const query = filters.value.toQuery()
-		if (companyId) {
-			CompanyAPI.vacancy.listByCompany(companyId, filters.value).then((res) => {
-				vacancyList.value = res.data
-			})
-		}
 		router.replace({name: 'company-profile', query})
+		updateVacancyList()
 	}, 200)
 }, {deep: true})
                                        
@@ -156,11 +155,12 @@ const submitVacancy = (form:VacancyCreate) => {
 		}
 		const data = res.data
 		const vacancy = new Vacancy(data)
-		if (!vacancyList.value) {
-			vacancyList.value = []
+		if (!vacancies.value) {
+			vacancies.value = []
 		}
-		vacancyList.value.push(vacancy)
+		vacancies.value.push(vacancy)
 		isCreateVacancy.value = false
+		updateVacancyList()
 	})
 }
 

@@ -31,6 +31,9 @@
                                 <Icon icon="tabler:school" height="1.2em"/>
                                 Degree required
                             </div>
+                            <div class="general-employment" v-if="vacancy.workFormatId">
+                                {{ getWorkFormat(vacancy.workFormatId)}}
+                            </div>
                         </div>
                         
                         <div class="general-skills" v-if="vacancy.skills.length">
@@ -41,10 +44,7 @@
                         </div>
                         
                         <div class="general-description">
-
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Nulla nec purus feugiat, molestie ipsum et, eleifend nunc.
-                            
+                            {{ vacancy.comment }}
                         </div>
                     </div>
                     <div class="modal-content__container" v-show="currentTab == 2">
@@ -124,7 +124,7 @@ import ModalWindowLayout from './ModalWindowLayout.vue';
 import FormCard from '../forms/FormCard.vue';
 import BaseIconButton from '../inputs/BaseIconButton.vue';
 import BaseButton from '../inputs/BaseButton.vue';
-import { ref , defineProps, defineModel, computed } from 'vue';
+import { ref , defineProps, defineModel, computed, watch } from 'vue';
 import Vacancy from '../../types/vacancy';
 import BaseSwitch from '../inputs/BaseSwitch.vue';
 import locations from '../../info/locations';
@@ -136,6 +136,8 @@ import VacancyApply from '../../types/vacancyApply';
 import VacancyApplyFormInstance from '../../types/forms/vacancyApply';
 import VacancyApplyForm from '../forms/VacancyApplyForm.vue';
 import { useRouter } from 'vue-router';
+import CompanyAuth from '../../utils/authCompany';
+import workFormats from '../../info/workFormats';
 
 const isOpen = defineModel<boolean>({required:true})
 
@@ -144,15 +146,28 @@ const closeHandler = () => {
     isOpen.value = false
 }
 
+
 const router = useRouter()
 const navTo = (name:string) => {
     router.push({name})
 } 
 
-defineProps({
+const props = defineProps({
     vacancy: Vacancy,
     isCompanyView: Boolean,
 })
+
+watch(() => props.vacancy, async () => {
+    if (!props.vacancy) {
+        return
+    }
+    const companyId = CompanyAuth.getCompanyId()
+    if (!companyId) {
+        return
+    }
+    await props.vacancy.setupDetails(companyId)
+})
+
 
 // APPLY
 
@@ -197,6 +212,10 @@ const currentTab = ref(1)
 
 const getEmploymentName = (id:number) => {
     return employments.find(emp => emp.value == id)?.title
+}
+
+const getWorkFormat = (id:number) => {
+    return workFormats.find(wf => wf.value == id)?.title
 }
 
 
