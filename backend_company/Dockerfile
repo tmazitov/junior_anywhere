@@ -11,7 +11,8 @@ RUN apt-get update && apt-get install -y \
     curl \
     && apt-get clean \
     && curl -sSL https://install.python-poetry.org | python3 - \
-    && ln -s /root/.local/bin/poetry /usr/local/bin/poetry
+    && ln -s /root/.local/bin/poetry /usr/local/bin/poetry \
+    && pip install django-cors-headers
 
 # Copy only the pyproject.toml and poetry.lock to install dependencies first
 COPY pyproject.toml poetry.lock /app/

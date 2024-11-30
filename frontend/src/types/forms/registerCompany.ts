@@ -36,7 +36,7 @@ class RegisterCompany {
 		return {
 			name: this.name,
 			email: this.email,
-			LLC_Number: this.documentId,
+			llc_number: this.documentId,
 			password: this.password
 		}
 	}

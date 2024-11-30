@@ -31,7 +31,7 @@ def registerVacancy(request, company_id):
 			company = get_object_or_404(Company, id=company_id)
 			# Include only the company ID in the data for the form
 			data['company_id'] = company.id  # Pass only the ID, not the instance
-			
+			data.setdefault('skills', "")
 			print("JSON data:", data)
 		except json.JSONDecodeError:
 			data = request.POST  # If it's not JSON, use POST data directly

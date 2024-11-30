@@ -15,7 +15,7 @@ def get_company_data(request, company_id):
         data = {
             'id': company.id,
             'name': company.name,
-            'llcNumber': company.LLC_Number,
+            'llcNumber': company.llc_number,
         }
         return JsonResponse(data, status=200)
     except Company.DoesNotExist:
