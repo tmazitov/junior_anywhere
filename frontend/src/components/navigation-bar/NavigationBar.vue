@@ -126,7 +126,9 @@ const companyValue = computed(() => CompanyAuth.info)
 	z-index: 4;
 
 	background: rgba( 255, 255, 255, 0.15 );
-	box-shadow: 0 3px 24px 0 rgba(162, 165, 199, 0.37);
+	/* box-shadow: 0 3px 24px 0 rgba(162, 165, 199, 0.37); */
+	box-shadow: 0 0 14px -7px  var(--border-color);
+
 	backdrop-filter: blur( 13px );
 	-webkit-backdrop-filter: blur( 13px );
 }
