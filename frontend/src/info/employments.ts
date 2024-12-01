@@ -1,14 +1,14 @@
 	const employments = [
 	{
-		value: 1,
+		value: 0,
 		title: "Internship"
 	},
 	{
-		value: 2,
+		value: 1,
 		title: "Full Time"
 	},
 	{
-		value: 3,
+		value: 2,
 		title: "Part Time"
 	},
 ]

@@ -20,7 +20,7 @@ def login_user(request):
             user = authenticate(request, email=email, password=password)
             if user is not None:
                 login(request, user)
-                return JsonResponse({'message': f'Welcome, {user.name}'}, status=200)
+                return JsonResponse({'message': f'Welcome, {user.name}', 'user_id': user.userId}, status=200)
             else:
                 return JsonResponse({'message': 'Invalid credentials'}, status=401)
         except json.JSONDecodeError:

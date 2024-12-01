@@ -1,9 +1,9 @@
 import VacancyStatus from "../types/vacancyStatus";
 
 const statuses = [
-    new VacancyStatus(1, "Active"),
-    new VacancyStatus(2, "Hired"),
-    new VacancyStatus(3, "Canceled"),
+    new VacancyStatus(0, "Active"),
+    new VacancyStatus(1, "Hired"),
+    new VacancyStatus(2, "Canceled"),
 ]
 
 export default statuses

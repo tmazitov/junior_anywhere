@@ -1,5 +1,7 @@
+import CompanyAPI from "../api/company/api"
+
 enum VacancyStatus {
-	Uploaded = 1,
+	Uploaded = 0,
 	Canceled,
 	Hired,
 }
@@ -9,7 +11,7 @@ class Vacancy {
 	name: string
 	companyName: string
 	salary: number
-	description: string|undefined
+	comment: string|undefined
 	employmentId:number|undefined
 	locationId: number
 	experience: number|undefined
@@ -17,26 +19,51 @@ class Vacancy {
 	skills: string[] = []
 	workFormatId: number|undefined
 	withDegree: boolean = false
-	status: VacancyStatus = 1
+	status: VacancyStatus = 0
 	/**
 	 *
 	 */
 	constructor(data:any) {
 		this.id = data["id"]
 		this.name = data["name"]
-		this.description = data["description"]
-		this.companyName = data["companyName"]
+		this.comment = data["comment"]
+		this.companyName = data["companyName"] ?? data["company_name"]
 		this.salary = data["salary"]
-		this.locationId = data["locationId"]
+		this.locationId = data["location"] ?? data["location_id"] ?? data["locationId"]
 		this.applies = data["applies"]
-		this.workFormatId = data["workFormatId"]
-		this.employmentId = data["employmentId"]
+		this.workFormatId = data["work_format_id"]
+		this.employmentId = data["employment_id"]
 		this.experience = data["experience"]
-		this.withDegree = data["withDegree"]
+		this.withDegree = data["is_degree_required"]
 		this.skills = data["skills"] ? data["skills"].split(" ") : []
 		if (data["status"]) {
 			this.status = data["status"]
 		}
+	}
+	
+	async setupDetails(companyId:number) {
+		CompanyAPI.vacancy.details(companyId, this.id).then((response) => {
+			if (response.status >= 400) {
+				console.error("Failed to fetch vacancy details")
+				return
+			}
+			const data = response.data.data
+			console.log(data)
+			this.name = data["name"]
+			this.comment = data["comment"]
+			this.companyName = data["companyName"] ?? data["company_name"]
+			this.salary = data["salary"]
+			this.locationId = data["location"]
+			this.applies = data["applies"]
+			this.workFormatId = data["work_format"]
+			this.employmentId = data["employment"]
+			this.experience = data["experience"]
+			this.withDegree = data["is_degree_required"]
+			this.skills = data["skills"] ? data["skills"].split(" ") : []
+			if (data["status"]) {
+				this.status = data["status"]
+			}
+		})
 	}
 }
 

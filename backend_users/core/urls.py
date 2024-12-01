@@ -23,16 +23,16 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # API Routes
-    path('api/user/register/', user_register_view, name='api_register'),
-    path('api/user/profile/', user_profile_view, name='api_profile'),
-    path('api/user/<int:user_id>/', get_user_by_id, name='api_get_user'),
-    path('api/vacancy/<int:vacancyId>/apply/', apply_vacancy, name='api_apply_vacancy'),
-    path('api/vacancy/<int:vacancyId>/apply/list/', get_applications_by_vacancy, name='api_get_applications'),
-    path('api/vacancy/<int:vacancyId>/apply/<int:applyId>/cancel/', cancel_application, name='api_cancel_application'),
-    path('api/test-auth/', test_auth_view, name='api_test_auth'),
-    path('api/user/<int:user_id>/delete/', delete_user, name='delete_user'),
-    path('api/user/login/', login_user, name='login_user'),
-    path('api/user/logout/', logout_user, name='logout_user'),
+    path('api/user/register', user_register_view, name='api_register'),
+    path('api/user/profile', user_profile_view, name='api_profile'),
+    path('api/user/<int:user_id>', get_user_by_id, name='api_get_user'),
+    path('api/vacancy/<int:vacancyId>/apply', apply_vacancy, name='api_apply_vacancy'),
+    path('api/vacancy/<int:vacancyId>/apply/list', get_applications_by_vacancy, name='api_get_applications'),
+    path('api/vacancy/<int:vacancyId>/apply/<int:applyId>/cancel', cancel_application, name='api_cancel_application'),
+    path('api/test-auth', test_auth_view, name='api_test_auth'),
+    path('api/user/<int:user_id>/delete', delete_user, name='delete_user'),
+    path('api/user/login', login_user, name='login_user'),
+    path('api/user/logout', logout_user, name='logout_user'),
     
     # Web routes
     path('register/', user_register_view, name='register'),

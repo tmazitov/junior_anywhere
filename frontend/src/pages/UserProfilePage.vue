@@ -4,13 +4,14 @@
 			<NavigationBar/>
 			<div class="page-frame__content centered">
 				<div class="profile-card">
-					<FormCard>
-						<template v-slot:header>
-							<h2>Timur Mazitov</h2>
+					<FormCard v-if="userValue">
+						<template v-slot:header >
+							<h2>{{userValue.getFullName()}}</h2>
 						</template>
 						<template v-slot:default>
-							<div class="support-message">
-								No Data
+							<div class="support-message main">
+								<div>Phone: {{userValue.phone}}</div>
+								<div>{{ userValue.email }}</div>
 							</div>		
 						</template>
 					</FormCard>
@@ -22,7 +23,7 @@
 
 						<template v-slot:default>
 							<div class="support-message">
-								Go ahead and create a summary about your skills and strong sides
+								Go ahead and create a summary about your skills and strong sides.
 							</div>							 
 						</template>
 
@@ -97,6 +98,8 @@ const logOut = () => {
 	router.replace({name: "auth"})
 }
 
+const userValue = computed(() => UserAuth.info)
+
 </script>
 
 <style scoped>
@@ -123,6 +126,11 @@ const logOut = () => {
 	align-items: center;
 	color: #616161;
 	font-size: 0.85em;
+	flex-direction: column
+}
+
+.support-message.main{
+	display: block
 }
 
 .blur-enter-active{

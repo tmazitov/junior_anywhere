@@ -17,29 +17,29 @@ class VacancyListFilters {
 		if (data["s"]) {
 			this.search = data["s"]
 		}
-		if (data["e"]) {
-			if (Array.isArray(data["e"])) {
-				data["e"] = data["e"].map((e) => Number(e))
+		if (data["emp"]) {
+			if (Array.isArray(data["emp"])) {
+				data["emp"] = data["emp"].map((e) => Number(e))
 				this.employments = employments.filter((employment) => {
-					return data["e"].includes(employment.value)
+					return data["emp"].includes(employment.value)
 				})
 			} else {
-				data["e"] = Number(data["e"])
+				data["emp"] = Number(data["emp"])
 				this.employments = employments.filter((employment) => {
-					return employment.value === data["e"] 
+					return employment.value === data["emp"] 
 				})
 			}
 		}
-		if (data["l"]) {
-			if (Array.isArray(data["l"])){
-				data["l"] = data["l"].map((l) => Number(l))
+		if (data["loc"]) {
+			if (Array.isArray(data["loc"])){
+				data["loc"] = data["loc"].map((l) => Number(l))
 				this.locations = locations.filter((loc) => {
-					return data["l"].includes(loc.value)
+					return data["loc"].includes(loc.value)
 				})
 			} else {
-				data["l"] = Number(data["l"])
+				data["loc"] = Number(data["loc"])
 				this.locations = locations.filter((loc) => {
-					return loc.value === data["l"] 
+					return loc.value === data["loc"] 
 				})
 			}
 		}
@@ -93,13 +93,13 @@ class VacancyListFilters {
 		}
 
 		if (this.employments.length) {
-			query["e"] = this.employments.map((employment) => {
+			query["emp"] = this.employments.map((employment) => {
 				return employment.value
 			})
 		}
 
 		if (this.locations.length) {
-			query["l"] = this.locations.map((loc) => {
+			query["loc"] = this.locations.map((loc) => {
 				return loc.value
 			})
 		}
@@ -133,7 +133,7 @@ class VacancyListFilters {
 		const queryStr = Object.keys(query).map((key) => {
 			if (Array.isArray(query[key])) {
 				return query[key].map((value) => {
-					return `${key}[]=${value}`
+					return `${key}=${value}`
 				}).join("&")
 			}
 			return `${key}=${query[key]}`
@@ -145,7 +145,7 @@ class VacancyListFilters {
 		const match = {
 			search: this.search ? 
 				vacancy.name.toLowerCase().includes(this.search.toLowerCase()) 
-				|| vacancy.description?.toLowerCase().includes(this.search.toLowerCase()) : true,
+				|| vacancy.comment?.toLowerCase().includes(this.search.toLowerCase()) : true,
 			employments: this.employments.length ? 
 				this.employments.some(e => e.value === vacancy.employmentId) : true,
 			locations: this.locations.length ? 

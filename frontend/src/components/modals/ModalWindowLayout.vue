@@ -1,10 +1,14 @@
 <template>
     <div class="modal-window-layout">
         <transition name="backdrop">
-            <div class="backdrop" v-if="isOpen" @click="closeHandler"></div>
+            <div class="backdrop" v-if="isOpen" @click="closeHandler" v-bind:style="{
+                zIndex : zIndex
+            }"></div>
         </transition>
         <transition name="content">
-            <div class="content" v-if="isOpen">
+            <div class="content" v-if="isOpen" v-bind:style="{
+                zIndex : zIndex + 1
+            }">
                 <slot></slot>
             </div>
         </transition>
@@ -12,9 +16,19 @@
 </template>
 
 <script lang="ts" setup>
-import { defineModel } from 'vue';
+import { computed, defineModel, onMounted, ref } from 'vue';
+import modalWindowIndexController from '../../utils/modalWindowIndex';
 
 const isOpen = defineModel<boolean>({required:true})
+const zIndex = computed(() => {
+    if (!isOpen.value) {
+        return 10000
+    }
+    const index = modalWindowIndexController.get()
+    modalWindowIndexController.increment()
+    return index
+})
+
 
 const props = defineProps({
     closeOnClickOutside:{
@@ -31,6 +45,7 @@ const closeHandler = () => {
     if (!props.closeOnClickOutside) {
         return
     }
+    modalWindowIndexController.decrement()
     isOpen.value = false
     emits('on-close')
 }

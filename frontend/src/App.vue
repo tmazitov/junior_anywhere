@@ -18,7 +18,7 @@ onBeforeMount(() => {
 		CompanyAuth.setupInfo(companyId)
 	}
 	if (!companyId && userId) {
-
+		UserAuth.setupInfo(userId)
 	}
 })
 </script>

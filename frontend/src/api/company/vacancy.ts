@@ -26,6 +26,14 @@ class VacancyAPI {
     static async submit(companyId:number, form:VacancyCreate) {
         return client.post(`${companyId}/vacancy`, form.toRequestBody())
     }
+
+    static async details(companyId:number, vacancyId:number) {
+        return client.get(`${companyId}/vacancy/${vacancyId}/view`)
+    }
+
+    static async cancel(companyId:number, vacancyId:number) {
+        return client.delete(`${companyId}/vacancy/${vacancyId}/cancel`)
+    }
 }
 
 export default VacancyAPI

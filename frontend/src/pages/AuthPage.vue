@@ -211,8 +211,10 @@ const submitSignInForm = () => {
 				return
 			}
 			const data = response.data
-			const userId = data.id
+			const userId = data["user_id"]
+			console.log(userId)
 			UserAuth.setUserId(userId)
+			UserAuth.setupInfo(userId)
 			submitChange()
 		})
 	}
@@ -250,8 +252,10 @@ const submitRegistrationForm = () => {
 				return
 			}
 			const data = response.data
-			const userId = data.id
+			const userId = data["user_id"]
+			console.log(userId)
 			UserAuth.setUserId(userId)
+			UserAuth.setupInfo(userId)
 			submitChange()
 		})
 	}
@@ -281,7 +285,6 @@ const submitVerificationCode = () => {
 		router.push({name:'company-profile'})
 		return
 	}
-	UserAuth.setUserId(1)
 	router.push({name:'user-profile'})
 }
 
