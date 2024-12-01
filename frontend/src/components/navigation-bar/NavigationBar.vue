@@ -44,11 +44,11 @@
 					icon="tabler:arrow-bar-to-right" 
 					primary />
 				
-				<div class="nav-bar__link" v-else-if="isAuthorized && userId"
+				<div class="nav-bar__link" v-else-if="isAuthorized && userId && userValue"
 				@click="navigateTo('user-profile')"
 				v-bind:class="{active: routeName?.toString().includes('profile')}">
 					<Icon icon="tabler:user" height="16px"/>
-					Timur Mazitov
+					{{userValue.getFullName()}}
 				</div>
 				
 				<div class="nav-bar__link" v-else-if="isAuthorized && companyId && companyValue"
@@ -109,6 +109,7 @@ const navbarItems:Array<NavbarItem> = [
 ]
 
 const companyValue = computed(() => CompanyAuth.info)
+const userValue = computed(() => UserAuth.info)
 
 </script>
 

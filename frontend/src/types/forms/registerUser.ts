@@ -39,10 +39,10 @@ class RegisterUser {
 
 	toRequestBody() {
 		return {
-			firstName: this.firstName,
-			lastName: this.lastName,
+			name: this.firstName,
+			second_name: this.lastName,
 			email: this.email,
-			phone: this.phone,
+			phone_number: this.phone,
 			password: this.password
 		}
 	}

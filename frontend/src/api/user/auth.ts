@@ -4,7 +4,7 @@ import client from "./client";
 
 class AuthAPI {
     static login(form: SignInUser) {
-        return client.post('auth', {
+        return client.post('login', {
             email: form.email,
             password: form.password
         });
