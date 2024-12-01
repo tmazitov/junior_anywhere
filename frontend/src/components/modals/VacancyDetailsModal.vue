@@ -39,7 +39,7 @@
                         <div class="general-skills" v-if="vacancy.skills.length">
 
                             <Category v-for="skill, index in vacancy.skills"
-                                :key="`skill-${index}`" 
+                                :key="`skill-${index}`"
                                 :title="skill" color="var(--primary-color)"/>
                         </div>
                         
@@ -55,6 +55,11 @@
             </template>
             <template v-slot:footer v-if="!isCompanyView">
                 <BaseButton title="Apply" width="fit-content" primary @click="isNewApply = true"/>
+            </template>
+            <template v-slot:footer v-if="isCompanyView && currentTab == 1">
+                <BaseButton title="Cancel" 
+                    width="fit-content"
+                    @click="isCancelAlertOpen = true"/>
             </template>
         </FormCard>
         <FormCard 
@@ -115,8 +120,14 @@
                 </div>
             </template>
         </FormCard>
-        </div>
-    </ModalWindowLayout>
+    </div>
+</ModalWindowLayout>
+<BaseAlert v-model="isCancelAlertOpen"
+    title="Cancel vacancy"
+    message="Are you sure you want to cancel this vacancy?"
+    confirmText="Yes"
+    cancelText="No"
+    @on-confirm="cancelVacancyHandler"/>
 </template>
 
 <script lang="ts" setup>
@@ -138,6 +149,8 @@ import VacancyApplyForm from '../forms/VacancyApplyForm.vue';
 import { useRouter } from 'vue-router';
 import CompanyAuth from '../../utils/authCompany';
 import workFormats from '../../info/workFormats';
+import CompanyAPI from '../../api/company/api';
+import BaseAlert from '../inputs/BaseAlert.vue';
 
 const isOpen = defineModel<boolean>({required:true})
 
@@ -156,6 +169,9 @@ const props = defineProps({
     vacancy: Vacancy,
     isCompanyView: Boolean,
 })
+const emits = defineEmits([
+    'on-cancel-vacancy',
+])
 
 watch(() => props.vacancy, async () => {
     if (!props.vacancy) {
@@ -218,6 +234,19 @@ const getWorkFormat = (id:number) => {
     return workFormats.find(wf => wf.value == id)?.title
 }
 
+// Cancel
+
+const isCancelAlertOpen = ref<boolean>(false)
+const cancelVacancyHandler = () => {
+    const companyId = CompanyAuth.getCompanyId()
+    if (!companyId || !props.vacancy) {
+        return
+    }
+    CompanyAPI.vacancy.cancel(companyId, props.vacancy.id)
+    .then(() => {
+        emits('on-cancel-vacancy', props.vacancy)
+    })
+}
 
 </script>
 
