@@ -12,11 +12,12 @@
 
 			<div class="vacancy-card__info">
 				<div class="info-item" v-if="vacancy.employmentId">
-					<Icon icon="tabler:bolt" size="1.1em" />
+					<Icon icon="tabler:briefcase" size="1.1em" />
 					{{ getEmployment(vacancy.employmentId) }}
 				</div>
 				<div class="info-item" v-if="vacancy.workFormatId">
-					<Icon icon="tabler:briefcase" size="1.1em"  />
+					<Icon :icon="vacancy.workFormatId == 1 ? 
+						'tabler:wifi' : 'tabler:building'" size="1.1em"/>
 					{{ getWorkFormat(vacancy.workFormatId) }}
 				</div>
 				<div class="info-item">

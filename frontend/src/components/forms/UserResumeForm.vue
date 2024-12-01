@@ -3,6 +3,7 @@
 	<BaseInput v-model="form.experienceInYears" type="number" placeholder="Years Experience"	
 		:min="0" :max="100"/>
 	<BaseTextarea v-model="form.description" placeholder="About You" :rows="5" :max-length="500"/>
+	<BaseCheckbox v-model="form.isWithDegree" label="I have degree"/>
 	<div class="skills" ref="skills">
 		Skills
 		<div class="skill-list">
@@ -15,7 +16,6 @@
 			</div>
 			<BaseButton title="Add Skill" @click="addSkill"/>
 		</div>
-		
 	</div>
 </template>
 
@@ -26,11 +26,15 @@ import BaseButton from '../inputs/BaseButton.vue';
 import { Icon } from '@iconify/vue/dist/iconify.js';
 import { nextTick, onUnmounted, ref } from 'vue';
 import BaseTextarea from '../inputs/BaseTextarea.vue';
+import BaseCheckbox from '../inputs/BaseCheckbox.vue';
 
 let inputArray:HTMLElement[] = []
 
 const form = defineModel<UserResume>({required:true})
 const skills = ref<HTMLElement|null>(null)
+const emits = defineEmits([
+	'on-submit',
+])
 
 const onKeyPressEnter = (ev:KeyboardEvent) => {
 	if (ev.key === "Enter") {
@@ -67,7 +71,6 @@ const delSkill = (index:number) => {
 	input.removeEventListener("keypress", onKeyPressEnter)
 	inputArray = inputArray.filter((_, i) => i != index)
 }
-
 </script>
 
 <style scoped>

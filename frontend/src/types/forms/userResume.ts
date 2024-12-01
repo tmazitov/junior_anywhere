@@ -5,18 +5,31 @@ class UserResume {
 	experienceInYears:number|null = null
 	skills:string[] = []
 	description:string = ""
+	isWithDegree:boolean = false
+
+	constructor(data:any=undefined) {
+		if (!data)
+			return
+		this.name = data.name
+		this.experienceInYears = data.experience
+		this.skills = data.skills.split(' ')
+		this.description = data.description
+		this.isWithDegree = data.is_with_degree
+	}
 
 	validate() : boolean{
 
-		const checks:boolean[] = [
-			this.name.length == 0,
-			this.experienceInYears == null,
-			Number.isNaN(this.experienceInYears),
-			this.skills.length < 3,
-			this.skills.find(skill => skill.length == 0) != undefined
-		]
+		return true
+	}
 
-		return !checks.find(result =>result)
+	toRequestBody(){
+		return {
+			name: this.name,
+			experience: Number(this.experienceInYears),
+			skills: this.skills.join(" "),
+			description: this.description,
+			is_with_degree: this.isWithDegree
+		}
 	}
 }
 
