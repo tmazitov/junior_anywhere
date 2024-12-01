@@ -12,6 +12,8 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_http_methods
 import json
 
+from app1.models.companyVacancyModel import StatusEnum
+
 #search for a particular company in database by company_id and return data
 #if this company's vacancy by vacancy_id
 @require_http_methods(["GET"])
@@ -31,6 +33,9 @@ def registerVacancy(request, company_id):
 			company = get_object_or_404(Company, id=company_id)
 			# Include only the company ID in the data for the form
 			data['company_id'] = company.id  # Pass only the ID, not the instance
+			data.setdefault('hired_user_id', None)  # None будет сохраняться как NULL
+			data.setdefault('status', StatusEnum.active.value)
+			# data.setdefault('work_format', WorkFormatEnum.offline.value)
 			data.setdefault('skills', "")
 			print("JSON data:", data)
 		except json.JSONDecodeError:
@@ -51,7 +56,7 @@ def registerVacancy(request, company_id):
 	form_data = {field.name: field.value() for field in form}  # Пример структуры формы
 	return JsonResponse({'form': form_data})
 
-@require_http_methods(["DELETE"])
+@require_http_methods(["PATCH"])
 def cancel_vacancy(request, company_id, vacancy_id):
     try:
         # Query the vacancy directly using company_id and vacancy_id for efficiency
@@ -71,7 +76,7 @@ def hire(request, company_id, vacancy_id, hired_user_id):
 	try:
 		vacancy = CompanyVacancy.objects.get(pk=vacancy_id, company_id=company_id)
 				
-		if vacancy.status == 0 & vacancy.hired_user_id == 0:
+		if vacancy.status == 0 and vacancy.hired_user_id == 0:
 			vacancy.status = 1
 			vacancy.hired_user_id = hired_user_id
 			vacancy.save()  # Commit the change
@@ -82,8 +87,10 @@ def hire(request, company_id, vacancy_id, hired_user_id):
 		return JsonResponse({'status': 'error', 'message': 'No vacancy found with the provided ID for this company.'}, status=404)
 
 @require_http_methods(["GET"])
-def filter_vacancies_in_company(request, company_id):
-    # Получаем параметры из запроса
+def filter_vacancies(request):
+      # Получаем параметры из запроса
+    company_id = request.GET.get('company_id')
+    print("company_id:", company_id)
     search = request.GET.get('s', '')
     sal_min = request.GET.get('sal_min')
     sal_max = request.GET.get('sal_max')
@@ -95,6 +102,8 @@ def filter_vacancies_in_company(request, company_id):
 
     # Проверка валидности параметров
     try:
+        if company_id != None:
+            company_id = int(company_id)
         if sal_min:
             sal_min = float(sal_min)
         if sal_max:
@@ -118,8 +127,11 @@ def filter_vacancies_in_company(request, company_id):
     except ValueError:
         return JsonResponse({'error': 'Invalid query parameter'}, status=400)
 
-    # Начальный фильтр: только вакансии данной компании
-    vacancies = CompanyVacancy.objects.filter(company_id=company_id)
+    # Получаем все вакансии всех компаний
+    if company_id == None:
+        vacancies = CompanyVacancy.objects.all()
+    else:
+        vacancies = CompanyVacancy.objects.filter(company_id=company_id)
 
     # Применение фильтров
     if search:
@@ -151,11 +163,12 @@ def filter_vacancies_in_company(request, company_id):
             'id': vacancy.vacancy_id,
             'name': vacancy.name,
             'salary': str(vacancy.salary),
-            'company_name': vacancy.company_id.name,
+            'companyName': vacancy.company_id.name,
             'locationId': vacancy.location,
+            'workFormat': vacancy.work_format,
+            'emplyment': vacancy.employment
         }
         for vacancy in vacancies
     ]
 
     return JsonResponse({'vacancies': result}, status=200)
-
