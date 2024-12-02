@@ -11,11 +11,14 @@ from . import views
 from users_app.user_handlers.get_user import get_user_by_id
 from users_app.user_handlers.user_auth import login_user
 from users_app.user_handlers.user_logout import logout_user
+
 from users_app.user_handlers.user_register import delete_user
 from users_app.user_handlers.user_apply import (
     apply_vacancy,
     get_applications_by_vacancy,
     cancel_application,
+    create_user_resume,
+    get_user_resume
 )
 
 urlpatterns = [
@@ -26,6 +29,8 @@ urlpatterns = [
     path('api/user/register', user_register_view, name='api_register'),
     path('api/user/profile', user_profile_view, name='api_profile'),
     path('api/user/<int:user_id>', get_user_by_id, name='api_get_user'),
+    path('api/user/<int:userId>/resume/get', get_user_resume, name='api_get_user_resume'),
+    path('api/user/<int:userId>/resume/create', create_user_resume, name='api_create_user_resume'),
     path('api/vacancy/<int:vacancyId>/apply', apply_vacancy, name='api_apply_vacancy'),
     path('api/vacancy/<int:vacancyId>/apply/list', get_applications_by_vacancy, name='api_get_applications'),
     path('api/vacancy/<int:vacancyId>/apply/<int:applyId>/cancel', cancel_application, name='api_cancel_application'),

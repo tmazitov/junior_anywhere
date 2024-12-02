@@ -164,6 +164,7 @@ def filter_vacancies(request):
             'name': vacancy.name,
             'salary': str(vacancy.salary),
             'companyName': vacancy.company_id.name,
+            'companyId': vacancy.company_id.id,
             'locationId': vacancy.location,
             'workFormat': vacancy.work_format,
             'emplyment': vacancy.employment

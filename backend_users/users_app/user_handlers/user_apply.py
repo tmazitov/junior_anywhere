@@ -67,11 +67,15 @@ def get_applications_by_vacancy(request, vacancyId):
     for application in applications:
         resume = application.resume
         user = resume.user if resume else None
+        user_full_name = f'{user.name} {user.second_name}' if user else None
         application_list.append({
             'id': application.id,
-            'user_name': user.name if user else None,
+            'user_id' : application.user_id,
+            'user_name': user_full_name,
+            'resume_id': resume.id if resume else None,
             'resume_name': resume.name if resume else None,
             'experience': resume.experience if resume else None,
+            'message': application.message,
             'is_with_degree': resume.is_with_degree if resume else False,
         })
     return JsonResponse(application_list, safe=False, status=200)
