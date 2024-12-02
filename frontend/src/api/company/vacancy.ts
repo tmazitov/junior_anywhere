@@ -1,7 +1,6 @@
 import vacancies from "../../info/vacancies";
 import VacancyCreate from "../../types/forms/vacancyCreate";
 import VacancyListFilters from "../../types/vacancyListFilters";
-import { fakeRequest } from "../utils/fakeRequest";
 import client from "./client";
 
 class VacancyAPI {
@@ -9,18 +8,7 @@ class VacancyAPI {
     static mockVacancies = import.meta.env.DEV ? vacancies : null
 
     static async list(filters:VacancyListFilters) {
-        return await fakeRequest({
-            responseData: () => {
-                return this.mockVacancies?.filter(vacancy => {
-                    return filters.check(vacancy)
-                })
-            },
-            delay: 1000,
-        });
-    }
-
-    static async listByCompany(companyId:number, filters:VacancyListFilters) {
-        return client.get(`${companyId}/vacancy_filter?${filters.toQueryStr()}`)
+        return client.get(`/vacancy_filter?${filters.toQueryStr()}`)
     }
 
     static async submit(companyId:number, form:VacancyCreate) {
@@ -32,7 +20,7 @@ class VacancyAPI {
     }
 
     static async cancel(companyId:number, vacancyId:number) {
-        return client.delete(`${companyId}/vacancy/${vacancyId}/cancel`)
+        return client.patch(`${companyId}/vacancy/${vacancyId}/cancel`)
     }
 }
 

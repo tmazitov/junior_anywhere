@@ -6,11 +6,16 @@
                 <BaseIconButton icon="tabler:arrow-back-up"
                     @click="closeHandler"
                     fill="clear"/>
-                <h3>{{vacancy.name}}</h3>
+                <div class="title">
+                    <div class="title__vacancy-name">{{vacancy.name}}</div>
+                    <div class="title__vacancy-status" v-if="vacancy.status != 0">
+                        {{ getVacancyStatus(vacancy.status) }}
+                    </div>
+                </div>
             </template>
             <template v-slot:default>
-                <div class="modal-content">
-                    <BaseSwitch v-if="isCompanyView" v-model="currentTab" :items="tabOptions"/>
+                <div class="modal-content" >
+                    <BaseSwitch v-if="isCompanyView && vacancy.status == 0" v-model="currentTab" :items="tabOptions"/>
 
                     <div class="modal-content__container" v-show="currentTab == 1">
 
@@ -56,7 +61,7 @@
             <template v-slot:footer v-if="!isCompanyView">
                 <BaseButton title="Apply" width="fit-content" primary @click="isNewApply = true"/>
             </template>
-            <template v-slot:footer v-if="isCompanyView && currentTab == 1">
+            <template v-slot:footer v-if="isCompanyView && currentTab == 1 && vacancy.status == 0">
                 <BaseButton title="Cancel" 
                     width="fit-content"
                     @click="isCancelAlertOpen = true"/>
@@ -151,6 +156,7 @@ import CompanyAuth from '../../utils/authCompany';
 import workFormats from '../../info/workFormats';
 import CompanyAPI from '../../api/company/api';
 import BaseAlert from '../inputs/BaseAlert.vue';
+import statuses from '../../info/vacancyStatuses';
 
 const isOpen = defineModel<boolean>({required:true})
 
@@ -244,8 +250,16 @@ const cancelVacancyHandler = () => {
     }
     CompanyAPI.vacancy.cancel(companyId, props.vacancy.id)
     .then(() => {
+        if (!props.vacancy) {
+            return
+        }
+        props.vacancy.status = 2
         emits('on-cancel-vacancy', props.vacancy)
     })
+}
+
+const getVacancyStatus = (status:number) => {
+    return statuses.find(st => st.value == status)?.title
 }
 
 </script>
@@ -314,6 +328,11 @@ const cancelVacancyHandler = () => {
     gap: 16px;
 }
 
+.model-content.disabled{
+    filter:grayscale(0.6);
+    pointer-events: none;
+}
+
 .content-header{
     height: 36px;
     width: 100%;
@@ -353,5 +372,22 @@ const cancelVacancyHandler = () => {
     .current-resume:hover{
         background: var(--input-background-hover);
     }
+}
+
+.title{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.title__vacancy-name{
+    font-weight: 500;
+    font-size: 1.2em;
+}
+
+.title__vacancy-status{
+    font-size: 0.95em;
+    color: #616161;
 }
 </style>

@@ -1,11 +1,13 @@
 import employments from "../info/employments";
 import locations from "../info/locations";
+import statuses from "../info/vacancyStatuses";
 import workFormats from "../info/workFormats";
 import LocationArea from "./location";
 import Vacancy from "./vacancy";
 
 class VacancyListFilters {
 	search: string = ""
+	companyId: number|undefined
 	locations: Array<LocationArea> = []
 	salaryRange: Array<number> = [0, 0]
 	withSalary: boolean = false
@@ -60,12 +62,12 @@ class VacancyListFilters {
 		if (data["st"]) {
 			if (Array.isArray(data["st"])){
 				data["st"] = data["st"].map((f) => Number(f))
-				this.workFormats = workFormats.filter((f) => {
+				this.statuses = statuses.filter((f) => {
 					return data["st"].includes(f.value)
 				})
 			} else {
 				data["st"] = Number(data["st"])
-				this.locations = locations.filter((f) => {
+				this.statuses = statuses.filter((f) => {
 					return f.value === data["st"] 
 				})
 			}
@@ -123,6 +125,10 @@ class VacancyListFilters {
 
 		if (this.degreeIsRequired) {
 			query["d"] = true
+		}
+
+		if (this.companyId) {
+			query["company_id"] = this.companyId
 		}
 
 		return query

@@ -53,7 +53,7 @@
 				<FormCard width="100%">
 					<template v-slot:header>
 						<div class="header-container">
-							<h3>Active Vacancies</h3>
+							<h3>{{getVacancyListStatuses(filters.statuses)}} vacancies</h3>
 							<BaseButton title="Create" width="fit-content" primary
 								@click="isCreateVacancy = true"/>
 						</div>
@@ -83,6 +83,7 @@ import CreateVacancyModal from '../components/modals/CreateVacancyModal.vue';
 import CompanyAuth from '../utils/authCompany';
 import CompanyAPI from '../api/company/api';
 import VacancyCreate from '../types/forms/vacancyCreate';
+import statuses from '../info/vacancyStatuses';
 
 const companyId = CompanyAuth.getCompanyId()
 
@@ -101,7 +102,8 @@ const updateVacancyList = () => {
 	if (!companyId) {
 		return
 	}
-	CompanyAPI.vacancy.listByCompany(companyId, filters.value).then((res) => {
+	filters.value.companyId = companyId
+	CompanyAPI.vacancy.list(filters.value).then((res) => {
 		if (res.status >= 400) {
 			console.error(res)
 			return
@@ -165,6 +167,17 @@ const submitVacancy = (form:VacancyCreate) => {
 }
 
 const companyInfo = computed(() => CompanyAuth.info)
+
+const getVacancyListStatuses = (status:Array<{value:number, title:string}>) => {
+	if (!status || status.length === 0 || status.length === 3) {
+		return "Active"
+	}
+	const activeStatuses = statuses.filter((s) => {
+		return !!status.find((st) => st.value === s.value)
+	}).map((s) => s.title)
+
+	return activeStatuses.join(" and ")
+}
 
 </script>
 
