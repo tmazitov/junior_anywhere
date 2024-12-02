@@ -1,6 +1,7 @@
 
 
 class UserResume {
+	id:number = 0
 	name:string = ""
 	experienceInYears:number|null = null
 	skills:string[] = []
@@ -10,6 +11,7 @@ class UserResume {
 	constructor(data:any=undefined) {
 		if (!data)
 			return
+		this.id = data.id
 		this.name = data.name
 		this.experienceInYears = data.experience
 		this.skills = data.skills.split(' ')

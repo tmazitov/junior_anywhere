@@ -3,15 +3,15 @@ import client from "./client";
 
 class InfoAPI {
     static async general(userId:number) {
-        return client.get(`${userId}`)
+        return client.get(`user/${userId}`)
     }
 
     static async uploadResume(userId:number, form:UserResume) {
-        return client.post(`${userId}/resume/create`, form.toRequestBody())
+        return client.post(`user/${userId}/resume/create`, form.toRequestBody())
     }
 
     static async getResume(userId:number) {
-        return client.get(`${userId}/resume/get`)
+        return client.get(`user/${userId}/resume/get`)
     }
 }
 

@@ -6,7 +6,8 @@
                     <h3>{{ apply.userName }}</h3>
                 </div>
                 <div class="item__sub-title">
-                    {{apply.resumeName}}
+                    <div>{{ apply.resumeName }}</div>
+                    <div v-if="apply.experience">{{ apply.experience }} years experience</div>
                 </div>
             </div>
             <div class="item__buttons">
@@ -56,6 +57,10 @@ const onOpenDetails = () => {
 .item__sub-title{
     color:#616161;
     font-size: 0.9em;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 .item-card{
     display: flex;

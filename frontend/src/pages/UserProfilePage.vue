@@ -28,7 +28,7 @@
 						</template>
 
 						<template v-slot:footer>
-							<BaseButton title="Create Resume" width="100%" 
+							<BaseButton title="Create" width="100%" 
 								@click="() => isFillResumeForm = true"
 								primary/>
 						</template>
@@ -37,7 +37,7 @@
 
 					<FormCard v-if="isFillResumeForm && !resume">
 						<template v-slot:header>
-							<h3>New Resume Form</h3>
+							<h3>New Resume</h3>
 						</template>
 
 						<template v-slot:default>
@@ -48,7 +48,7 @@
 							<div class="buttons">
 								<BaseButton title="Cancel" width="100%" fill="outline"
 									@click="() => isFillResumeForm = false"/>
-								<BaseButton title="Upload" width="100%" primary :disabled="!resumeFormIsValid"
+								<BaseButton title="Save" width="100%" primary :disabled="!resumeFormIsValid"
 									@click="onSubmitResume"/>
 							</div>
 						</template>
@@ -59,28 +59,11 @@
 							<h3>{{ resume.name }}</h3>
 						</template>
 						<template v-slot:default>
-							<div class="resume-details">
-								<div class="second-info">
-									<div class="second-info">{{ resume.experienceInYears }} years experience</div>
-									|
-									<div class="second-info" v-if="resume.isWithDegree">
-										<Icon icon="tabler:school" height="1.2em"/>
-										With degree
-									</div>
-								</div>
-								<div class="description">
-									{{ resume.description }}
-								</div>
-								<div>Skills</div>
-								<div class="skills">
-									<Category v-for="skill in resume.skills" 
-										:title="skill" color="var(--primary-color)"/>
-								</div>
-							</div>
+							<UserResumeView :resume="resume"/>
 						</template>
 					</FormCard>
 
-					<FormCard v-if="resume">
+					<!-- <FormCard v-if="resume">
 						<template v-slot:header>
 							<h3>Applies</h3>
 						</template>
@@ -89,7 +72,7 @@
 								Empty list
 							</div>
 						</template>
-					</FormCard>
+					</FormCard> -->
 
 					<BaseButton title="Log Out" @click="logOut"/>
 
@@ -111,6 +94,7 @@ import { useRouter } from 'vue-router';
 import UserAPI from '../api/user/api';
 import { Icon } from '@iconify/vue/dist/iconify.js';
 import Category from '../components/inputs/Category.vue';
+import UserResumeView from '../components/vacancy-list/UserResumeView.vue';
 
 const isFillResumeForm = ref(false)
 const resumeForm = ref(new UserResume(undefined))
@@ -162,7 +146,7 @@ const onSubmitResume = () => {
 			if (response.status >= 400) {
 				throw new Error("Get resume error")
 			}
-			console.log(response.data)
+			resume.value = new UserResume(response.data)
 		})
 	})
 }
@@ -234,30 +218,4 @@ const onSubmitResume = () => {
 	flex-direction: row;
 	gap: 16px;
 }
-.second-info{
-	color: #616161;
-	font-size: 0.9em;
-	display: flex;
-	flex-direction: row;
-	gap: 6px;
-}
-
-.resume-details{
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
-}
-.skills{
-	display: flex;
-	flex-direction: row;
-	gap: 10px;
-	flex-wrap: wrap;
-}
-
-.description{
-	margin: 10px 0;
-
-}
-
-
 </style>

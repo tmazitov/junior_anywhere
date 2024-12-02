@@ -9,9 +9,9 @@ enum VacancyStatus {
 class Vacancy {
 	id: number
 	name: string
+	companyId: number
 	companyName: string
 	salary: number
-	companyId: number|undefined
 	comment: string|undefined
 	employmentId:number|undefined
 	locationId: number
@@ -28,6 +28,7 @@ class Vacancy {
 		this.id = data["id"]
 		this.name = data["name"]
 		this.comment = data["comment"]
+		this.companyId = data["companyId"]
 		this.companyName = data["companyName"] ?? data["company_name"]
 		this.salary = data["salary"]
 		this.locationId = data["location"] ?? data["location_id"] ?? data["locationId"]
@@ -42,8 +43,8 @@ class Vacancy {
 		}
 	}
 	
-	async setupDetails(companyId:number) {
-		CompanyAPI.vacancy.details(companyId, this.id).then((response) => {
+	async setupDetails() {
+		CompanyAPI.vacancy.details(this.companyId, this.id).then((response) => {
 			if (response.status >= 400) {
 				console.error("Failed to fetch vacancy details")
 				return
@@ -66,6 +67,6 @@ class Vacancy {
 			}
 		})
 	}
-}
+}``
 
 export default Vacancy

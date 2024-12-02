@@ -82,7 +82,7 @@ class VacancyListFilters {
 		if (data["s_max"] || data["s_min"]) {
 			this.withSalary = true
 		}
-		if (data["d"]) {
+		if (data["is_degree"]) {
 			this.degreeIsRequired = true
 		}
 	}
@@ -124,7 +124,7 @@ class VacancyListFilters {
 		}
 
 		if (this.degreeIsRequired) {
-			query["d"] = true
+			query["is_degree"] = 1
 		}
 
 		if (this.companyId) {

@@ -12,6 +12,9 @@ export default defineConfig({
 			'/api/user': {
 				target: 'http://localhost:8001',
 			},
+			'/api/vacancy': {
+				target: 'http://localhost:8001',
+			},
 		},
 		cors:false
 	},
