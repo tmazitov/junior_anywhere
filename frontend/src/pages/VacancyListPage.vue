@@ -76,9 +76,23 @@ const filters = ref(new VacancyListFilters(route.query))
 let timeout:number|null = null
 
 const vacancyList = ref<Vacancy[]>([])
-CompanyAPI.vacancy.list(filters.value).then((res) => {
-	vacancyList.value = res.data
-})
+const updateVacancyList = () => {
+	CompanyAPI.vacancy.list(filters.value).then((response) => {
+		if (response.status >= 400) {
+			console.error(response)
+			return
+		}
+		const data = response.data
+		if (!data || !data.vacancies || data.vacancies.length === 0) {
+			vacancyList.value = []
+			return
+		}
+
+		vacancyList.value = data.vacancies.map((vacancyData:any) => new Vacancy(vacancyData))
+	})
+}
+updateVacancyList()
+
 
 watch(() => filters.value, () => {
 	
@@ -87,9 +101,7 @@ watch(() => filters.value, () => {
 	}
 	
 	timeout = setTimeout(() => {
-		CompanyAPI.vacancy.list(filters.value).then((res) => {
-			vacancyList.value = res.data
-		})
+		updateVacancyList()
 		const query = filters.value.toQuery()
 		router.replace({name: 'vacancy-list', query})
 	}, 200)

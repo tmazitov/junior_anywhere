@@ -11,6 +11,7 @@ class Vacancy {
 	name: string
 	companyName: string
 	salary: number
+	companyId: number|undefined
 	comment: string|undefined
 	employmentId:number|undefined
 	locationId: number
@@ -51,7 +52,6 @@ class Vacancy {
 			console.log(data)
 			this.name = data["name"]
 			this.comment = data["comment"]
-			this.companyName = data["companyName"] ?? data["company_name"]
 			this.salary = data["salary"]
 			this.locationId = data["location"]
 			this.applies = data["applies"]
@@ -59,6 +59,7 @@ class Vacancy {
 			this.employmentId = data["employment"]
 			this.experience = data["experience"]
 			this.withDegree = data["is_degree_required"]
+			this.companyId = data["company_id"]
 			this.skills = data["skills"] ? data["skills"].split(" ") : []
 			if (data["status"]) {
 				this.status = data["status"]
