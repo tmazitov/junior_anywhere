@@ -92,8 +92,6 @@ import UserResume from '../types/forms/userResume';
 import UserAuth from '../utils/authUser';
 import { useRouter } from 'vue-router';
 import UserAPI from '../api/user/api';
-import { Icon } from '@iconify/vue/dist/iconify.js';
-import Category from '../components/inputs/Category.vue';
 import UserResumeView from '../components/vacancy-list/UserResumeView.vue';
 
 const isFillResumeForm = ref(false)

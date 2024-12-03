@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineModel, onMounted, ref } from 'vue';
+import { computed, defineModel } from 'vue';
 import modalWindowIndexController from '../../utils/modalWindowIndex';
 
 const isOpen = defineModel<boolean>({required:true})

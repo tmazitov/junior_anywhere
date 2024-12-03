@@ -413,6 +413,7 @@ const getVacancyStatus = (status:number) => {
     display: flex;
     flex-direction: row;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .general-description{
