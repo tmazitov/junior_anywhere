@@ -21,3 +21,5 @@ Anybody when start a career face the big problem. It's find the first job. Linke
     docker-compose up --build
 ```
 
+3. Open localhost:3000 in your browser to start test
+
