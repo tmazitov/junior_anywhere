@@ -1,30 +1,26 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-</script>
+
 
 <template>
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+	<router-view></router-view>
 </template>
 
+<script setup lang="ts">
+import { onBeforeMount } from 'vue';
+import CompanyAuth from './utils/authCompany';
+import UserAuth from './utils/authUser';
+
+onBeforeMount(() => {
+	const companyId = CompanyAuth.getCompanyId();
+	const userId = UserAuth.getUserId();
+	if (companyId && !userId) {
+		CompanyAuth.setupInfo(companyId)
+	}
+	if (!companyId && userId) {
+		UserAuth.setupInfo(userId)
+	}
+})
+</script>
+
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
+
 </style>
